@@ -42,6 +42,7 @@ import { SignupProvider } from '../providers/signup/signup';
 import { SigninProvider } from '../providers/signin/signin';
 import { ProfileProvider } from '../providers/profile/profile';
 import { SignedInProvider } from '../providers/signed-in/signed-in';
+import { LogoutProvider } from '../providers/logout/logout';
 
 @NgModule({
     declarations: [
@@ -126,7 +127,8 @@ import { SignedInProvider } from '../providers/signed-in/signed-in';
     SignupProvider,
     SigninProvider,
     ProfileProvider,
-    SignedInProvider
+    SignedInProvider,
+    LogoutProvider
     ]
 })
 export class AppModule { }
