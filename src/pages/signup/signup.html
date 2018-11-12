@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Sign Up - Town Hall Users</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list radio-group>
+        <h3 class="center">Select Account Type</h3>
+        <ion-item>
+            <ion-label>Town Hall User</ion-label>
+            <ion-radio checked="true" (ionSelect)="selectedAcc('u')" value="u"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Town Hall Journalist</ion-label>
+            <ion-radio (ionSelect)="selectedAcc('j')" value="j"></ion-radio>
+        </ion-item>
+        <ion-item>
+            <ion-label>Town Hall Organisation</ion-label>
+            <ion-radio (ionSelect)="selectedAcc('o')" value="o"></ion-radio>
+        </ion-item>
+        <br><br>
+        <div>
+            <ion-buttons>
+                <button (click)="back()" ion-button icon-start>
+                    <ion-icon name="arrow-back"></ion-icon> Back&nbsp;&nbsp;
+                </button>
+                <button (click)="signup()" class="fl-right" ion-button icon-end>
+                    &nbsp;&nbsp;Next <ion-icon name="arrow-forward"></ion-icon>
+                </button>
+            </ion-buttons>
+        </div>
+    </ion-list>
+</ion-content>

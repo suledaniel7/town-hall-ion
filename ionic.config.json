@@ -1,0 +1,14 @@
+{
+  "name": "town_hall",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "393b40c2",
+  "proxies": [
+    {
+      "path": "/server",
+      "proxyUrl": "http://localhost:8080"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<div id="main">
+    <h1 class="center">Town Hall</h1>
+    <div class="errorDiv">{{err}}</div>
+    <div *ngIf="errSit">
+        <button (click)="retry()">Retry</button>
+    </div>
+</div>

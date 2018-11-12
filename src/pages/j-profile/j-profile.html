@@ -1,0 +1,34 @@
+<ion-content>
+    <div class="profileDets">
+        <img src="/assets/imgs/users.jpg" alt="User Avatar" class="center-block profileAvatar">
+        <h3 class="center">Full Name</h3>
+        <ion-row class="center">
+            <ion-col>
+                <strong>
+                    Jos North
+                </strong>
+            </ion-col>
+            <ion-col>
+                <strong>Org Name</strong>
+            </ion-col>
+            <ion-col>
+                <strong>
+                    178
+                    <br>
+                    Followers
+                </strong>
+            </ion-col>
+            <ion-col>
+                <ion-icon (click)="settings()" name="settings" class="icon"></ion-icon>
+            </ion-col>
+        </ion-row>
+    </div>
+    <hr>
+    <br>
+    <page-message></page-message>
+    <ion-fab bottom right>
+        <button (click)="compose()" ion-fab color="secondary" class="fab">
+            <ion-icon name="add" class="icon"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

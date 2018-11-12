@@ -1,0 +1,32 @@
+<ion-content>
+    <div class="profileDets">
+        <img src="/assets/imgs/users.jpg" alt="User Avatar" class="center-block profileAvatar">
+        <h3 class="center">Organisation Name</h3>
+        <ion-row class="center">
+            <ion-col>
+                <strong>17<br>Journalists</strong>
+            </ion-col>
+            <ion-col>
+                <strong>180<br>Unique Followers</strong>
+            </ion-col>
+            <ion-col>
+                <strong>767<br>Messages</strong>
+            </ion-col>
+            <ion-col>
+                <ion-icon (click)="settings()" name="settings" class="icon"></ion-icon>
+            </ion-col>
+        </ion-row>
+    </div>
+    <hr>
+    <br>
+    <div class="messages" id="messages">
+        <div *ngFor="let message of item?.messages">
+            <page-message [message]="message"></page-message>
+        </div>
+    </div>
+    <ion-fab bottom right>
+        <button (click)="compose()" ion-fab color="secondary" class="fab">
+            <ion-icon name="add" class="icon"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

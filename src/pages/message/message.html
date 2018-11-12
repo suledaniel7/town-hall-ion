@@ -1,0 +1,29 @@
+<ion-card class="message" id="{{message.m_timestamp}}">
+    <ion-item>
+        <ion-avatar item-start>
+            <img src="http://localhost:8080/{{message.sender_avatar}}" alt="Avatar">
+        </ion-avatar>
+        <h2 (click)="profile(message.sender, message.ac_type)">{{message.sender_name}}</h2>
+        <p>{{message.date_created}}</p>
+    </ion-item>
+    <ion-card-content>
+        <p [innerHTML]="message.message"></p>
+    </ion-card-content>
+    <ion-row>
+        <ion-col>
+            <button ion-button icon-start clear small>
+                <ion-icon active="false" name="chatbubbles"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col>
+            <button ion-button icon-start clear small>
+                <ion-icon active="false" name="flag"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col center text-center>
+            <ion-note>
+                {{message.time_created}}
+            </ion-note>
+        </ion-col>
+    </ion-row>
+</ion-card>

@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Compose Message</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-textarea placeholder="Enter Message..."></ion-textarea>
+    <br><br>
+    <ion-list>
+        <ion-item>
+            <ion-label>Select District(s)</ion-label>
+            <ion-select multiple="true" okText="Okay" cancelText="Cancel">
+                <ion-option value="all" selected="true">All</ion-option>
+                <ion-option value="jnt">Jos North</ion-option>
+                <ion-option value="jst">Jos South</ion-option>
+                <ion-option value="jet">Jos East</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+    <button id="send" ion-button icon-start large class="fl-right">
+        <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Send
+    </button>
+</ion-content>

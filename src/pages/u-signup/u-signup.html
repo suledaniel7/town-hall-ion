@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Sign Up - Town Hall Users</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-label stacked>First Name</ion-label>
+            <ion-input type="text" id="f_name" name="f_name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Username</ion-label>
+            <ion-input type="text" id="username" name="username"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Email Address</ion-label>
+            <ion-input type="email" id="email" name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Password</ion-label>
+            <ion-input type="password" id="password" name="password"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Confirm Password</ion-label>
+            <ion-input type="password" id="pass1"></ion-input>
+        </ion-item>
+        <br><br>
+        <ion-item>
+            <ion-label><strong>Gender</strong></ion-label>
+            <ion-select>
+                <ion-option selected="true" value="f">Female</ion-option>
+                <ion-option value="m">Male</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label><strong>State</strong></ion-label>
+            <ion-select>
+                <ion-option selected="true" value="pl">Plateau</ion-option>
+                <ion-option value="ab">Abuja</ion-option>
+            </ion-select>
+        </ion-item>
+        <br><br>
+        <div class="center">
+            <button ion-button color="primary">Create Account</button>
+        </div>
+    </ion-list>
+</ion-content>

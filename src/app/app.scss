@@ -1,0 +1,69 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.home {
+    background: color($colors, light);
+    color: color($colors, primary);
+    margin-top: 30px;
+}
+
+.toolbar-title {
+    // text-align: center;
+}
+
+.tabs-md .tab-button-icon {
+    color: #ccc;
+}
+
+.item-input .label-md, .item-select .label-md, .item-datetime .label-md {
+    color: color($colors, primary);
+}
+
+.item-input-has-focus .label-md[stacked], .input-has-focus .label-md[stacked] {
+    font-size: 10pt;
+    color: color($colors, primary);
+}
+
+.white-text {
+    color: white;
+}
+
+.center {
+    text-align: center;
+}
+
+.errorDiv {
+    color: color($colors, danger);
+    text-align: center;
+    font-weight: bold;
+}
+
+.fl-right {
+    float: right;
+}
+
+.fl-left {
+    float: left;
+}
+
+.profileAvatar {
+    border-radius: 50%;
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+}

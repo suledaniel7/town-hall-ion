@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Sign Up - Town Hall Organisations</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="errorDiv">{{err}}</div>
+    <ion-list>
+        <ion-item>
+            <ion-label stacked>Organisation Name</ion-label>
+            <ion-input [(ngModel)]="name" type="text" id="name" name="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Username</ion-label>
+            <ion-input [(ngModel)]="username" (ionBlur)="checkUsername()" type="text" id="username" name="username"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Official Town Hall Email Address</ion-label>
+            <ion-input [(ngModel)]="email" (ionBlur)="checkEmail()" type="email" id="email" name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Town Hall Public Email Address</ion-label>
+            <ion-input [(ngModel)]="email_corr" (ionBlur)="checkCMail()" type="email" id="email_corr" name="email_corr"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Password</ion-label>
+            <ion-input [(ngModel)]="password" type="password" id="password" name="password"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Confirm Password</ion-label>
+            <ion-input [(ngModel)]="pass1" type="password" id="pass1"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>NUJ ID Number</ion-label>
+            <ion-input [(ngModel)]="id" type="text" id="id" name="id"></ion-input>
+        </ion-item>
+
+        <br><br>
+        <div class="center">
+            <button (click)="sub()" ion-button color="primary">Create Account</button>
+        </div>
+    </ion-list>
+</ion-content>

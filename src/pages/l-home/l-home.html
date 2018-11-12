@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Home</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="messages" id="messages">
+        <page-message></page-message>
+    </div>
+    <ion-fab bottom right>
+        <button (click)="compose()" ion-fab color="secondary" class="fab">
+            <ion-icon name="add" class="icon"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>
