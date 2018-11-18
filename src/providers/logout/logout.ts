@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from "rxjs";
 
 /*
   Generated class for the LogoutProvider provider.
@@ -10,8 +11,12 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LogoutProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello LogoutProvider Provider');
-  }
+    constructor(public http: HttpClient) {
+
+    }
+
+    logout(): Observable<any>{
+        return this.http.get('/server/logout');
+    }
 
 }

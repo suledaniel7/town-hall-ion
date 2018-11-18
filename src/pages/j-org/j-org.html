@@ -5,6 +5,8 @@
 </ion-header>
 <ion-content padding>
     <div class="messages" id="messages">
-        <page-message></page-message>
+        <div *ngFor="let message of item?.org_msgs">
+            <page-message [message]="message"></page-message>
+        </div>
     </div>
 </ion-content>

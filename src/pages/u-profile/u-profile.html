@@ -1,18 +1,20 @@
 <ion-content>
-    <div class="profileDets">
-        <img src="/assets/imgs/users.jpg" alt="User Avatar" class="center-block profileAvatar">
-        <h3 class="center">User Name</h3>
+    <div *ngIf="item?.user">
+        <div class="profileDets">
+            <img src="http://localhost:8080/{{item.user.avatar}}" alt="{{f_name}}'s Avatar" class="center-block profileAvatar">
+            <h3 class="center">{{item.user.f_name}}</h3>
+        </div>
+        <hr>
+        <br>
+        <ion-list inset>
+            <ion-item><strong>State: </strong><span id="">{{item.user.state}}</span></ion-item>
+            <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">{{item.rep.district}}</span></ion-item>
+            <ion-item><strong>Representative: </strong><span color="secondary" id="">{{item.rep.full_name}}</span></ion-item>
+            <ion-item><strong>Senatorial District: </strong><span color="secondary" id="">{{item.sen.district}}</span></ion-item>
+            <ion-item><strong>Senator: </strong><span color="secondary" id="">{{item.sen.full_name}}</span></ion-item>
+            <ion-item><strong>Date Joined: </strong><span color="secondary" id="">{{item.user.date_joined}}</span></ion-item>
+        </ion-list>
     </div>
-    <hr>
-    <br>
-    <ion-list inset>
-        <ion-item><strong>State: </strong><span id="">Plateau</span></ion-item>
-        <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">Jos North</span></ion-item>
-        <ion-item><strong>Representative: </strong><span color="secondary" id="">Random Person</span></ion-item>
-        <ion-item><strong>Senatorial District: </strong><span color="secondary" id="">Jos North</span></ion-item>
-        <ion-item><strong>Senator: </strong><span color="secondary" id="">Random Person</span></ion-item>
-        <ion-item><strong>Date Joined: </strong><span color="secondary" id="">June, 2018</span></ion-item>
-    </ion-list>
     <ion-fab bottom right>
         <button ion-fab (click)="settings()" color="secondary" class="fab">
             <ion-icon name="cog" class="icon"></ion-icon>

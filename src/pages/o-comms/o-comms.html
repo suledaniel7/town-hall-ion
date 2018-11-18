@@ -11,13 +11,13 @@
             <ion-label>Select District(s)</ion-label>
             <ion-select multiple="true" okText="Okay" cancelText="Cancel">
                 <ion-option value="all" selected="true">All</ion-option>
-                <ion-option value="jnt">Jos North</ion-option>
-                <ion-option value="jst">Jos South</ion-option>
-                <ion-option value="jet">Jos East</ion-option>
+                <div *ngFor="let beat of item?.b_arr">
+                    <ion-option value="{{beat.code}}">{{beat.name}} ({{beat.type}})</ion-option>
+                </div>
             </ion-select>
         </ion-item>
     </ion-list>
-    <button id="send" ion-button icon-start large class="fl-right">
+    <button id="send" ion-button icon-start class="fl-right">
         <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Send
     </button>
 </ion-content>

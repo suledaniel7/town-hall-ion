@@ -1,0 +1,18 @@
+<ion-card class="journalist">
+    <ion-item>
+        <ion-avatar item-start>
+            <img src="http://localhost:8080/{{journalist.avatar}}" alt="{{journalist.f_name}}'s Avatar">
+        </ion-avatar>
+        <h2>{{journalist.full_name}}</h2>
+        <h3>{{journalist.beatDets.name}}</h3>
+        <h3>{{journalist.beatDets.rep}}</h3>
+        <h3>{{journalist.followersNo}} <span id="plur">Followers</span></h3>
+    </ion-item>
+    <ion-row class="fl-right">
+        <ion-col>
+            <button ion-button clear small>
+                <ion-icon name="options"></ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
+</ion-card>

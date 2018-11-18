@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from "../pages/home/home";
-import { JBeatPage } from "../pages/j-beat/j-beat";
 import { JCommsPage } from "../pages/j-comms/j-comms";
 import { JHomePage } from "../pages/j-home/j-home";
 import { JOrgPage } from "../pages/j-org/j-org";
@@ -17,13 +16,13 @@ import { JSettingsPage } from '../pages/j-settings/j-settings';
 import { JournalistsPage } from "../pages/journalists/journalists";
 import { LCommsPage } from "../pages/l-comms/l-comms";
 import { LHomePage } from "../pages/l-home/l-home";
-import { LMentionsPage } from '../pages/l-mentions/l-mentions';
 import { LProfilePage } from "../pages/l-profile/l-profile";
 import { LSettingsPage } from '../pages/l-settings/l-settings';
 import { LegislatorsPage } from "../pages/legislators/legislators";
 import { MessagePage } from "../pages/message/message";
 import { OCommsPage } from "../pages/o-comms/o-comms";
 import { OHomePage } from "../pages/o-home/o-home";
+import { OJournoPage } from "../pages/o-journo/o-journo";
 import { OJournosPage } from "../pages/o-journos/o-journos";
 import { OProfilePage } from "../pages/o-profile/o-profile";
 import { OSignupPage } from "../pages/o-signup/o-signup";
@@ -48,7 +47,6 @@ import { LogoutProvider } from '../providers/logout/logout';
     declarations: [
         MyApp,
         HomePage,
-        JBeatPage,
         JCommsPage,
         JHomePage,
         JOrgPage,
@@ -58,13 +56,13 @@ import { LogoutProvider } from '../providers/logout/logout';
         JournalistsPage,
         LCommsPage,
         LHomePage,
-        LMentionsPage,
         LProfilePage,
         LSettingsPage,
         LegislatorsPage,
         MessagePage,
         OCommsPage,
         OHomePage,
+        OJournoPage,
         OJournosPage,
         OProfilePage,
         OSignupPage,
@@ -88,7 +86,6 @@ import { LogoutProvider } from '../providers/logout/logout';
     entryComponents: [
         MyApp,
         HomePage,
-        JBeatPage,
         JCommsPage,
         JHomePage,
         JOrgPage,
@@ -98,13 +95,13 @@ import { LogoutProvider } from '../providers/logout/logout';
         JournalistsPage,
         LCommsPage,
         LHomePage,
-        LMentionsPage,
         LProfilePage,
         LSettingsPage,
         LegislatorsPage,
         MessagePage,
         OCommsPage,
         OHomePage,
+        OJournoPage,
         OJournosPage,
         OProfilePage,
         OSignupPage,
@@ -124,11 +121,11 @@ import { LogoutProvider } from '../providers/logout/logout';
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         CheckUsernameProvider,
-    SignupProvider,
-    SigninProvider,
-    ProfileProvider,
-    SignedInProvider,
-    LogoutProvider
+        SignupProvider,
+        SigninProvider,
+        ProfileProvider,
+        SignedInProvider,
+        LogoutProvider
     ]
 })
 export class AppModule { }

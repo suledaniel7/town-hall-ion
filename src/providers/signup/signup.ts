@@ -21,6 +21,14 @@ export class SignupProvider {
         return this.http.get('/server/users/checkCorrEmail/'+email);
     }
 
+    load_states(): Observable<any> {
+        return this.http.get('/server/users/signup');
+    }
+
+    load_districts(state_key): Observable<any> {
+        return this.http.get('/server/users/signup/districts/'+state_key);
+    }
+
     signup_o(name, username, email, email_corr, password, id): Observable<any>{
         return this.http.post('/server/organisations/signup', {
             name: name,

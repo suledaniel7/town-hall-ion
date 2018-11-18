@@ -3,9 +3,11 @@
         <ion-title>Home</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
     <div class="messages" id="messages">
-        <page-message></page-message>
+        <div *ngFor="let message of item?.beat_msgs">
+            <page-message [message]="message"></page-message>
+        </div>
     </div>
     <ion-fab bottom right>
         <button (click)="compose()" ion-fab color="secondary" class="fab">

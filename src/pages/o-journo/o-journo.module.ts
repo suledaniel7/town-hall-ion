@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { JBeatPage } from './j-beat';
+import { OJournoPage } from './o-journo';
 
 @NgModule({
   declarations: [
-    JBeatPage,
+    OJournoPage,
   ],
   imports: [
-    IonicPageModule.forChild(JBeatPage),
+    IonicPageModule.forChild(OJournoPage),
   ],
 })
-export class JBeatPageModule {}
+export class OJournoPageModule {}

@@ -1,31 +1,39 @@
 <ion-content>
-    <div class="profileDets">
-        <img src="/assets/imgs/users.jpg" alt="User Avatar" class="center-block profileAvatar">
-        <h3 class="center">Full Name</h3>
-        <ion-row class="center">
-            <ion-col>
-                <strong>
-                    Jos North
-                </strong>
-            </ion-col>
-            <ion-col>
-                <strong>Org Name</strong>
-            </ion-col>
-            <ion-col>
-                <strong>
-                    178
-                    <br>
-                    Followers
-                </strong>
-            </ion-col>
-            <ion-col>
-                <ion-icon (click)="settings()" name="settings" class="icon"></ion-icon>
-            </ion-col>
-        </ion-row>
+    <div *ngIf="item?.user">
+        <div class="profileDets">
+            <img src="http://localhost:8080/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar" class="center-block profileAvatar">
+            <h3 class="center">{{item.user.full_name}}</h3>
+            <ion-row class="center">
+                <ion-col>
+                    <strong>
+                        {{item.user.beatDets.name}}
+                    </strong>
+                </ion-col>
+                <ion-col>
+                    <strong>{{item.user.orgName}}</strong>
+                </ion-col>
+                <ion-col>
+                    <strong>
+                        {{item.user.followersNo}}
+                        <br>
+                        Followers
+                    </strong>
+                </ion-col>
+                <ion-col>
+                    <ion-icon (click)="settings()" name="settings" class="icon"></ion-icon>
+                </ion-col>
+            </ion-row>
+        </div>
     </div>
     <hr>
     <br>
-    <page-message></page-message>
+    <div>
+        <div class="messages" id="messages">
+            <div *ngFor="let message of item?.messages">
+                <page-message [message]="message"></page-message>
+            </div>
+        </div>
+    </div>
     <ion-fab bottom right>
         <button (click)="compose()" ion-fab color="secondary" class="fab">
             <ion-icon name="add" class="icon"></ion-icon>

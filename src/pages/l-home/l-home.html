@@ -5,7 +5,9 @@
 </ion-header>
 <ion-content padding>
     <div class="messages" id="messages">
-        <page-message></page-message>
+        <div *ngFor="let message of item?.dist_posts">
+            <page-message [message]="message"></page-message>
+        </div>
     </div>
     <ion-fab bottom right>
         <button (click)="compose()" ion-fab color="secondary" class="fab">

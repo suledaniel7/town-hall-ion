@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the USettingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LogoutProvider } from "../../providers/logout/logout";
+
+import { SigninPage } from "../signin/signin";
 
 @IonicPage()
 @Component({
@@ -15,14 +12,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class USettingsPage {
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private logProv: LogoutProvider) {
     }
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad USettingsPage');
+        
     }
 
     logout(){
-        
+        this.logProv.logout().subscribe(data => {
+            if(data.success){
+                this.navCtrl.setRoot(SigninPage);
+                this.navCtrl.popToRoot();
+            }
+            else {
+                alert("Something went wrong while logging you out. Please restart the app");
+            }
+        }, (err)=> {
+            alert("An error occured. Error: " + err.message);
+        });
     }
 }

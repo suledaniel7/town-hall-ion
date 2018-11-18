@@ -1,25 +1,46 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the OCommsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ProfileProvider } from "../../providers/profile/profile";
 
 @IonicPage()
 @Component({
-  selector: 'page-o-comms',
-  templateUrl: 'o-comms.html',
+    selector: 'page-o-comms',
+    templateUrl: 'o-comms.html',
 })
 export class OCommsPage {
+    item: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams, private profProv: ProfileProvider) {
+        this.profProv.o_profile_c().subscribe(data => {
+            if(data.success){
+                this.item = data.item;
+            }
+            else {
+                this.autoretry();
+            }
+        }, err => {
+            alert(err.message);
+            this.autoretry();
+        });
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad OCommsPage');
-  }
+    autoretry(){
+        this.profProv.o_profile_c().subscribe(data => {
+            if(data.success){
+                this.item = data.item;
+            }
+            else {
+                this.autoretry();
+            }
+        }, err => {
+            alert(err.message);
+            this.autoretry();
+        });
+    }
+
+    ionViewDidLoad() {
+
+    }
 
 }

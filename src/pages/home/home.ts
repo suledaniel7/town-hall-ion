@@ -5,7 +5,10 @@ import { LoadingController } from "ionic-angular";
 import { SignedInProvider } from "../../providers/signed-in/signed-in";
 
 import { SigninPage } from '../signin/signin';
+import { UsersPage } from "../users/users";
+import { JournalistsPage } from "../journalists/journalists";
 import { OrganisationsPage } from "../organisations/organisations";
+import { LegislatorsPage } from "../legislators/legislators";
 
 @Component({
     selector: 'page-home',
@@ -16,33 +19,12 @@ export class HomePage {
     errSit = false;
 
     constructor(public navCtrl: NavController, private ldCtrl: LoadingController, private signedIn: SignedInProvider) {
-        let loader = this.ldCtrl.create({
-            showBackdrop: true,
-            content: "Please wait...",
-        });
 
-        loader.present();
-
-        this.signedIn.isSignedIn().subscribe(data => {
-            if(data.active){
-                loader.dismiss();
-                this.navCtrl.setRoot(OrganisationsPage);
-                this.navCtrl.popToRoot();
-            }
-            else {
-                loader.dismiss();
-                this.navCtrl.setRoot(SigninPage);
-                this.navCtrl.popToRoot();
-            }
-        }, (err)=>{
-            loader.dismiss();
-            this.errSit = true;
-            this.err = "Error connecting to Internet. Check your connection";
-        });
+        this.load();
         
     }
 
-    retry(){
+    load(){
         let loader = this.ldCtrl.create({
             showBackdrop: true,
             content: "Please wait...",
@@ -53,7 +35,22 @@ export class HomePage {
         this.signedIn.isSignedIn().subscribe(data => {
             if(data.active){
                 loader.dismiss();
-                this.navCtrl.setRoot(OrganisationsPage);
+                let u_type = data.u_type;
+                if(u_type == 'u'){
+                    this.navCtrl.setRoot(UsersPage);
+                }
+                else if(u_type == 'j'){
+                    this.navCtrl.setRoot(JournalistsPage);
+                }
+                else if(u_type == 'o'){
+                    this.navCtrl.setRoot(OrganisationsPage);
+                }
+                else if(u_type == 'l'){
+                    this.navCtrl.setRoot(LegislatorsPage);
+                }
+                else {
+                    alert("Invalid data.u_type provided. home.ts");
+                }
                 this.navCtrl.popToRoot();
             }
             else {
@@ -64,8 +61,12 @@ export class HomePage {
         }, (err)=>{
             loader.dismiss();
             this.errSit = true;
-            this.err = "Error connecting to Internet. Check your connection";
+            this.err = err.message;
         });
+    }
+
+    retry(){
+        this.load();
     }
 
 }

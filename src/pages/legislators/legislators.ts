@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-// import { LCommsPage } from "../l-comms/l-comms";
 import { LHomePage } from "../l-home/l-home";
 import { LProfilePage } from "../l-profile/l-profile";
 import { SearchPage } from "../search/search";
