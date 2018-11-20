@@ -1,3 +1,10 @@
 .messages {
     margin-bottom: 100px;
 }
+
+.suggs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}

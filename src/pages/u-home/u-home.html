@@ -5,6 +5,13 @@
 </ion-header>
 <ion-content>
     <div class="messages" id="messages">
+        <div class="utilityDiv" id="utilityDiv">{{utilityText}}</div>
+        <div class="suggs" *ngIf="item?.sourceSelNull">
+            <page-org></page-org>
+            <page-org></page-org>
+            <page-org></page-org>
+            <page-org></page-org>
+        </div>
         <div *ngFor="let message of item?.messages">
             <page-message [message]="message"></page-message>
         </div>
