@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Input } from "@angular/core";
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
@@ -10,16 +11,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-org',
-  templateUrl: 'org.html',
+    selector: 'page-org',
+    templateUrl: 'org.html',
 })
 export class OrgPage {
+    @Input() person: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad OrgPage');
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad OrgPage');
+    }
 
 }

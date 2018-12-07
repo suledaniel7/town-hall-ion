@@ -1,0 +1,11 @@
+<ion-card class="cardy" (click)="render_pg(person.tint, person.username)">
+    <ion-card-content>
+        <img src="http://localhost:8080/{{person.avatar}}" alt="{{person.name}}'s Avatar" class="avatar">
+        <div class="name">
+            {{person.name}}
+        </div>
+        <div class="bio">
+            {{person.bio}}
+        </div>
+    </ion-card-content>
+</ion-card>

@@ -1,18 +1,48 @@
-<!--
-  Generated template for the JCommsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>j-comms</ion-title>
-  </ion-navbar>
-
+    <ion-row>
+        <ion-col>
+            <button (click)="back()" ion-button color="secondary">Cancel</button>
+        </ion-col>
+        <ion-col class="right">
+            <button (click)="post()" ion-button color="{{btnColor}}">Post</button>
+        </ion-col>
+    </ion-row>
 </ion-header>
+<ion-content>
+    <div class="cr-post">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="http://localhost:8080/{{item?.avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea maxlength="360" class="txt-msg" (keyup)="count()" [(ngModel)]="message" placeholder="Type Post...">
 
-
-<ion-content padding>
-
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+            <ion-row class="center grey-text">
+                <ion-col class="center">{{charCount}}/360 Characters</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12 class="center">
+                    <ion-list radio-group [(ngModel)]="m_type">
+                        <ion-list-header>Post Type</ion-list-header>
+                        <ion-item>
+                            <ion-label>Opinion</ion-label>
+                            <ion-radio checked="checked" name="m_type" value="o"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>News</ion-label>
+                            <ion-radio name="m_type" value="n"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 </ion-content>

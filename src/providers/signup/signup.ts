@@ -6,19 +6,19 @@ import { Observable } from "rxjs";
 export class SignupProvider {
 
     constructor(public http: HttpClient) {
-        
+
     }
 
-    u_check(username): Observable<any>{
-        return this.http.get('/server/users/check/'+username);
+    u_check(username): Observable<any> {
+        return this.http.get('/server/users/check/' + username);
     }
 
-    e_check(email): Observable<any>{
-        return this.http.get('/server/users/checkEmail/'+email);
+    e_check(email): Observable<any> {
+        return this.http.get('/server/users/checkEmail/' + email);
     }
 
-    c_check(email): Observable<any>{
-        return this.http.get('/server/users/checkCorrEmail/'+email);
+    c_check(email): Observable<any> {
+        return this.http.get('/server/users/checkCorrEmail/' + email);
     }
 
     load_states(): Observable<any> {
@@ -26,10 +26,10 @@ export class SignupProvider {
     }
 
     load_districts(state_key): Observable<any> {
-        return this.http.get('/server/users/signup/districts/'+state_key);
+        return this.http.get('/server/users/signup/districts/' + state_key);
     }
 
-    signup_o(name, username, email, email_corr, password, id): Observable<any>{
+    signup_o(name, username, email, email_corr, password, id): Observable<any> {
         return this.http.post('/server/organisations/signup', {
             name: name,
             username: username,
@@ -40,7 +40,7 @@ export class SignupProvider {
         });
     }
 
-    signup_j(f_name, l_name, username, email, password, ac_type): Observable<any>{
+    signup_j(f_name, l_name, username, email, password, ac_type): Observable<any> {
         return this.http.post('/server/journalists/signup', {
             f_name: f_name,
             l_name: l_name,
@@ -51,7 +51,7 @@ export class SignupProvider {
         });
     }
 
-    signup_u(f_name, username, email, password, gender, sen_dist, fed_const): Observable<any>{
+    signup_u(f_name, username, email, password, gender, sen_dist, fed_const): Observable<any> {
         return this.http.post('/server/users/signup', {
             f_name: f_name,
             username: username,
@@ -62,5 +62,4 @@ export class SignupProvider {
             fed_const: fed_const
         });
     }
-
 }

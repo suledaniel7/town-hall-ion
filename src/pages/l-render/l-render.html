@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{item?.user.full_name}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="item?.user">
+        <div class="profileDets">
+            <img src="http://localhost:8080/{{item.user.avatar}}" alt="User Avatar" class="center-block profileAvatar">
+            <h3 class="center">{{item.user.type_exp}} {{item.user.full_name}}</h3>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col>
+                    <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <ion-row class="center">
+                <ion-col>
+                    <strong>
+                        Representing {{item.user.district}}
+                    </strong>
+                </ion-col>
+                <ion-col>
+                    <!-- constituents col followers -->
+                    <strong>
+                        {{item.const_num}}
+                        <br>
+                        {{flwrsText}}
+                    </strong>
+                </ion-col>
+            </ion-row>
+        </div>
+        <hr>
+        <br>
+    </div>
+    <div class="messages" id="messages">
+        <div *ngFor="let message of item?.messages">
+            <page-message [username]="item.username" [message]="message"></page-message>
+        </div>
+    </div>
+</ion-content>

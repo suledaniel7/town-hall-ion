@@ -6,14 +6,23 @@
 <ion-content>
     <div class="messages" id="messages">
         <div class="utilityDiv" id="utilityDiv">{{utilityText}}</div>
-        <div class="suggs" *ngIf="item?.sourceSelNull">
-            <page-org></page-org>
-            <page-org></page-org>
-            <page-org></page-org>
-            <page-org></page-org>
+        <div *ngIf="item?.sourceSelNull">
+            <div *ngIf="!item?.noOrgs">
+                <div class="grey-text center larger mt">
+                    Follow an Organisation to keep up with your Legislators
+                </div>
+                <div class="suggs">
+                    <div *ngFor="let person of item.suggested_orgs">
+                        <page-person [person]="person"></page-person>
+                    </div>
+                </div>
+            </div>
+            <div class="grey-text center larger mt" *ngIf="item?.noOrgs">
+                We currently have no Organisations that report on your Legislators
+            </div>
         </div>
         <div *ngFor="let message of item?.messages">
-            <page-message [message]="message"></page-message>
+            <page-message [username]="item.user.username" [message]="message"></page-message>
         </div>
     </div>
 </ion-content>

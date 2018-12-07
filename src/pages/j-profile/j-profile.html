@@ -5,11 +5,11 @@
             <h3 class="center">{{item.user.full_name}}</h3>
             <ion-row class="center">
                 <ion-col>
-                    <strong>
+                    <strong *ngIf="item.free">
                         {{item.user.beatDets.name}}
                     </strong>
                 </ion-col>
-                <ion-col>
+                <ion-col *ngIf="item.free">
                     <strong>{{item.user.orgName}}</strong>
                 </ion-col>
                 <ion-col>
@@ -27,15 +27,18 @@
     </div>
     <hr>
     <br>
+    <div *ngIf="!item?.free" class="center">
+        <h4 class="grey-text">{{item?.exp}}</h4>
+    </div>
     <div>
         <div class="messages" id="messages">
             <div *ngFor="let message of item?.messages">
-                <page-message [message]="message"></page-message>
+                <page-message [username]="item.user.username" [message]="message"></page-message>
             </div>
         </div>
     </div>
-    <ion-fab bottom right>
-        <button (click)="compose()" ion-fab color="secondary" class="fab">
+    <ion-fab *ngIf="item?.free" bottom right>
+        <button (click)="compose()" id="fab" ion-fab color="secondary" class="fab">
             <ion-icon name="add" class="icon"></ion-icon>
         </button>
     </ion-fab>

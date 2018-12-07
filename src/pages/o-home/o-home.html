@@ -6,7 +6,7 @@
 <ion-content>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.j_msgs">
-            <page-message [message]="message"></page-message>
+            <page-message [username]="item.user.username" [message]="message"></page-message>
         </div>
     </div>
     <ion-fab bottom right>

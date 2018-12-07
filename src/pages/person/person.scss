@@ -1,0 +1,29 @@
+.cardy {
+    border-radius: 10px;
+    height: 35vh;
+    width: 150px;
+    padding: 1%;
+    text-align: center;
+    border: 1px solid rgb(177, 167, 167);
+    flex: 0 0 auto;
+    margin-right: 10px;
+    float: left;
+}
+
+.avatar {
+    height: 20vh;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+    margin-bottom: 5px;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.bio {
+    margin-top: 10px;
+    font-size: 10pt;
+    font-style: italic;
+}

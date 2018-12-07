@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-row>
+        <ion-col>
+            <button (click)="back()" ion-button color="secondary">Cancel</button>
+        </ion-col>
+        <ion-col class="right">
+            <button (click)="update()" ion-button color="{{btnColor}}">Update Post</button>
+        </ion-col>
+    </ion-row>
+</ion-header>
+<ion-content>
+    <div class="cr-post">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="http://localhost:8080/{{m_item?.sender_avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea maxlength="360" class="txt-msg" (keyup)="count()" [(ngModel)]="message" placeholder="Type Post...">
+
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+            <ion-row class="center grey-text">
+                <ion-col class="center">{{charCount}}/360 Characters</ion-col>
+            </ion-row>
+            <ion-row *ngIf="ac_type == 'o'">
+                <ion-col col-12 class="center">
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Select District(s)</ion-label>
+                            <ion-select multiple="true" [(ngModel)]="selBeats" okText="Okay" cancelText="Cancel">
+                                <ion-option value="all" selected="true">All</ion-option>
+                                <div *ngFor="let beat of em_item?.b_arr">
+                                    <ion-option value="{{beat.code}}">{{beat.name}} ({{beat.type}})</ion-option>
+                                </div>
+                            </ion-select>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row *ngIf="ac_type == 'j'">
+                <ion-col col-12 class="center">
+                    <ion-list radio-group [(ngModel)]="em_type">
+                        <ion-list-header>Post Type</ion-list-header>
+                        <ion-item>
+                            <ion-label>Opinion</ion-label>
+                            <ion-radio checked="checked" name="m_type" value="o"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>News</ion-label>
+                            <ion-radio name="m_type" value="n"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

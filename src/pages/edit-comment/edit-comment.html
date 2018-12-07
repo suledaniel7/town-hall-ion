@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-row>
+        <ion-col>
+            <button (click)="back()" ion-button color="secondary">Cancel</button>
+        </ion-col>
+        <ion-col class="right">
+            <button (click)="update()" ion-button color="{{btnColor}}">Update Comment</button>
+        </ion-col>
+    </ion-row>
+</ion-header>
+<ion-content>
+    <div class="cr-post">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="http://localhost:8080/{{c_item?.sender_avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea class="txt-msg" (keyup)="count()" [(ngModel)]="comment" placeholder="Type Comment...">
+
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

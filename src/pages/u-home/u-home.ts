@@ -30,8 +30,8 @@ export class UHomePage {
         loader.present();
 
         this.profProv.u_profile_h().subscribe(data => {
+            loader.dismiss();
             if(data.success){
-                loader.dismiss();
                 this.item = data.item;
             }
             else {

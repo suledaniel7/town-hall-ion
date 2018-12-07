@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-navbar color="primary">
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-card *ngIf="c_item" class="message" id="{{c_item?.message.m_timestamp}}">
+        <ion-item>
+            <ion-avatar item-start>
+                <img src="http://localhost:8080/{{c_item.message.sender_avatar}}" alt="Avatar">
+            </ion-avatar>
+            <h2 (click)="profile(c_item.message.sender, c_item.message.ac_type)">{{c_item.message.sender_name}}</h2>
+            <p>{{c_item.message.sender_position}}</p>
+        </ion-item>
+        <ion-card-content>
+            <p id="p-{{c_item.message.m_timestamp}}" [innerHTML]="c_item.message.message"></p>
+        </ion-card-content>
+        <ion-row>
+            <ion-col>
+                <ion-note>
+                    {{c_item.message.date_created}}
+                </ion-note>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="right">
+                <ion-note>
+                    {{c_item.message.time_created}}
+                </ion-note>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+    <div class="cr-comm">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="http://localhost:8080/{{c_item?.user.avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea class="txt-cmt" (keyup)="count()" [(ngModel)]="comment" placeholder="Type Comment...">
+
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="right">
+                    <button ion-button small color="{{btnColor}}" (click)="post()" class="cmtBtn">Post Comment</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+    <div class="comments">
+        <div *ngFor="let comment of c_item?.comments">
+            <page-comment [comment]="comment" [username]="c_item.user.username"></page-comment>
+        </div>
+    </div>
+</ion-content>

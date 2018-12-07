@@ -3,10 +3,10 @@
         <ion-title>Your Organisation</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.org_msgs">
-            <page-message [message]="message"></page-message>
+            <page-message [username]="item.user.username" [message]="message"></page-message>
         </div>
     </div>
 </ion-content>

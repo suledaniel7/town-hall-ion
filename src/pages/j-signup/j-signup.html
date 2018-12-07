@@ -7,32 +7,32 @@
     <ion-list>
         <ion-item>
             <ion-label stacked>First Name</ion-label>
-            <ion-input type="text" id="f_name" name="f_name"></ion-input>
+            <ion-input type="text" [(ngModel)]="f_name" id="f_name" name="f_name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label stacked>Last Name</ion-label>
-            <ion-input type="text" id="l_name" name="l_name"></ion-input>
+            <ion-input type="text" [(ngModel)]="l_name" id="l_name" name="l_name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label stacked>Username</ion-label>
-            <ion-input type="text" id="username" name="username"></ion-input>
+            <ion-input type="text" [(ngModel)]="username" (ionBlur)="checkUsername()" id="username" name="username"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label stacked>Email Address</ion-label>
-            <ion-input type="email" id="email" name="email"></ion-input>
+            <ion-input type="email" [(ngModel)]="email" (ionBlur)="checkEmail()" id="email" name="email"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label stacked>Password</ion-label>
-            <ion-input type="password" id="password" name="password"></ion-input>
+            <ion-input type="password" [(ngModel)]="password" id="password" name="password"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label stacked>Confirm Password</ion-label>
-            <ion-input type="password" id="pass1"></ion-input>
+            <ion-input type="password" [(ngModel)]="pass1" id="pass1"></ion-input>
         </ion-item>
         <br><br>
         <ion-item>
             <ion-label><strong>Account Type</strong></ion-label>
-            <ion-select>
+            <ion-select [(ngModel)]="ac_type">
                 <ion-option selected="true" value="m">Formal</ion-option>
                 <ion-option value="l">Freelance</ion-option>
             </ion-select>
@@ -40,7 +40,7 @@
         
         <br><br>
         <div class="center">
-            <button ion-button color="primary">Create Account</button>
+            <button (click)="validate()" ion-button color="primary">Create Account</button>
         </div>
     </ion-list>
 </ion-content>

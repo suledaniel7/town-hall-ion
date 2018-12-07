@@ -23,7 +23,7 @@ export class UProfilePage {
         console.log('ionViewDidLoad UProfilePage');
     }
 
-    load(){
+    load() {
         let loader = this.ldCtrl.create({
             showBackdrop: true,
             content: "Please wait...",
@@ -33,15 +33,17 @@ export class UProfilePage {
         loader.present();
 
         this.profProv.u_profile_p().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 loader.dismiss();
                 this.item = data.item;
             }
             else {
+                loader.dismiss();
                 alert(data.reason);
             }
-        }, (err)=>{
-            alert("An error occured. Error: "+ err.message);
+        }, (err) => {
+            loader.dismiss();
+            alert("An error occured. Error: " + err.message);
             let confirmed = true;
             let confirm = this.alertCtrl.create({
                 title: "Retry?",
@@ -49,28 +51,28 @@ export class UProfilePage {
                 buttons: [
                     {
                         text: 'Yes',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = true;
                         }
                     },
                     {
                         text: 'No',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = false;
                         }
                     }
                 ]
             });
             confirm.present();
-            if(confirmed){
-                setTimeout(()=>{
+            if (confirmed) {
+                setTimeout(() => {
                     this.load();
                 }, 10000);
             }
         });
     }
 
-    settings(){
+    settings() {
         this.navCtrl.push(USettingsPage);
     }
 }

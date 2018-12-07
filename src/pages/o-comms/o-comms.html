@@ -1,23 +1,48 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>Compose Message</ion-title>
-    </ion-navbar>
+    <ion-row>
+        <ion-col>
+            <button (click)="back()" ion-button color="secondary">Cancel</button>
+        </ion-col>
+        <ion-col class="right">
+            <button (click)="post()" ion-button color="{{btnColor}}">Post</button>
+        </ion-col>
+    </ion-row>
 </ion-header>
-<ion-content padding>
-    <ion-textarea placeholder="Enter Message..."></ion-textarea>
-    <br><br>
-    <ion-list>
-        <ion-item>
-            <ion-label>Select District(s)</ion-label>
-            <ion-select multiple="true" okText="Okay" cancelText="Cancel">
-                <ion-option value="all" selected="true">All</ion-option>
-                <div *ngFor="let beat of item?.b_arr">
-                    <ion-option value="{{beat.code}}">{{beat.name}} ({{beat.type}})</ion-option>
-                </div>
-            </ion-select>
-        </ion-item>
-    </ion-list>
-    <button id="send" ion-button icon-start class="fl-right">
-        <ion-icon name="send"></ion-icon>&nbsp;&nbsp;Send
-    </button>
+<ion-content>
+    <div class="cr-post">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="http://localhost:8080/{{item?.avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea maxlength="360" class="txt-msg" (keyup)="count()" [(ngModel)]="message" placeholder="Type Post...">
+
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+            <ion-row class="center grey-text">
+                <ion-col class="center">{{charCount}}/360 Characters</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-12 class="center">
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Select District(s)</ion-label>
+                            <ion-select multiple="true" [(ngModel)]="selBeats" okText="Okay" cancelText="Cancel">
+                                <ion-option value="all" selected="true">All</ion-option>
+                                <div *ngFor="let beat of item?.b_arr">
+                                    <ion-option value="{{beat.code}}">{{beat.name}} ({{beat.type}})</ion-option>
+                                </div>
+                            </ion-select>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 </ion-content>

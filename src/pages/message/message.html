@@ -4,20 +4,37 @@
             <img src="http://localhost:8080/{{message.sender_avatar}}" alt="Avatar">
         </ion-avatar>
         <h2 (click)="profile(message.sender, message.ac_type)">{{message.sender_name}}</h2>
-        <p>{{message.date_created}}</p>
+        <p>{{message.sender_position}}</p>
     </ion-item>
-    <ion-card-content>
-        <p [innerHTML]="message.message"></p>
+    <ion-card-content (click)="conversation()">
+        <p id="p-{{message.m_timestamp}}" [innerHTML]="message.message"></p>
     </ion-card-content>
     <ion-row>
         <ion-col>
-            <button ion-button icon-start clear small>
-                <ion-icon active="false" name="chatbubbles"></ion-icon>
+            <ion-note>
+                {{message.date_created}}
+            </ion-note>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+            <button (click)="conversation()" ion-button icon-start clear small>
+                <ion-icon active="false" name="chatbubbles"></ion-icon>({{message.comments_no}})
             </button>
         </ion-col>
-        <ion-col>
-            <button ion-button icon-start clear small>
+        <ion-col *ngIf="!originator">
+            <button (click)="report(message.m_timestamp)" ion-button icon-start clear small>
                 <ion-icon active="false" name="flag"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col *ngIf="originator">
+            <button (click)="edit()" ion-button icon-start clear small>
+                <ion-icon active="false" name="create"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col *ngIf="originator">
+            <button (click)="del(message.m_timestamp)" ion-button icon-start clear small>
+                <ion-icon active="false" name="trash"></ion-icon>
             </button>
         </ion-col>
         <ion-col center text-center>

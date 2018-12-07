@@ -1,0 +1,50 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{item?.user.username}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="item?.user">
+        <div class="profileDets">
+            <img src="http://localhost:8080/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar" class="center-block profileAvatar">
+            <h3 class="center">{{item.user.full_name}}</h3>
+            <ion-row>
+                <ion-col></ion-col>
+                <ion-col>
+                    <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <ion-row class="center">
+                <ion-col>
+                    Reporting on: 
+                    <strong>
+                        {{item.user.beatDets.name}}
+                    </strong>
+                </ion-col>
+                <ion-col *ngIf="item.user.orgName">
+                    <strong>{{item.user.orgName}}</strong> Journalist
+                </ion-col>
+                <ion-col *ngIf="!item.user.orgName">
+                    <strong>Freelance Journalist</strong>
+                </ion-col>
+                <ion-col>
+                    <strong>
+                        {{item.user.followersNo}}
+                        <br>
+                        {{flwrsText}}
+                    </strong>
+                </ion-col>
+            </ion-row>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div>
+        <div class="messages" id="messages">
+            <div *ngFor="let message of item?.messages">
+                <page-message [username]="item.username" [message]="message"></page-message>
+            </div>
+        </div>
+    </div>
+</ion-content>

@@ -25,6 +25,9 @@ export class JHomePage {
         this.profProv.j_profile_h().subscribe(data =>{
             if(data.success){
                 this.item = data.item;
+                if(!data.item.free){
+                    this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
+                }
             }
             else {
                 alert(data.reason);

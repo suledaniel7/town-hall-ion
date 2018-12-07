@@ -21,10 +21,6 @@
     margin-top: 30px;
 }
 
-.toolbar-title {
-    // text-align: center;
-}
-
 .tabs-md .tab-button-icon {
     color: #ccc;
 }
@@ -38,12 +34,32 @@
     color: color($colors, primary);
 }
 
+.larger {
+    font-size: 15pt;
+}
+
+.grey {
+    background-color: rgb(177, 167, 167);
+}
+
+.grey-text {
+    color: rgb(177, 167, 167);
+}
+
 .white-text {
     color: white;
 }
 
 .center {
     text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left;
 }
 
 .errorDiv {
@@ -66,4 +82,36 @@
     display: block;
     margin: 0 auto;
     margin-top: 20px;
+}
+
+.mt {
+    margin-top: 20px;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.txt-msg {
+    border: none;
+}
+
+.item-md.item-block .item-inner{
+    border-bottom: none;
+}
+
+textarea {
+    height: 30vh;
+}
+
+.followBtn {
+    height: 1.75em;
+    max-width: 150px;
+    text-transform: capitalize;
+    font-stretch: expanded;
+}
+
+.txt-cmt {
+    border-style: dotted;
+    height: 20vh;
 }

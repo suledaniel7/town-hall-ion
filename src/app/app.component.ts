@@ -20,15 +20,3 @@ export class MyApp {
         });
     }
 }
-
-/* 
-    11h - 
-        Signup, signin, Logout
-    3h - 
-        Slides or other
-    Typical Func
-    Slides, on localstorage.firsttime
-    Messages
-    Comments
-    Settings
-*/

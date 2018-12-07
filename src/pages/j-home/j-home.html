@@ -4,13 +4,16 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <div *ngIf="!item?.free" class="center">
+        <h4 class="grey-text">{{item?.exp}}</h4>
+    </div>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.beat_msgs">
-            <page-message [message]="message"></page-message>
+            <page-message [username]="item.user.username" [message]="message"></page-message>
         </div>
     </div>
     <ion-fab bottom right>
-        <button (click)="compose()" ion-fab color="secondary" class="fab">
+        <button *ngIf="item?.free" (click)="compose()" ion-fab color="secondary" class="fab">
             <ion-icon name="add" class="icon"></ion-icon>
         </button>
     </ion-fab>

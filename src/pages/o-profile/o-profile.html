@@ -27,7 +27,7 @@
     <div>
         <div class="messages" id="messages">
             <div *ngFor="let message of item?.messages">
-                <page-message [message]="message"></page-message>
+                <page-message [username]="item.user.username" [message]="message"></page-message>
             </div>
         </div>
     </div>

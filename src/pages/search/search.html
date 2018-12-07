@@ -1,6 +1,69 @@
 <ion-content>
-    <ion-searchbar showCancelButton="true"></ion-searchbar>
-    <ion-list>
-        
-    </ion-list>
+    <ion-searchbar name="searchTerm" id="searchBar" (ionInput)="search()" (keyup.enter)="search()" [(ngModel)]="term" showCancelButton="true"></ion-searchbar>
+    <!-- <div *ngIf="suggActive" class="suggestions" id="suggDiv">
+        <div class="suggestion">
+            <div *ngFor="let suggestion of s_item?.suggestions">
+                <p class="sugg" (click)="sugg_search(suggestion.name, suggestion.type)">{{suggestion.name}}</p>
+            </div>
+        </div>
+    </div> -->
+    <div>
+        <ion-segment [(ngModel)]="activeTab">
+            <ion-segment-button (click)="g_curr()" value="general">General</ion-segment-button>
+            <ion-segment-button (click)="p_curr()" value="people">People</ion-segment-button>
+            <ion-segment-button (click)="t_curr()" value="tag">Tags</ion-segment-button>
+        </ion-segment>
+        <div [ngSwitch]="activeTab" padding>
+            <div *ngSwitchCase="'general'">
+                <div *ngIf="g_active">
+                    <div *ngIf="tr_active">
+                        <h5>Trends</h5>
+                        <div *ngFor="let trend of tr_item?.trends">
+                            <page-trend (click)="search_tr(trend.tag)" [trend]="trend"></page-trend>
+                        </div>
+                    </div>
+                    <div class="accounts suggs">
+                        <div *ngFor="let account of g_item?.accounts">
+                            <page-person [person]="account"></page-person>
+                        </div>
+                    </div>
+                    <div class="messages">
+                        <div *ngFor="let message of g_item?.messages">
+                            <page-message [username]="g_item.username" [message]="message"></page-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="'people'">
+                <div *ngIf="p_active">
+                    <div *ngIf="tr_active">
+                        <h5>Trends</h5>
+                        <div *ngFor="let trend of tr_item?.trends">
+                            <page-trend (click)="search_tr(trend.tag)" [trend]="trend"></page-trend>
+                        </div>
+                    </div>
+                    <div class="accounts suggs">
+                        <div *ngFor="let account of p_item?.accounts">
+                            <page-person [person]="account"></page-person>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="'tag'">
+                <div *ngIf="t_active">
+                    <div *ngIf="tr_active">
+                        <h5>Trends</h5>
+                        <div *ngFor="let trend of tr_item?.trends">
+                            <page-trend (click)="search_tr(trend.tag)" [trend]="trend"></page-trend>
+                        </div>
+                    </div>
+                    <div class="messages">
+                        <div *ngFor="let message of t_item?.messages">
+                            <page-message [username]="t_item.username" [message]="message"></page-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ion-content>

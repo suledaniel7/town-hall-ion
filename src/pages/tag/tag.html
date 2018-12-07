@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{trend}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="messages" *ngIf="item?.results">
+        <div *ngFor="let message of item.messages">
+            <page-message [username]="item.username" [message]="message"></page-message>
+        </div>
+    </div>
+    <div *ngIf="!item?.results">
+        <h4 class="center grey-text">{{item?.error}}</h4>
+    </div>
+</ion-content>

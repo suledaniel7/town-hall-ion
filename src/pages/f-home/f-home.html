@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Home</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div class="messages" id="messages">
+        <div *ngFor="let message of item?.beat_msgs">
+            <page-message [message]="message"></page-message>
+        </div>
+    </div>
+    <ion-fab bottom right>
+        <button (click)="compose()" ion-fab color="secondary" class="fab">
+            <ion-icon name="add" class="icon"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

@@ -17,6 +17,10 @@ export class ProfileProvider {
         return this.http.get('/server/?pg=profile');
     }
 
+    j_profile_v(): Observable<any> {
+        return this.http.get('/server/?pg=verify');
+    }
+
     j_profile_h(): Observable<any>{
         return this.http.get('/server/?pg=home');
     }

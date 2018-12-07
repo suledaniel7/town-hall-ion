@@ -1,0 +1,45 @@
+<ion-card class="comment" id="{{comment.c_timestamp}}">
+    <ion-item>
+        <ion-avatar item-start>
+            <img src="http://localhost:8080/{{comment.sender_avatar}}" alt="Avatar">
+        </ion-avatar>
+        <h2 (click)="profile(comment.sender, comment.ac_type)">{{comment.sender_name}}</h2>
+    </ion-item>
+    <ion-card-content>
+        <p id="p-{{comment.c_timestamp}}" [innerHTML]="comment.comment"></p>
+    </ion-card-content>
+    <ion-row>
+        <ion-col>
+            <ion-note>
+                {{comment.date_created}}
+            </ion-note>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <!-- <ion-col>
+            <button ion-button icon-start clear small>
+                <ion-icon active="false" name="chatbubbles"></ion-icon>
+            </button>
+        </ion-col> -->
+        <ion-col *ngIf="!originator">
+            <button (click)="report(comment.c_timestamp)" ion-button icon-start clear small>
+                <ion-icon active="false" name="flag"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col *ngIf="originator">
+            <button (click)="edit()" ion-button icon-start clear small>
+                <ion-icon active="false" name="create"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col *ngIf="originator">
+            <button (click)="del(comment.c_timestamp)" ion-button icon-start clear small>
+                <ion-icon active="false" name="trash"></ion-icon>
+            </button>
+        </ion-col>
+        <ion-col center text-center>
+            <ion-note>
+                {{comment.time_created}}
+            </ion-note>
+        </ion-col>
+    </ion-row>
+</ion-card>
