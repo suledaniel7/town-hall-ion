@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { Input } from "@angular/core";
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, LoadingController } from 'ionic-angular';
 
 import { EditMessagePage } from "../edit-message/edit-message";
 import { JRenderPage } from "../j-render/j-render";
 import { ORenderPage } from "../o-render/o-render";
 import { LRenderPage } from "../l-render/l-render";
 import { ConversationPage } from '../conversation/conversation';
+import { TagPage } from "../tag/tag";
 
 import { MessageProvider } from '../../providers/message/message';
+import { RenderProvider } from '../../providers/render/render';
 
 @IonicPage()
 @Component({
@@ -19,13 +21,18 @@ export class MessagePage {
     @Input() message: any;
     @Input() username: any;
     originator: boolean = false;
+    tags: Array<string> = [];
+    mentions: Array<string> = [];
+    elems: Array<any> = [];
 
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
         private modalCtrl: ModalController,
         private messageProv: MessageProvider,
-        public alertCtrl: AlertController
+        public alertCtrl: AlertController,
+        private ldCtrl: LoadingController,
+        private rndrProv: RenderProvider
         ) {
         
     }
@@ -38,6 +45,108 @@ export class MessagePage {
         if(this.username == this.message.sender){
             this.message.sender_name = "You";
             this.originator = true;
+        }
+        this.message.message = this.extractTags(this.message.message);
+        this.message.message = this.extractMentions(this.message.message);
+    }
+
+    ngAfterViewInit(){
+        this.affixIds();
+    }
+
+    extractTags(message) {
+        let mText = message;
+
+        let mTextArr = mText.split(/\s/);
+        let finalTextArr = [];
+        mTextArr.forEach(element => {
+            if (element[0] == '#' && element.slice(1).search(/\W/) != 0) {
+                let hold_elem = element[0];
+                let part_elem = element.slice(1);
+                let end = part_elem.search(/\W/);
+                if (end == -1) {
+                    hold_elem = '#' + part_elem;
+                }
+                else {
+                    hold_elem += part_elem.slice(0, end);
+                }
+
+                hold_elem = `<span class="tag tg-${this.message.m_timestamp}">${hold_elem}</span>`;
+                element = hold_elem;
+                this.tags.push(part_elem);
+            }
+            finalTextArr.push(element);
+        });
+
+        //doesn't use the same char as was used to separate
+        mText = finalTextArr.join(' ');
+        return mText;
+    }
+
+    extractMentions(message) {
+        let mText = message;
+        let mTextArr = mText.split(/\s/);
+        let finalTextArr = [];
+        mTextArr.forEach((element: string)=> {
+            if (element[0] == '@' && element.slice(1).search(/\W/) != 0) {
+                let hold_elem = element[0];
+                let part_elem = element.slice(1);
+                let end = part_elem.search(/\W/);
+                let rest_elem = null;
+                if (end == -1) {
+                    hold_elem = '@' + part_elem;
+                }
+                else {
+                    rest_elem = part_elem.slice(end);
+                    part_elem = part_elem.slice(0, end);
+                    hold_elem = '@' + part_elem;
+                }
+
+                if (rest_elem) {
+                    hold_elem = `<span class="tag mt-${this.message.m_timestamp}">${hold_elem}</span>${rest_elem}`;
+                }
+                else {
+                    hold_elem = `<span class="tag mt-${this.message.m_timestamp}">${hold_elem}</span>`;
+                }
+                this.mentions.push(part_elem);
+                element = hold_elem;
+            }
+            finalTextArr.push(element);
+        });
+
+        //doesn't use the same char as was used to separate
+        mText = finalTextArr.join(' ');
+        return mText;
+    }
+
+    affixIds(){
+        //tags
+        //the problem with using event listeners is that they get affixed and then when another page is brought up, they don't disappear
+        let arrTg = document.getElementsByClassName(`tg-${this.message.m_timestamp}`);
+        let ltTg = arrTg.length;
+        for(let i=0; i<ltTg; i++){
+            let tag = arrTg[i].textContent.slice(1);
+            let evFn = (event)=>{
+                this.navCtrl.push(TagPage, {trend: tag});
+            }
+            // arrTg[i].addEventListener('click', ()=>{
+            //     this.navCtrl.push(TagPage, {trend: tag});
+            // });
+            let curr_el = arrTg[i];
+            curr_el.addEventListener('click', evFn, false);
+            this.elems.push({
+                element: curr_el,
+                listener: evFn
+            });
+        }
+        //mentions
+        let arrMt = document.getElementsByClassName(`mt-${this.message.m_timestamp}`);
+        let ltMt = arrMt.length;
+        for(let i=0; i<ltMt; i++){
+            let mention = arrMt[i].textContent.slice(1);
+            arrMt[i].addEventListener('click', ()=> {
+                this.blind_profile(mention);
+            });
         }
     }
 
@@ -54,7 +163,7 @@ export class MessagePage {
     }
 
     conversation(){
-        this.navCtrl.push(ConversationPage, {timestamp: this.message.m_timestamp})
+        this.navCtrl.push(ConversationPage, {timestamp: this.message.m_timestamp});
     }
 
     edit(){
@@ -136,5 +245,41 @@ export class MessagePage {
         });
 
         repConf.present();
+    }
+
+    blind_profile(username){
+        //find u_type
+        //push page or alert error
+        let ld = this.ldCtrl.create({content: "Loading User"});
+        ld.present();
+        this.rndrProv.req_type(username).subscribe(data => {
+            ld.dismiss();
+            if(data.success){
+                let u_type = data.u_type;
+                if(u_type == 'j'){
+                    this.navCtrl.push(JRenderPage, {username: username});
+                }
+                else if(u_type == 'l'){
+                    this.navCtrl.push(LRenderPage, {code: username});
+                }
+                else if(u_type == 'o'){
+                    this.navCtrl.push(ORenderPage, {username: username});
+                }
+            }
+            else {
+                alert(data.reason);
+            }
+        }, err => {
+            ld.dismiss();
+            alert("An error occured. Error: " + err.message);
+        });
+    }
+
+    ngOnDestroy(){
+        this.elems.forEach(element => {
+            let domEl = element.element;
+            let listener = element.listener;
+            domEl.removeEventListener('click', listener, false);
+        });
     }
 }

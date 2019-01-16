@@ -10,6 +10,6 @@ export class SigninProvider {
     }
 
     signinUser(email, password): Observable<any> {
-        return this.http.post('/server/signin', {email: email, password: password});
+        return this.http.post('http://127.169.43.55:8095/api/signin', {email: email, password: password});
     }
 }

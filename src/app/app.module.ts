@@ -2,7 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { StatusBar } from '@ionic-native/status-bar';;
+import { File } from "@ionic-native/file";
+import { FileChooser } from "@ionic-native/file-chooser"
+import { FilePath } from "@ionic-native/file-path";
+import { FileTransfer } from "@ionic-native/file-transfer";
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
@@ -183,6 +187,10 @@ import { ConversationProvider } from '../providers/conversation/conversation';
     providers: [
         StatusBar,
         SplashScreen,
+        File,
+        FileChooser,
+        FilePath,
+        FileTransfer,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         CheckUsernameProvider,
         SignupProvider,

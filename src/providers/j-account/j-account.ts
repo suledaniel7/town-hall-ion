@@ -10,18 +10,18 @@ export class JAccountProvider {
     }
 
     j_beat_render(): Observable<any> {
-        return this.http.get('/server/journalists/beats/');
+        return this.http.get('http://127.169.43.55:8095/api/journalists/beats/');
     }
 
     j_org_render(): Observable<any> {
-        return this.http.get('/server/journalists/orgs/');
+        return this.http.get('http://127.169.43.55:8095/api/journalists/orgs/');
     }
 
     j_beat_sub(beat): Observable<any> {
-        return this.http.post('/server/select-beat', {beat: beat});
+        return this.http.post('http://127.169.43.55:8095/api/select-beat', {beat: beat});
     }
 
     j_org_sub(org): Observable<any> {
-        return this.http.post('/server/organisations/request', {organisation: org});
+        return this.http.post('http://127.169.43.55:8095/api/organisations/request', {organisation: org});
     }
 }

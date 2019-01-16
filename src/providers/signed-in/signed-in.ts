@@ -10,7 +10,7 @@ export class SignedInProvider {
     }
 
     isSignedIn():  Observable<any> {
-        return this.http.get('/server/signed-in');
+        return this.http.get('http://127.169.43.55:8095/api/signed-in');
     }
 
 }

@@ -16,6 +16,7 @@ export class OCommsPage {
     message: string = "";
     charCount: any = 0;
     selBeats: any = "all";
+    m_type: string = "o";
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private profProv: ProfileProvider, private messageProv: MessageProvider) {
         this.profProv.o_profile_c().subscribe(data => {
@@ -71,7 +72,7 @@ export class OCommsPage {
             if(this.selBeats == 'all'){
                 this.selBeats = ['all'];
             }
-            this.messageProv.post_message('o', this.message, null, this.selBeats).subscribe(data => {
+            this.messageProv.post_message('o', this.message, this.m_type, this.selBeats).subscribe(data => {
                 if(data.success){
                     this.navCtrl.pop();
                 }

@@ -10,15 +10,18 @@ export class RenderProvider {
     }
 
     render_profile(username: string): Observable<any> {
-        return this.http.get(`/server/profile/${username}`);
+        return this.http.get(`http://127.169.43.55:8095/api/profile/${username}`);
     }
 
     follow(username: string): Observable<any> {
-        return this.http.post(`/server/follow/${username}`, {});
+        return this.http.post(`http://127.169.43.55:8095/api/follow/${username}`, {});
     }
 
     unfollow(username: string): Observable<any> {
-        return this.http.post(`/server/unfollow/${username}`, {});
+        return this.http.post(`http://127.169.43.55:8095/api/unfollow/${username}`, {});
     }
 
+    req_type(username: string): Observable<any> {
+        return this.http.get(`http://127.169.43.55:8095/api/req-type/${username}`);
+    }
 }

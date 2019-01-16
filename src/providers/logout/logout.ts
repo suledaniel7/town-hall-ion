@@ -16,7 +16,7 @@ export class LogoutProvider {
     }
 
     logout(): Observable<any>{
-        return this.http.get('/server/logout');
+        return this.http.get('http://127.169.43.55:8095/api/logout');
     }
 
 }

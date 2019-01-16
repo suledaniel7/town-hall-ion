@@ -10,27 +10,27 @@ export class SignupProvider {
     }
 
     u_check(username): Observable<any> {
-        return this.http.get('/server/users/check/' + username);
+        return this.http.get('http://127.169.43.55:8095/api/users/check/' + username);
     }
 
     e_check(email): Observable<any> {
-        return this.http.get('/server/users/checkEmail/' + email);
+        return this.http.get('http://127.169.43.55:8095/api/users/checkEmail/' + email);
     }
 
     c_check(email): Observable<any> {
-        return this.http.get('/server/users/checkCorrEmail/' + email);
+        return this.http.get('http://127.169.43.55:8095/api/users/checkCorrEmail/' + email);
     }
 
     load_states(): Observable<any> {
-        return this.http.get('/server/users/signup');
+        return this.http.get('http://127.169.43.55:8095/api/users/signup');
     }
 
     load_districts(state_key): Observable<any> {
-        return this.http.get('/server/users/signup/districts/' + state_key);
+        return this.http.get('http://127.169.43.55:8095/api/users/signup/districts/' + state_key);
     }
 
     signup_o(name, username, email, email_corr, password, id): Observable<any> {
-        return this.http.post('/server/organisations/signup', {
+        return this.http.post('http://127.169.43.55:8095/api/organisations/signup', {
             name: name,
             username: username,
             email: email,
@@ -41,7 +41,7 @@ export class SignupProvider {
     }
 
     signup_j(f_name, l_name, username, email, password, ac_type): Observable<any> {
-        return this.http.post('/server/journalists/signup', {
+        return this.http.post('http://127.169.43.55:8095/api/journalists/signup', {
             f_name: f_name,
             l_name: l_name,
             username: username,
@@ -52,7 +52,7 @@ export class SignupProvider {
     }
 
     signup_u(f_name, username, email, password, gender, sen_dist, fed_const): Observable<any> {
-        return this.http.post('/server/users/signup', {
+        return this.http.post('http://127.169.43.55:8095/api/users/signup', {
             f_name: f_name,
             username: username,
             email: email,

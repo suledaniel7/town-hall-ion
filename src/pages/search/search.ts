@@ -67,7 +67,7 @@ export class SearchPage {
             }
             else {
                 search_term = search_term.replace(wp, '');
-                if (search_term.length > 1 && !wsp.test(search_term)) {
+                if (!wsp.test(search_term)) {
                     this.srch(search_term);
                 }
             }

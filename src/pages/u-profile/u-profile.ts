@@ -6,6 +6,7 @@ import { AlertController } from 'ionic-angular';
 import { ProfileProvider } from "../../providers/profile/profile";
 
 import { USettingsPage } from "../u-settings/u-settings";
+import { LRenderPage } from '../l-render/l-render';
 
 @IonicPage()
 @Component({
@@ -44,7 +45,7 @@ export class UProfilePage {
         }, (err) => {
             loader.dismiss();
             alert("An error occured. Error: " + err.message);
-            let confirmed = true;
+            let confirmed = false;
             let confirm = this.alertCtrl.create({
                 title: "Retry?",
                 message: "Should we try again in ten seconds?",
@@ -63,13 +64,23 @@ export class UProfilePage {
                     }
                 ]
             });
-            confirm.present();
-            if (confirmed) {
-                setTimeout(() => {
-                    this.load();
-                }, 10000);
-            }
+            confirm.present().then(()=>{
+                if (confirmed) {
+                    setTimeout(() => {
+                        this.load();
+                    }, 10000);
+                }
+            }).catch((reason)=>{
+                let al1 = this.alertCtrl.create({
+                    message: `An error occured. ${reason}`
+                });
+                al1.present();
+            });
         });
+    }
+
+    profile(code){
+        this.navCtrl.push(LRenderPage, {code: code});
     }
 
     settings() {

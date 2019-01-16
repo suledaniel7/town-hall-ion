@@ -1,7 +1,7 @@
 <ion-content>
     <div *ngIf="item?.user">
         <div class="profileDets">
-            <img src="http://localhost:8080/{{item.user.avatar}}" alt="{{f_name}}'s Avatar" class="center-block profileAvatar">
+            <img src="http://127.169.43.55:8095/{{item.user.avatar}}" alt="{{f_name}}'s Avatar" class="center-block profileAvatar">
             <h3 class="center">{{item.user.f_name}}</h3>
         </div>
         <hr>
@@ -9,9 +9,9 @@
         <ion-list inset>
             <ion-item><strong>State: </strong><span id="">{{item.user.state}}</span></ion-item>
             <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">{{item.rep.district}}</span></ion-item>
-            <ion-item><strong>Representative: </strong><span color="secondary" id="">{{item.rep.full_name}}</span></ion-item>
+            <ion-item (click)="profile(item.rep.code)"><strong>Representative: </strong><span color="secondary" id="">{{item.rep.full_name}}</span></ion-item>
             <ion-item><strong>Senatorial District: </strong><span color="secondary" id="">{{item.sen.district}}</span></ion-item>
-            <ion-item><strong>Senator: </strong><span color="secondary" id="">{{item.sen.full_name}}</span></ion-item>
+            <ion-item (click)="profile(item.sen.code)"><strong>Senator: </strong><span color="secondary" id="">{{item.sen.full_name}}</span></ion-item>
             <ion-item><strong>Date Joined: </strong><span color="secondary" id="">{{item.user.date_joined}}</span></ion-item>
         </ion-list>
     </div>

@@ -1,7 +1,7 @@
 <ion-card class="comment" id="{{comment.c_timestamp}}">
     <ion-item>
         <ion-avatar item-start>
-            <img src="http://localhost:8080/{{comment.sender_avatar}}" alt="Avatar">
+            <img src="http://127.169.43.55:8095/{{comment.sender_avatar}}" alt="Avatar">
         </ion-avatar>
         <h2 (click)="profile(comment.sender, comment.ac_type)">{{comment.sender_name}}</h2>
     </ion-item>

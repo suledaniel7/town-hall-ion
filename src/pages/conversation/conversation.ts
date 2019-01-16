@@ -26,7 +26,6 @@ export class ConversationPage {
         convProv.load_conv(this.m_timestamp).subscribe(data => {
             ld.dismiss();
             if(data.success){
-                console.log(data);
                 this.c_item = {};
                 this.c_item.message = data.message;
                 this.c_item.user = data.user;
