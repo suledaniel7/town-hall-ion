@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { LogoutProvider } from "../../providers/logout/logout";
 
@@ -12,24 +12,40 @@ import { SigninPage } from "../signin/signin";
 })
 export class LSettingsPage {
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private logProv: LogoutProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public app: App,
+        public navParams: NavParams,
+        private logProv: LogoutProvider,
+        private alCtrl: AlertController
+    ) {
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad LSettingsPage');
     }
 
-    logout(){
+    logout() {
         this.logProv.logout().subscribe(data => {
-            if(data.success){
-                this.navCtrl.setRoot(SigninPage);
+            if (data.success) {
+                this.app.getRootNav().setRoot(SigninPage);
                 this.navCtrl.popToRoot();
             }
             else {
-                alert("Something went wrong while logging you out. Please restart the app");
+                this.newAlert("Error", data.reason);
             }
-        }, (err)=> {
-            alert("An error occured. Error: " + err.message);
+        }, (err) => {
+            this.newAlert("Connection Error", err.message);
         });
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

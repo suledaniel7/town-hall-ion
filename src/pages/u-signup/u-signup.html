@@ -41,19 +41,20 @@
                 </div>
             </ion-select>
         </ion-item>
-        <!-- <div *ngIf="statesLoaded">
-            <div *ngIf="districtsLoading">Loading Districts...</div>
-        </div> -->
         <ion-item *ngIf="districtsLoaded">
             <ion-label><strong>Federal Constituency</strong></ion-label>
-            <ion-select [(ngModel)]="fed_const" *ngFor="let district of districts?.fed_consts">
-                <ion-option value="{{district.code}}">{{district.name}}</ion-option>
+            <ion-select [(ngModel)]="fed_const">
+                <div *ngFor="let district of districts?.fed_consts">
+                    <ion-option value="{{district.code}}">{{district.name}}</ion-option>
+                </div>
             </ion-select>
         </ion-item>
         <ion-item *ngIf="districtsLoaded">
             <ion-label><strong>Senatorial Districts</strong></ion-label>
-            <ion-select [(ngModel)]="sen_dist" *ngFor="let district of districts?.sen_dists">
-                <ion-option value="{{district.code}}">{{district.name}}</ion-option>
+            <ion-select [(ngModel)]="sen_dist">
+                <div *ngFor="let district of districts?.sen_dists">
+                    <ion-option value="{{district.code}}">{{district.name}}</ion-option>
+                </div>
             </ion-select>
         </ion-item>
         <br><br>

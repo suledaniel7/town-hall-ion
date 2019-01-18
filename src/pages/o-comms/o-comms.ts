@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 import { MessageProvider } from "../../providers/message/message";
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -17,32 +18,45 @@ export class OCommsPage {
     charCount: any = 0;
     selBeats: any = "all";
     m_type: string = "o";
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private profProv: ProfileProvider, private messageProv: MessageProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private profProv: ProfileProvider,
+        private messageProv: MessageProvider,
+        public address: AddressProvider,
+        private alCtrl: AlertController
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.profProv.o_profile_c().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item = data.item;
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message + "We'll keep retrying");
-            this.autoretry();
+            this.newAlert("Connection Error", err.message);
+            setTimeout(()=>{
+                this.autoretry()
+            }, 10000);
         });
     }
 
-    autoretry(){
+    autoretry() {
         this.profProv.o_profile_c().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item = data.item;
             }
             else {
                 this.autoretry();
             }
         }, err => {
-            alert(err.message);
-            this.autoretry();
+            this.newAlert("Connection Error", err.message);
+            setTimeout(()=>{
+                this.autoretry();
+            }, 10000);
         });
     }
 
@@ -50,14 +64,14 @@ export class OCommsPage {
         console.log('ionViewDidLoad OCommsPage');
     }
 
-    back(){
+    back() {
         this.navCtrl.pop();
     }
 
-    count(){
+    count() {
         this.charCount = this.message.length;
         let wsp = /^\s*$/;
-        if(this.charCount > 0 && this.charCount <= 360 && !wsp.test(this.message)){
+        if (this.charCount > 0 && this.charCount <= 360 && !wsp.test(this.message)) {
             this.btnColor = "primary";
             this.validMesssage = true;
         }
@@ -67,22 +81,31 @@ export class OCommsPage {
         }
     }
 
-    post(){
-        if(this.validMesssage){
-            if(this.selBeats == 'all'){
+    post() {
+        if (this.validMesssage) {
+            if (this.selBeats == 'all') {
                 this.selBeats = ['all'];
             }
             this.messageProv.post_message('o', this.message, this.m_type, this.selBeats).subscribe(data => {
-                if(data.success){
+                if (data.success) {
                     this.navCtrl.pop();
                 }
                 else {
-                    alert(data.reason);
+                    this.newAlert("Error", data.reason);
                 }
             }, err => {
-                alert("An error occured. Error: "+err.message);
+                this.newAlert("Connection Error", err.message);
             });
         }
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

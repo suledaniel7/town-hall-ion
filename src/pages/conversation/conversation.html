@@ -6,7 +6,7 @@
     <ion-card *ngIf="c_item" class="message" id="{{c_item?.message.m_timestamp}}">
         <ion-item>
             <ion-avatar item-start>
-                <img src="http://127.169.43.55:8095/{{c_item.message.sender_avatar}}" alt="Avatar">
+                <img src="{{imgAddress}}/{{c_item.message.sender_avatar}}" alt="Avatar">
             </ion-avatar>
             <h2 (click)="profile(c_item.message.sender, c_item.message.ac_type)">{{c_item.message.sender_name}}</h2>
             <p>{{c_item.message.sender_position}}</p>
@@ -35,7 +35,7 @@
                 <ion-col col-2>
                     <ion-item>
                         <ion-avatar item-start>
-                            <img src="http://127.169.43.55:8095/{{c_item?.user.avatar}}" alt="Avatar">
+                            <img src="{{imgAddress}}/{{c_item?.user.avatar}}" alt="Avatar">
                         </ion-avatar>
                     </ion-item>
                 </ion-col>

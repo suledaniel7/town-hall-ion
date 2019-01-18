@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 
 import { RenderProvider } from '../../providers/render/render';
-
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -14,8 +14,16 @@ export class JRenderPage {
     flwrsText: string;
     flwBtnText: string;
     username: string;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private rndrProv: RenderProvider, private ldCtrl: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private rndrProv: RenderProvider,
+        private ldCtrl: LoadingController,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
         let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
         ld.present();
         let username = this.navParams.get('username');

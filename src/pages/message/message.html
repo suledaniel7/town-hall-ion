@@ -1,7 +1,7 @@
 <ion-card class="message" id="{{message.m_timestamp}}">
     <ion-item>
         <ion-avatar item-start>
-            <img src="http://127.169.43.55:8095/{{message.sender_avatar}}" alt="Avatar">
+            <img src="{{imgAddress}}/{{message.sender_avatar}}" alt="Avatar">
         </ion-avatar>
         <h2 (click)="profile(message.sender, message.ac_type)">{{message.sender_name}}</h2>
         <p>{{message.sender_position}}</p>

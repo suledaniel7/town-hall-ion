@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { MessageProvider } from '../../providers/message/message';
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -10,6 +11,7 @@ import { MessageProvider } from '../../providers/message/message';
 })
 export class EditMessagePage {
     m_item: any;
+    imgAddress: string;
 
     btnColor: string = "primary";
     message: string = "";
@@ -21,7 +23,13 @@ export class EditMessagePage {
     m_type: string = "message";
     em_type: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private messageProv: MessageProvider) {
+    constructor(public navCtrl: NavController,
+        public navParams: NavParams,
+        private messageProv: MessageProvider,
+        public address: AddressProvider,
+        private alCtrl: AlertController
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.m_item = navParams.get('m_item');
         this.messageProv.load_districts().subscribe(data => {
             if (data.success) {
@@ -70,41 +78,50 @@ export class EditMessagePage {
                     this.selBeats = ['all'];
                 }
                 this.messageProv.edit_message(this.message, this.m_type, this.ac_type, this.m_item.m_timestamp, this.selBeats).subscribe(data => {
-                    if(data.success){
+                    if (data.success) {
                         this.navCtrl.pop();
                     }
                     else {
-                        alert(data.reason);
+                        this.newAlert("Error", data.reason);
                     }
                 }, err => {
-                    alert("An error occured. Error: " + err.message);
+                    this.newAlert("Connection Error", err.message);
                 });
             }
             else if (this.ac_type == 'j') {
                 this.messageProv.edit_message(this.message, this.m_type, this.ac_type, this.m_item.m_timestamp, null, this.em_type).subscribe(data => {
-                    if(data.success){
+                    if (data.success) {
                         this.navCtrl.pop();
                     }
                     else {
-                        alert(data.reason);
+                        this.newAlert("Error", data.reason);
                     }
                 }, err => {
-                    alert("An error occured. Error: " + err.message);
+                    this.newAlert("Connection Error", err.message);
                 });
             }
             else if (this.ac_type == 'l') {
                 this.messageProv.edit_message(this.message, this.m_type, this.ac_type, this.m_item.m_timestamp).subscribe(data => {
-                    if(data.success){
+                    if (data.success) {
                         this.navCtrl.pop();
                     }
                     else {
-                        alert(data.reason);
+                        this.newAlert("Error", data.reason);
                     }
                 }, err => {
-                    alert("An error occured. Error: " + err.message);
+                    this.newAlert("Connection Error", err.message);
                 });
             }
         }
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

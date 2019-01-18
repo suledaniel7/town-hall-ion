@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { SearchProvider } from '../../providers/search/search';
 
@@ -11,18 +11,23 @@ import { SearchProvider } from '../../providers/search/search';
 export class TagPage {
     item: any;
     trend: any;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private searchProv: SearchProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private searchProv: SearchProvider,
+        private alCtrl: AlertController
+    ) {
         let trend = this.navParams.get('trend');
         this.trend = trend;
         this.searchProv.search('tag', trend).subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item = data.results;
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error Loading tags", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -30,4 +35,13 @@ export class TagPage {
         console.log('ionViewDidLoad TagPage');
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

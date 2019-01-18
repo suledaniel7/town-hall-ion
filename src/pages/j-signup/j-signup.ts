@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { SignupProvider } from "../../providers/signup/signup";
 
-import { JBeatSelPage } from "../j-beat-sel/j-beat-sel";
-import { JOrgSelPage } from "../j-org-sel/j-org-sel";
+import { UploadPage } from '../upload/upload';
 
 @IonicPage()
 @Component({
@@ -21,7 +19,13 @@ export class JSignupPage {
     pass1: any = '';
     ac_type: any = 'm';
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private signupProv: SignupProvider, private ldCtrl: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private signupProv: SignupProvider,
+        private ldCtrl: LoadingController,
+        private alCtrl: AlertController
+    ) {
     }
 
     ionViewDidLoad() {
@@ -41,33 +45,33 @@ export class JSignupPage {
                 this.signupProv.u_check(this.username).subscribe(data => {
                     if (data.found) {
                         u_loader.dismiss();
-                        alert("A user exists with that username. Please choose another");
+                        this.newAlert("Username in Use", "A user exists with that username. Please choose another");
                     }
                     else {
                         this.signupProv.e_check(this.email).subscribe(data1 => {
                             if (data1.found) {
                                 u_loader.dismiss();
-                                alert("A user exists with that email address. Please choose another");
+                                this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
                             }
                             else {
                                 this.signupProv.signup_j(this.f_name, this.l_name, this.username, this.email, this.password, this.ac_type).subscribe(data => {
                                     u_loader.dismiss();
                                     if (data.success) {
                                         if (this.ac_type == 'm') {
-                                            this.navCtrl.setRoot(JOrgSelPage);
+                                            this.navCtrl.setRoot(UploadPage, { u_type: 'j', photo_type: 'Avatar' });
                                             this.navCtrl.popToRoot();
                                         }
                                         else {
-                                            this.navCtrl.setRoot(JBeatSelPage);
+                                            this.navCtrl.setRoot(UploadPage, { u_type: 'f', photo_type: 'Avatar' });
                                             this.navCtrl.popToRoot();
                                         }
                                     }
                                     else {
-                                        alert("An error occured during signup. Error: " + data.reason);
+                                        this.newAlert("Error", data.reason);
                                     }
                                 }, err => {
                                     u_loader.dismiss();
-                                    alert("An error occured during signup. Please check your connection. Error: " + err.message);
+                                    this.newAlert("Connection Error", err.message);
                                 });
                             }
                         });
@@ -75,11 +79,11 @@ export class JSignupPage {
                 });
             }
             else {
-                alert("Your passwords do not match");
+                this.newAlert("Password Mismatch", "Your passwords do not match");
             }
         }
         else {
-            alert("All fields are required");
+            this.newAlert("Incomplete Details", "All fields are required");
         }
     }
 
@@ -88,7 +92,7 @@ export class JSignupPage {
         if (!wsp.test(this.username)) {
             this.signupProv.u_check(this.username).subscribe((data) => {
                 if (data.found) {
-                    alert("A user exists with that username. Please choose another");
+                    this.newAlert("Username in Use", "A user exists with that username. Please choose another");
                 }
             });
         }
@@ -99,9 +103,19 @@ export class JSignupPage {
         if (!wsp.test(this.email)) {
             this.signupProv.e_check(this.email).subscribe(data => {
                 if (data.found) {
-                    alert("A user exists with that email address. Please choose another");
+                    this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
                 }
             });
         }
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

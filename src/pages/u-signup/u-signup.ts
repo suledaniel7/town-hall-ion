@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { SignupProvider } from "../../providers/signup/signup";
 
-import { UsersPage } from '../users/users';
+import { UploadPage } from '../upload/upload';
 
 @IonicPage()
 @Component({
@@ -31,32 +30,37 @@ export class USignupPage {
     fed_const: any = '';
 
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private signupProv: SignupProvider, private ldCtrl: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private signupProv: SignupProvider,
+        private ldCtrl: LoadingController,
+        private alCtrl: AlertController
+    ) {
         this.load_states();
     }
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad USignupPage');
     }
 
-    load_states(){
+    load_states() {
         let s_loader = this.ldCtrl.create({
             content: "Loading States..."
         });
 
         s_loader.present();
         this.signupProv.load_states().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 s_loader.dismiss();
                 this.item = data.item;
                 this.statesLoaded = true;
             }
         }, err => {
-            alert("An error occured. Error: "+err.message);
+            this.newAlert("Error", err.message);
         });
     }
 
-    load_districts(key){
+    load_districts(key) {
         let d_loader = this.ldCtrl.create({
             content: "Loading Districts..."
         });
@@ -71,10 +75,10 @@ export class USignupPage {
         });
     }
 
-    validate(){
+    validate() {
         let wsp = /^\s*$/;
-        if(!wsp.test(this.f_name) && !wsp.test(this.username) && !wsp.test(this.email) && !wsp.test(this.password) && !wsp.test(this.pass1) && !wsp.test(this.gender) && !wsp.test(this.fed_const) && !wsp.test(this.sen_dist)){
-            if(this.password == this.pass1){
+        if (!wsp.test(this.f_name) && !wsp.test(this.username) && !wsp.test(this.email) && !wsp.test(this.password) && !wsp.test(this.pass1) && !wsp.test(this.gender) && !wsp.test(this.fed_const) && !wsp.test(this.sen_dist)) {
+            if (this.password == this.pass1) {
                 let u_loader = this.ldCtrl.create({
                     content: "Creating Account..."
                 });
@@ -82,38 +86,44 @@ export class USignupPage {
                 u_loader.present();
 
                 this.signupProv.u_check(this.username).subscribe(data => {
-                    if(data.found){
+                    if (data.found) {
                         u_loader.dismiss();
-                        alert("A user exists with that username. Please choose another");
+                        this.newAlert("Username in Use", "A user exists with that username. Please choose another");
                     }
                     else {
                         this.signupProv.e_check(this.email).subscribe(data1 => {
                             if (data1.found) {
                                 u_loader.dismiss();
-                                alert("A user exists with that email address. Please choose another");
+                                this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
                             }
                             else {
                                 this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
                                     u_loader.dismiss();
-                                    if(resp.success){
-                                        this.navCtrl.setRoot(UsersPage);
+                                    if (resp.success) {
+                                        this.navCtrl.setRoot(UploadPage, { u_type: 'u', photo_type: 'Avatar' });
                                         this.navCtrl.popToRoot();
                                     }
                                     else {
-                                        alert(resp.reason);
+                                        this.newAlert("Signup Error", resp.reason);
                                     }
+                                }, (err)=>{
+                                    this.newAlert("Connection Error", err.message);
                                 });
                             }
+                        }, (err)=>{
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
+                }, (err)=>{
+                    this.newAlert("Connection Error", err.message);
                 });
             }
             else {
-                alert("Your passwords do not match");
+                this.newAlert("Password Mismatch", "Your passwords do not match");
             }
         }
         else {
-            alert("All fields are required");
+            this.newAlert("Incomplete Data", "All fields are required");
         }
     }
 
@@ -122,7 +132,7 @@ export class USignupPage {
         if (!wsp.test(this.username)) {
             this.signupProv.u_check(this.username).subscribe((data) => {
                 if (data.found) {
-                    alert("A user exists with that username. Please choose another");
+                    this.newAlert("Username in Use", "A user exists with that username. Please choose another");
                 }
             });
         }
@@ -133,9 +143,19 @@ export class USignupPage {
         if (!wsp.test(this.email)) {
             this.signupProv.e_check(this.email).subscribe(data => {
                 if (data.found) {
-                    alert("A user exists with that email address. Please choose another");
+                    this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
                 }
             });
         }
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

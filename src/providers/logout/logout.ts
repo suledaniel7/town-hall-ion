@@ -1,22 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
+import { AddressProvider } from '../address/address';
 
-/*
-  Generated class for the LogoutProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class LogoutProvider {
+    api: string;
 
-    constructor(public http: HttpClient) {
-
+    constructor(public http: HttpClient, public address: AddressProvider) {
+        this.api = this.address.getApi();
     }
 
     logout(): Observable<any>{
-        return this.http.get('http://127.169.43.55:8095/api/logout');
+        return this.http.get(`${this.api}/logout`);
     }
 
 }

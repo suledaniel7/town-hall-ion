@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ProfileProvider } from '../../providers/profile/profile';
+import { AddressProvider } from '../../providers/address/address';
 
 import { JCommsPage } from "../j-comms/j-comms";
 import { JSettingsPage } from "../j-settings/j-settings";
@@ -13,8 +14,15 @@ import { JSettingsPage } from "../j-settings/j-settings";
 })
 export class JProfilePage {
     item: any;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private profProv: ProfileProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private profProv: ProfileProvider,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.load();
     }
 
@@ -22,19 +30,19 @@ export class JProfilePage {
         console.log('ionViewDidLoad JProfilePage');
     }
 
-    compose(){
+    compose() {
         this.navCtrl.push(JCommsPage);
     }
 
-    settings(){
+    settings() {
         this.navCtrl.push(JSettingsPage);
     }
 
-    load(){
+    load() {
         this.profProv.j_profile_p().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item = data.item;
-                if(!data.item.free){
+                if (!data.item.free) {
                     this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
                 }
             }

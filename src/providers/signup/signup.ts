@@ -1,36 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
+import { AddressProvider } from '../address/address';
 
 @Injectable()
 export class SignupProvider {
+    api: string;
 
-    constructor(public http: HttpClient) {
-
+    constructor(public http: HttpClient, public address: AddressProvider) {
+        this.api = this.address.getApi();
     }
 
     u_check(username): Observable<any> {
-        return this.http.get('http://127.169.43.55:8095/api/users/check/' + username);
+        return this.http.get(`${this.api}/users/check/` + username);
     }
 
     e_check(email): Observable<any> {
-        return this.http.get('http://127.169.43.55:8095/api/users/checkEmail/' + email);
+        return this.http.get(`${this.api}/users/checkEmail/` + email);
     }
 
     c_check(email): Observable<any> {
-        return this.http.get('http://127.169.43.55:8095/api/users/checkCorrEmail/' + email);
+        return this.http.get(`${this.api}/users/checkCorrEmail/` + email);
     }
 
     load_states(): Observable<any> {
-        return this.http.get('http://127.169.43.55:8095/api/users/signup');
+        return this.http.get(`${this.api}/users/signup`);
     }
 
     load_districts(state_key): Observable<any> {
-        return this.http.get('http://127.169.43.55:8095/api/users/signup/districts/' + state_key);
+        return this.http.get(`${this.api}/users/signup/districts/` + state_key);
     }
 
     signup_o(name, username, email, email_corr, password, id): Observable<any> {
-        return this.http.post('http://127.169.43.55:8095/api/organisations/signup', {
+        return this.http.post(`${this.api}/organisations/signup`, {
             name: name,
             username: username,
             email: email,
@@ -41,7 +43,7 @@ export class SignupProvider {
     }
 
     signup_j(f_name, l_name, username, email, password, ac_type): Observable<any> {
-        return this.http.post('http://127.169.43.55:8095/api/journalists/signup', {
+        return this.http.post(`${this.api}/journalists/signup`, {
             f_name: f_name,
             l_name: l_name,
             username: username,
@@ -52,7 +54,7 @@ export class SignupProvider {
     }
 
     signup_u(f_name, username, email, password, gender, sen_dist, fed_const): Observable<any> {
-        return this.http.post('http://127.169.43.55:8095/api/users/signup', {
+        return this.http.post(`${this.api}/users/signup`, {
             f_name: f_name,
             username: username,
             email: email,

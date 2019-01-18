@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { SignupProvider } from '../../providers/signup/signup';
-import { OrganisationsPage } from '../organisations/organisations';
+import { UploadPage } from '../upload/upload';
 
 @IonicPage()
 @Component({
@@ -22,7 +22,11 @@ export class OSignupPage {
     validEmail: boolean = false;
     validCMail: boolean = false;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private signupProv: SignupProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private signupProv: SignupProvider
+    ) {
     }
 
     ionViewDidLoad() {
@@ -79,19 +83,31 @@ export class OSignupPage {
                             else {
                                 this.signupProv.signup_o(this.name, this.username, this.email, this.email_corr, this.password, this.id).subscribe(data => {
                                     if (data.success) {
-                                        this.navCtrl.setRoot(OrganisationsPage);
+                                        this.navCtrl.setRoot(UploadPage, { u_type: 'o', photo_type: 'Logo' });
                                         this.navCtrl.popToRoot();
                                     }
                                     else {
                                         this.err = data.reason;
                                         this.clearErr();
                                     }
+                                }, (err)=>{
+                                    this.err = err.message;
+                                    this.clearErr();
                                 });
                             }
+                        }, (err)=>{
+                            this.err = err.message;
+                            this.clearErr();
                         });
                     }
+                }, (err)=>{
+                    this.err = err.message;
+                    this.clearErr();
                 });
             }
+        }, (err)=>{
+            this.err = err.message;
+            this.clearErr();
         });
     }
 

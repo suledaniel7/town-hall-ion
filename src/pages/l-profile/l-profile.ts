@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
-import { AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { ProfileProvider } from "../../providers/profile/profile";
+import { AddressProvider } from '../../providers/address/address';
 
 import { LCommsPage } from '../l-comms/l-comms';
 import { LSettingsPage } from "../l-settings/l-settings";
@@ -15,8 +14,17 @@ import { LSettingsPage } from "../l-settings/l-settings";
 })
 export class LProfilePage {
     item: any;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, private alertCtrl: AlertController, private ldCtrl: LoadingController, public navParams: NavParams, private profileProv: ProfileProvider) {
+    constructor(
+        public navCtrl: NavController,
+        private alertCtrl: AlertController,
+        private ldCtrl: LoadingController,
+        public navParams: NavParams,
+        private profileProv: ProfileProvider,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.load();
     }
 
@@ -24,7 +32,7 @@ export class LProfilePage {
         console.log('ionViewDidLoad LProfilePage');
     }
 
-    load(){
+    load() {
         let loader = this.ldCtrl.create({
             showBackdrop: true,
             content: "Please wait...",
@@ -33,15 +41,15 @@ export class LProfilePage {
         loader.present();
 
         this.profileProv.l_profile_p().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 loader.dismiss();
                 this.item = data.item;
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
-        }, (err)=>{
-            alert("An error occured. Error: "+ err.message);
+        }, (err) => {
+            this.newAlert("Connection Error", err.message);
             let confirmed = true;
             let confirm = this.alertCtrl.create({
                 title: "Retry?",
@@ -49,31 +57,40 @@ export class LProfilePage {
                 buttons: [
                     {
                         text: 'Yes',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = true;
                         }
                     },
                     {
                         text: 'No',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = false;
                         }
                     }
                 ]
             });
             confirm.present();
-            if(confirmed){
+            if (confirmed) {
                 setTimeout(this.load, 10000);
             }
         });
     }
 
-    compose(){
+    compose() {
         this.navCtrl.push(LCommsPage);
     }
 
-    settings(){
+    settings() {
         this.navCtrl.push(LSettingsPage);
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

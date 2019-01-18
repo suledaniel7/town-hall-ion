@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
-import { AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { ProfileProvider } from "../../providers/profile/profile";
+import { AddressProvider } from '../../providers/address/address';
 
 import { USettingsPage } from "../u-settings/u-settings";
 import { LRenderPage } from '../l-render/l-render';
@@ -15,8 +14,17 @@ import { LRenderPage } from '../l-render/l-render';
 })
 export class UProfilePage {
     item: any;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, private alertCtrl: AlertController, public ldCtrl: LoadingController, public navParams: NavParams, private profProv: ProfileProvider) {
+    constructor(
+        public navCtrl: NavController,
+        private alertCtrl: AlertController,
+        public ldCtrl: LoadingController,
+        public navParams: NavParams,
+        private profProv: ProfileProvider,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.load();
     }
 
@@ -40,11 +48,11 @@ export class UProfilePage {
             }
             else {
                 loader.dismiss();
-                alert(data.reason);
+                this.newAlert("Error Loading Info", data.reason);
             }
         }, (err) => {
             loader.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
             let confirmed = false;
             let confirm = this.alertCtrl.create({
                 title: "Retry?",
@@ -64,13 +72,13 @@ export class UProfilePage {
                     }
                 ]
             });
-            confirm.present().then(()=>{
+            confirm.present().then(() => {
                 if (confirmed) {
                     setTimeout(() => {
                         this.load();
                     }, 10000);
                 }
-            }).catch((reason)=>{
+            }).catch((reason) => {
                 let al1 = this.alertCtrl.create({
                     message: `An error occured. ${reason}`
                 });
@@ -79,11 +87,21 @@ export class UProfilePage {
         });
     }
 
-    profile(code){
-        this.navCtrl.push(LRenderPage, {code: code});
+    profile(code) {
+        this.navCtrl.push(LRenderPage, { code: code });
     }
 
     settings() {
         this.navCtrl.push(USettingsPage);
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

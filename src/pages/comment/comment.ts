@@ -10,6 +10,7 @@ import { TagPage } from "../tag/tag";
 
 import { ConversationProvider } from "../../providers/conversation/conversation";
 import { RenderProvider } from '../../providers/render/render';
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -22,6 +23,7 @@ export class CommentPage {
     originator: boolean = false;
     tags: Array<string> = [];
     mentions: Array<string> = [];
+    imgAddress: string;
 
     constructor(
         public navCtrl: NavController,
@@ -30,9 +32,10 @@ export class CommentPage {
         private convProv: ConversationProvider,
         public alertCtrl: AlertController,
         private ldCtrl: LoadingController,
-        private rndrProv: RenderProvider
+        private rndrProv: RenderProvider,
+        public address: AddressProvider
     ) {
-        
+        this.imgAddress = this.address.getImageApi();
     }
 
     ionViewDidLoad() {
@@ -160,10 +163,10 @@ export class CommentPage {
                     this.comment = data.item.comment;
                 }
                 else {
-                    alert(data.reason);
+                    this.newAlert("Error", data.reason);
                 }
             }, err => {
-                alert("An error occured. Error: " + err.message);
+                this.newAlert("Connection Error", err.message);
             });
         });
     }
@@ -184,10 +187,10 @@ export class CommentPage {
                                 document.getElementById(timestamp).remove();
                             }
                             else {
-                                alert(data.reason);
+                                this.newAlert("Error", data.reason);
                             }
                         }, err => {
-                            alert("An error occured. Error: " + err.message);
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
                 }
@@ -218,10 +221,10 @@ export class CommentPage {
                                 sucRepAl.present();
                             }
                             else {
-                                alert(data.reason);
+                                this.newAlert("Error", data.reason);
                             }
                         }, err => {
-                            alert("An error occured. Error: " + err.message);
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
                 }
@@ -233,7 +236,7 @@ export class CommentPage {
 
     blind_profile(username) {
         //find u_type
-        //push page or alert error
+        //push page or this.newAlert error
         let ld = this.ldCtrl.create({ content: "Loading User" });
         ld.present();
         this.rndrProv.req_type(username).subscribe(data => {
@@ -251,11 +254,21 @@ export class CommentPage {
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             ld.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

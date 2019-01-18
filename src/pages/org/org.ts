@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { Input } from "@angular/core";
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the OrgPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -15,9 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
     templateUrl: 'org.html',
 })
 export class OrgPage {
+    imgAddress: string;
+
     @Input() person: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
     }
 
     ionViewDidLoad() {

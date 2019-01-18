@@ -6,34 +6,43 @@ import { JRenderPage } from "../j-render/j-render";
 import { ORenderPage } from "../o-render/o-render";
 import { LRenderPage } from "../l-render/l-render";
 
+import { AddressProvider } from '../../providers/address/address';
+
 @IonicPage()
 @Component({
     selector: 'page-person',
     templateUrl: 'person.html',
 })
 export class PersonPage {
+    imgAddress: string;
+
     @Input() person: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad PersonPage');
     }
 
-    ngOnInit(){
+    ngOnInit() {
 
     }
 
-    render_pg(ac_type, username){
-        if(ac_type == 'j'){
-            this.navCtrl.push(JRenderPage, {username: username});
+    render_pg(ac_type, username) {
+        if (ac_type == 'j') {
+            this.navCtrl.push(JRenderPage, { username: username });
         }
-        else if(ac_type == 'o'){
-            this.navCtrl.push(ORenderPage, {username: username});
+        else if (ac_type == 'o') {
+            this.navCtrl.push(ORenderPage, { username: username });
         }
-        else if(ac_type == 'l'){
-            this.navCtrl.push(LRenderPage, {code: username});
+        else if (ac_type == 'l') {
+            this.navCtrl.push(LRenderPage, { code: username });
         }
     }
 

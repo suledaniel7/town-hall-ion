@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { RenderProvider } from '../../providers/render/render';
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -13,8 +14,17 @@ export class ORenderPage {
     flwrsText: string;
     flwBtnText: string;
     username: string;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private rndrProv: RenderProvider, private ldCtrl: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private rndrProv: RenderProvider,
+        private ldCtrl: LoadingController,
+        public address: AddressProvider,
+        private alCtrl: AlertController
+    ) {
+        this.imgAddress = this.address.getImageApi();
         let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
         ld.present();
         let username = this.navParams.get('username');
@@ -40,11 +50,11 @@ export class ORenderPage {
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Loading Error", data.reason);
             }
         }, err => {
             ld.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -76,11 +86,11 @@ export class ORenderPage {
             }
             else {
                 this.flwBtnText = "Follow";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Follow";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -99,12 +109,21 @@ export class ORenderPage {
             }
             else {
                 this.flwBtnText = "Following";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Following";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

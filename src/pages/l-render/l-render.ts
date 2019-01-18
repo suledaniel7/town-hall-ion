@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+
 import { RenderProvider } from '../../providers/render/render';
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -12,38 +14,47 @@ export class LRenderPage {
     flwrsText: string;
     flwBtnText: string;
     username: string;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private rndrProv: RenderProvider, private ldCtrl: LoadingController) {
-        let ld = this.ldCtrl.create({content: "Loading Profile Info"});
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private rndrProv: RenderProvider,
+        private ldCtrl: LoadingController,
+        public address: AddressProvider,
+        private alCtrl: AlertController
+    ) {
+        this.imgAddress = this.address.getImageApi();
+        let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
         ld.present();
         let code = this.navParams.get('code');
-        this.username = code;        
+        this.username = code;
         this.rndrProv.render_profile(code).subscribe(data => {
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
-                if(this.item.user.followersNo == 1){
+                if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Constituent";
                 }
                 else {
                     this.flwrsText = "Constituents";
                 }
-                if(this.item.following){
+                if (this.item.following) {
                     this.flwBtnText = "Following";
                 }
                 else {
                     this.flwBtnText = "Follow";
                 }
-                if(!this.item.canFollow){
+                if (!this.item.canFollow) {
                     document.getElementById('fbtn').setAttribute('disabled', 'disabled');
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             ld.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -51,21 +62,21 @@ export class LRenderPage {
         console.log('ionViewDidLoad LRenderPage');
     }
 
-    fClick(){
-        if(this.flwBtnText == 'Follow'){
+    fClick() {
+        if (this.flwBtnText == 'Follow') {
             this.follow();
         }
-        else if(this.flwBtnText == "Following"){
+        else if (this.flwBtnText == "Following") {
             this.unfollow();
         }
     }
 
-    follow(){
+    follow() {
         this.flwBtnText = "Loading...";
         this.rndrProv.follow(this.username).subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item.user.followersNo++;
-                if(this.item.user.followersNo == 1){
+                if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Constituent";
                 }
                 else {
@@ -75,20 +86,20 @@ export class LRenderPage {
             }
             else {
                 this.flwBtnText = "Follow";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Follow";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
-    unfollow(){
+    unfollow() {
         this.flwBtnText = "Loading...";
         this.rndrProv.unfollow(this.username).subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item.user.followersNo--;
-                if(this.item.user.followersNo = 1){
+                if (this.item.user.followersNo = 1) {
                     this.flwrsText = "Constituent";
                 }
                 else {
@@ -98,11 +109,21 @@ export class LRenderPage {
             }
             else {
                 this.flwBtnText = "Following";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Following";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

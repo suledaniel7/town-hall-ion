@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { TagPage } from "../tag/tag";
 import { JRenderPage } from "../j-render/j-render";
@@ -30,7 +30,12 @@ export class SearchPage {
     s_item = null;
     sugg_active = false;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private searchProv: SearchProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private searchProv: SearchProvider,
+        private alCtrl: AlertController
+    ) {
         this.load_trends();
     }
 
@@ -120,10 +125,10 @@ export class SearchPage {
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Invalid Search Request", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
     g_curr() {
@@ -143,10 +148,10 @@ export class SearchPage {
                 this.tr_item.trends = data.trends;
             }
             else {
-                alert("An error occured on our end while loading trends. Please try again later");
+                this.newAlert("Trend Error", "An error occured on our end while loading trends. Please try again later");
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -160,16 +165,26 @@ export class SearchPage {
         this.search();
     }
 
-    render_pg(ac_type, username){
-        if(ac_type == 'j'){
-            this.navCtrl.push(JRenderPage, {username: username});
+    render_pg(ac_type, username) {
+        if (ac_type == 'j') {
+            this.navCtrl.push(JRenderPage, { username: username });
         }
-        else if(ac_type == 'o'){
-            this.navCtrl.push(ORenderPage, {username: username});
+        else if (ac_type == 'o') {
+            this.navCtrl.push(ORenderPage, { username: username });
         }
-        else if(ac_type == 'l'){
-            this.navCtrl.push(LRenderPage, {code: username});
+        else if (ac_type == 'l') {
+            this.navCtrl.push(LRenderPage, { code: username });
         }
+    }
+
+    newAlert(title: string, text: string) {
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 
 }

@@ -11,6 +11,7 @@ import { TagPage } from "../tag/tag";
 
 import { MessageProvider } from '../../providers/message/message';
 import { RenderProvider } from '../../providers/render/render';
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,7 @@ export class MessagePage {
     tags: Array<string> = [];
     mentions: Array<string> = [];
     elems: Array<any> = [];
+    imgAddress: string;
 
     constructor(
         public navCtrl: NavController,
@@ -32,17 +34,18 @@ export class MessagePage {
         private messageProv: MessageProvider,
         public alertCtrl: AlertController,
         private ldCtrl: LoadingController,
-        private rndrProv: RenderProvider
-        ) {
-        
+        private rndrProv: RenderProvider,
+        public address: AddressProvider
+    ) {
+        this.imgAddress = this.address.getImageApi();
     }
 
     ionViewDidLoad() {
         console.log("ionViewDidLoad MessagePage");
     }
 
-    ngOnInit(){
-        if(this.username == this.message.sender){
+    ngOnInit() {
+        if (this.username == this.message.sender) {
             this.message.sender_name = "You";
             this.originator = true;
         }
@@ -50,7 +53,7 @@ export class MessagePage {
         this.message.message = this.extractMentions(this.message.message);
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.affixIds();
     }
 
@@ -87,7 +90,7 @@ export class MessagePage {
         let mText = message;
         let mTextArr = mText.split(/\s/);
         let finalTextArr = [];
-        mTextArr.forEach((element: string)=> {
+        mTextArr.forEach((element: string) => {
             if (element[0] == '@' && element.slice(1).search(/\W/) != 0) {
                 let hold_elem = element[0];
                 let part_elem = element.slice(1);
@@ -119,15 +122,15 @@ export class MessagePage {
         return mText;
     }
 
-    affixIds(){
+    affixIds() {
         //tags
         //the problem with using event listeners is that they get affixed and then when another page is brought up, they don't disappear
         let arrTg = document.getElementsByClassName(`tg-${this.message.m_timestamp}`);
         let ltTg = arrTg.length;
-        for(let i=0; i<ltTg; i++){
+        for (let i = 0; i < ltTg; i++) {
             let tag = arrTg[i].textContent.slice(1);
-            let evFn = (event)=>{
-                this.navCtrl.push(TagPage, {trend: tag});
+            let evFn = (event) => {
+                this.navCtrl.push(TagPage, { trend: tag });
             }
             // arrTg[i].addEventListener('click', ()=>{
             //     this.navCtrl.push(TagPage, {trend: tag});
@@ -142,49 +145,49 @@ export class MessagePage {
         //mentions
         let arrMt = document.getElementsByClassName(`mt-${this.message.m_timestamp}`);
         let ltMt = arrMt.length;
-        for(let i=0; i<ltMt; i++){
+        for (let i = 0; i < ltMt; i++) {
             let mention = arrMt[i].textContent.slice(1);
-            arrMt[i].addEventListener('click', ()=> {
+            arrMt[i].addEventListener('click', () => {
                 this.blind_profile(mention);
             });
         }
     }
 
-    profile(username, ac){
-        if(ac == 'j'){
-            this.navCtrl.push(JRenderPage, {username: username});
+    profile(username, ac) {
+        if (ac == 'j') {
+            this.navCtrl.push(JRenderPage, { username: username });
         }
-        else if(ac == 'o'){
-            this.navCtrl.push(ORenderPage, {username: username});
+        else if (ac == 'o') {
+            this.navCtrl.push(ORenderPage, { username: username });
         }
-        else if(ac == 'l'){
-            this.navCtrl.push(LRenderPage, {code: username});
+        else if (ac == 'l') {
+            this.navCtrl.push(LRenderPage, { code: username });
         }
     }
 
-    conversation(){
-        this.navCtrl.push(ConversationPage, {timestamp: this.message.m_timestamp});
+    conversation() {
+        this.navCtrl.push(ConversationPage, { timestamp: this.message.m_timestamp });
     }
 
-    edit(){
+    edit() {
         let mText = document.getElementById(`p-${this.message.m_timestamp}`).innerText;
-        let currModal = this.modalCtrl.create(EditMessagePage, {m_item: this.message, m_text: mText});
+        let currModal = this.modalCtrl.create(EditMessagePage, { m_item: this.message, m_text: mText });
         currModal.present();
-        currModal.onWillDismiss(()=>{
+        currModal.onWillDismiss(() => {
             this.messageProv.req_message('m', this.message.m_timestamp).subscribe(data => {
-                if(data.success){
+                if (data.success) {
                     this.message = data.item.message;
                 }
                 else {
-                    alert(data.reason);
+                    this.newAlert("Connection Error", data.reason);
                 }
             }, err => {
-                alert("An error occured. Error: " + err.message);
+                this.newAlert("Connection Error", err.message);
             });
         });
     }
 
-    del(timestamp){
+    del(timestamp) {
         let delConf = this.alertCtrl.create({
             title: "Delete Message",
             message: "Do you want to delete this message? This action cannot be undone",
@@ -194,16 +197,16 @@ export class MessagePage {
                 },
                 {
                     text: "Delete",
-                    handler: ()=>{
+                    handler: () => {
                         this.messageProv.del_message(timestamp).subscribe(data => {
-                            if(data.success){
+                            if (data.success) {
                                 document.getElementById(timestamp).remove();
                             }
                             else {
-                                alert(data.reason);
+                                this.newAlert("Error", data.reason);
                             }
                         }, err => {
-                            alert("An error occured. Error: " + err.message);
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
                 }
@@ -213,7 +216,7 @@ export class MessagePage {
         delConf.present();
     }
 
-    report(timestamp){
+    report(timestamp) {
         let sucRepAl = this.alertCtrl.create({
             title: "Message Reported",
             message: "We appreciate you taking out time to report this message. Our Community Moderators will have a look at it and take action where necessary. Thank you.",
@@ -228,16 +231,16 @@ export class MessagePage {
                 },
                 {
                     text: "Report",
-                    handler: ()=>{
+                    handler: () => {
                         this.messageProv.report_message(timestamp).subscribe(data => {
-                            if(data.success){
+                            if (data.success) {
                                 sucRepAl.present();
                             }
                             else {
-                                alert(data.reason);
+                                this.newAlert("Error", data.reason);
                             }
                         }, err => {
-                            alert("An error occured. Error: " + err.message);
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
                 }
@@ -247,39 +250,49 @@ export class MessagePage {
         repConf.present();
     }
 
-    blind_profile(username){
+    blind_profile(username) {
         //find u_type
-        //push page or alert error
-        let ld = this.ldCtrl.create({content: "Loading User"});
+        //push page or this.newAlert error
+        let ld = this.ldCtrl.create({ content: "Loading User" });
         ld.present();
         this.rndrProv.req_type(username).subscribe(data => {
             ld.dismiss();
-            if(data.success){
+            if (data.success) {
                 let u_type = data.u_type;
-                if(u_type == 'j'){
-                    this.navCtrl.push(JRenderPage, {username: username});
+                if (u_type == 'j') {
+                    this.navCtrl.push(JRenderPage, { username: username });
                 }
-                else if(u_type == 'l'){
-                    this.navCtrl.push(LRenderPage, {code: username});
+                else if (u_type == 'l') {
+                    this.navCtrl.push(LRenderPage, { code: username });
                 }
-                else if(u_type == 'o'){
-                    this.navCtrl.push(ORenderPage, {username: username});
+                else if (u_type == 'o') {
+                    this.navCtrl.push(ORenderPage, { username: username });
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             ld.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.elems.forEach(element => {
             let domEl = element.element;
             let listener = element.listener;
             domEl.removeEventListener('click', listener, false);
         });
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

@@ -6,7 +6,7 @@
 <ion-content>
     <div *ngIf="item?.user">
         <div class="profileDets">
-            <img src="http://127.169.43.55:8095/{{item.user.avatar}}" alt="User Avatar" class="center-block profileAvatar">
+            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="User Avatar" class="center-block profileAvatar">
             <h3 class="center">{{item.user.type_exp}} {{item.user.full_name}}</h3>
             <ion-row>
                 <ion-col></ion-col>

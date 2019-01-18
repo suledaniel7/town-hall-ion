@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Upload your {{photo_type}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="center">
+        <img src="{{fileUri}}" id="avatar" class="center-block">
+        <p>
+            <button ion-button color="secondary" (click)="select()">Select File</button>
+        </p>
+        <br>
+        <p>
+            <button ion-button (click)="upload()">Upload Image</button>
+        </p>
+        <p>
+            <button ion-button full color="secondary" (click)="skip()">Skip</button>
+        </p>
+    </div>
+</ion-content>

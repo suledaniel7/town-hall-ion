@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -11,7 +11,11 @@ import { ProfileProvider } from '../../providers/profile/profile';
 export class JOrgPage {
     item: any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private profProv: ProfileProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private profProv: ProfileProvider,
+        private alCtrl: AlertController) {
         this.load();
     }
 
@@ -25,11 +29,20 @@ export class JOrgPage {
                 this.item = data.item;
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

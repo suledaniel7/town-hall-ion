@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { MessageProvider } from "../../providers/message/message";
+import { AddressProvider } from '../../providers/address/address';
 
 @IonicPage()
 @Component({
@@ -15,19 +16,27 @@ export class JCommsPage {
     m_type: string = "o";
     charCount: any = 0;
     item: any;
+    imgAddress: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private messageProv: MessageProvider) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private messageProv: MessageProvider,
+        public address: AddressProvider,
+        private alCtrl: AlertController
+    ) {
+        this.imgAddress = this.address.getImageApi();
         this.messageProv.load_image().subscribe(data => {
-            if(data.success){
+            if (data.success) {
                 this.item = {
                     avatar: data.avatar
                 }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -35,14 +44,14 @@ export class JCommsPage {
         console.log('ionViewDidLoad JCommsPage');
     }
 
-    back(){
+    back() {
         this.navCtrl.pop();
     }
 
-    count(){
+    count() {
         this.charCount = this.message.length;
         let wsp = /^\s*$/;
-        if(this.charCount > 0 && this.charCount <= 360 && !wsp.test(this.message)){
+        if (this.charCount > 0 && this.charCount <= 360 && !wsp.test(this.message)) {
             this.btnColor = "primary";
             this.validMesssage = true;
         }
@@ -52,18 +61,28 @@ export class JCommsPage {
         }
     }
 
-    post(){
-        if(this.validMesssage){
+    post() {
+        if (this.validMesssage) {
             this.messageProv.post_message('j', this.message, this.m_type).subscribe(data => {
-                if(data.success){
+                if (data.success) {
                     this.navCtrl.pop();
                 }
                 else {
-                    alert(data.reason);
+                    this.newAlert("Error", data.reason);
                 }
             }, err => {
-                alert("An error occured. Error: "+err.message);
+                this.newAlert("Connection Error", err.message);
             });
         }
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

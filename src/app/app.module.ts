@@ -59,8 +59,10 @@ import { UHomePage } from "../pages/u-home/u-home";
 import { UProfilePage } from "../pages/u-profile/u-profile";
 import { USignupPage } from "../pages/u-signup/u-signup";
 import { UsersPage } from "../pages/users/users";
-import { CheckUsernameProvider } from '../providers/check-username/check-username';
 import { USettingsPage } from '../pages/u-settings/u-settings';
+import { UploadPage } from "../pages/upload/upload";
+
+import { CheckUsernameProvider } from '../providers/check-username/check-username';
 import { SignupProvider } from '../providers/signup/signup';
 import { SigninProvider } from '../providers/signin/signin';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -71,6 +73,8 @@ import { SearchProvider } from '../providers/search/search';
 import { MessageProvider } from '../providers/message/message';
 import { RenderProvider } from '../providers/render/render';
 import { ConversationProvider } from '../providers/conversation/conversation';
+import { AddressProvider } from '../providers/address/address';
+import { UploadProvider } from '../providers/upload/upload';
 
 @NgModule({
     declarations: [
@@ -125,6 +129,7 @@ import { ConversationProvider } from '../providers/conversation/conversation';
         USignupPage,
         UsersPage,
         USettingsPage,
+        UploadPage,
     ],
     imports: [
         BrowserModule,
@@ -183,6 +188,7 @@ import { ConversationProvider } from '../providers/conversation/conversation';
         USignupPage,
         UsersPage,
         USettingsPage,
+        UploadPage,
     ],
     providers: [
         StatusBar,
@@ -202,7 +208,9 @@ import { ConversationProvider } from '../providers/conversation/conversation';
     SearchProvider,
     MessageProvider,
     RenderProvider,
-    ConversationProvider
+    ConversationProvider,
+    AddressProvider,
+    UploadProvider
     ]
 })
 export class AppModule { }

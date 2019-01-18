@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { SignupPage } from '../signup/signup';
 import { SigninProvider } from "../../providers/signin/signin";
@@ -19,7 +18,13 @@ export class SigninPage {
     password: string;
     err = '';
 
-    constructor(public navCtrl: NavController, private ldCtrl: LoadingController, public navParams: NavParams, private signinProv: SigninProvider) {
+    constructor(
+        public navCtrl: NavController,
+        private ldCtrl: LoadingController,
+        public navParams: NavParams,
+        private signinProv: SigninProvider,
+        private alCtrl: AlertController
+        ) {
     }
 
     ionViewDidLoad() {
@@ -63,14 +68,19 @@ export class SigninPage {
                         this.err = data.reason;
                         this.clearErr();
                     }
+                }, (err)=>{
+                    loader.dismiss();
+                    this.newAlert("Connection Error", err.message);
                 });
             }
             else {
+                loader.dismiss();
                 this.err = 'All fields are required';
                 this.clearErr();
             }
         }
         else {
+            loader.dismiss();
             this.err = 'All fields are required';
             this.clearErr();
         }
@@ -80,5 +90,15 @@ export class SigninPage {
         setTimeout(() => {
             this.err = '';
         }, 5000);
+    }
+
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 }

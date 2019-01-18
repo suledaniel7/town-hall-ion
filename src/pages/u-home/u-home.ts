@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoadingController } from "ionic-angular";
-import { AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 
@@ -13,7 +11,13 @@ import { ProfileProvider } from "../../providers/profile/profile";
 export class UHomePage {
     item: any;
 
-    constructor(public navCtrl: NavController, private alertCtrl: AlertController, private ldCtrl: LoadingController, public navParams: NavParams, private profProv: ProfileProvider) {
+    constructor(
+        public navCtrl: NavController,
+        private alertCtrl: AlertController,
+        private ldCtrl: LoadingController,
+        public navParams: NavParams,
+        private profProv: ProfileProvider
+    ) {
         this.load();
     }
 
@@ -21,7 +25,7 @@ export class UHomePage {
 
     }
 
-    load(){
+    load() {
         let loader = this.ldCtrl.create({
             showBackdrop: true,
             content: "Please wait...",
@@ -31,14 +35,15 @@ export class UHomePage {
 
         this.profProv.u_profile_h().subscribe(data => {
             loader.dismiss();
-            if(data.success){
+            if (data.success) {
                 this.item = data.item;
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error Loading Profile", data.reason);
             }
-        }, (err)=>{
-            alert("An error occured. Error: "+ err.message);
+        }, (err) => {
+            loader.dismiss();
+            this.newAlert("Connection Error", err.message);
             let confirmed = true;
             let confirm = this.alertCtrl.create({
                 title: "Retry?",
@@ -46,23 +51,33 @@ export class UHomePage {
                 buttons: [
                     {
                         text: 'Yes',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = true;
                         }
                     },
                     {
                         text: 'No',
-                        handler: ()=>{
+                        handler: () => {
                             confirmed = false;
                         }
                     }
                 ]
             });
             confirm.present();
-            if(confirmed){
+            if (confirmed) {
                 setTimeout(this.load, 10000);
             }
         });
+    }
+
+    newAlert(title: string, text: string) {
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
     }
 
 }
