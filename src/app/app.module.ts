@@ -7,6 +7,7 @@ import { File } from "@ionic-native/file";
 import { FileChooser } from "@ionic-native/file-chooser"
 import { FilePath } from "@ionic-native/file-path";
 import { FileTransfer } from "@ionic-native/file-transfer";
+import { HeaderColor } from "@ionic-native/header-color";
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
@@ -197,6 +198,7 @@ import { UploadProvider } from '../providers/upload/upload';
         FileChooser,
         FilePath,
         FileTransfer,
+        HeaderColor,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         CheckUsernameProvider,
         SignupProvider,
