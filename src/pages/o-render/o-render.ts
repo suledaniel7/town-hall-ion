@@ -45,9 +45,6 @@ export class ORenderPage {
                 else {
                     this.flwBtnText = "Follow";
                 }
-                if (!this.item.canFollow) {
-                    document.getElementById('fbtn').setAttribute('disabled', 'disabled');
-                }
             }
             else {
                 this.newAlert("Loading Error", data.reason);

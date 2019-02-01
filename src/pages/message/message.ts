@@ -12,6 +12,7 @@ import { TagPage } from "../tag/tag";
 import { MessageProvider } from '../../providers/message/message';
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
+import { URenderPage } from '../u-render/u-render';
 
 @IonicPage()
 @Component({
@@ -163,6 +164,9 @@ export class MessagePage {
         else if (ac == 'l') {
             this.navCtrl.push(LRenderPage, { code: username });
         }
+        else if (ac == 'u') {
+            this.navCtrl.push(URenderPage, { username: username });
+        }
     }
 
     conversation() {
@@ -268,6 +272,9 @@ export class MessagePage {
                 else if (u_type == 'o') {
                     this.navCtrl.push(ORenderPage, { username: username });
                 }
+                else if (u_type == 'u') {
+                    this.navCtrl.push(URenderPage, { username: username });
+                }
             }
             else {
                 this.newAlert("Error", data.reason);
@@ -286,7 +293,7 @@ export class MessagePage {
         });
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alertCtrl.create({
             title: title,
             subTitle: text,

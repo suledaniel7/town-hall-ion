@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { SignupProvider } from '../../providers/signup/signup';
-import { UploadPage } from '../upload/upload';
+import { BioPage } from '../bio/bio';
 
 @IonicPage()
 @Component({
@@ -83,7 +83,7 @@ export class OSignupPage {
                             else {
                                 this.signupProv.signup_o(this.name, this.username, this.email, this.email_corr, this.password, this.id).subscribe(data => {
                                     if (data.success) {
-                                        this.navCtrl.setRoot(UploadPage, { u_type: 'o', photo_type: 'Logo' });
+                                        this.navCtrl.setRoot(BioPage, { u_type: 'o', photo_type: 'Logo' });
                                         this.navCtrl.popToRoot();
                                     }
                                     else {

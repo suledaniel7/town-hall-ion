@@ -3,29 +3,55 @@
         <ion-title>Settings</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content padding>
-    <ion-item-group>
-        <ion-item-divider color="light">Account</ion-item-divider>
-        <ion-item>
-            Edit Personal Details
-            <ion-icon name="arrow-dropright" item-end></ion-icon>
-        </ion-item>
-        <ion-item>
-            Edit District Details
-            <ion-icon name="arrow-dropright" item-end></ion-icon>
-        </ion-item>
-        <ion-item>
-            Password
-            <ion-icon name="arrow-dropright" item-end></ion-icon>
-        </ion-item>
-    </ion-item-group>
-    <ion-item-group>
-        <ion-item-divider color="light">Login</ion-item-divider>
-        <ion-item>
-            <button (click)="logout()" color="secondary" ion-button full>
-                Logout
-            </button>
-        </ion-item>
-        <ion-item>Switch to Another Account</ion-item>
-    </ion-item-group>
+<ion-content *ngIf="item">
+    <div>
+        <ion-list padding>
+            <ion-item>
+                <ion-label stacked>Bio</ion-label>
+                <ion-input type="text" maxlength="500" [(ngModel)]="bio">{{bio}}</ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>First Name</ion-label>
+                <ion-input type="text" [(ngModel)]="f_name">{{f_name}}</ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Last Name</ion-label>
+                <ion-input type="text" [(ngModel)]="l_name">{{l_name}}</ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Email Address</ion-label>
+                <ion-input type="email" [(ngModel)]="email">{{email}}</ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Current Password</ion-label>
+                <ion-input type="password" [(ngModel)]="password"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>New Password</ion-label>
+                <ion-input type="password" [(ngModel)]="n_pass"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Confirm New Password</ion-label>
+                <ion-input type="password" [(ngModel)]="c_pass"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label><strong>Gender</strong></ion-label>
+                <ion-select [(ngModel)]="gender">
+                    <ion-option value="f">Female</ion-option>
+                    <ion-option value="m">Male</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item-divider color="light"></ion-item-divider>
+            <ion-item class="center">
+                <button ion-button color="primary" (click)="validate()">Update</button>
+            </ion-item>
+            <ion-item-divider class="center" color="light"></ion-item-divider>
+            <ion-item class="center">
+                <button (click)="logout()" color="secondary" ion-button>
+                    Logout
+                </button>
+            </ion-item>
+            <ion-item class="danger">Delete Account</ion-item>
+        </ion-list>
+    </div>
 </ion-content>

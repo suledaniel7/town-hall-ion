@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from "../pages/home/home";
+import { BioPage } from "../pages/bio/bio";
+import { ChangeBeatPage } from "../pages/change-beat/change-beat";
 import { CommentPage } from "../pages/comment/comment";
 import { ConversationPage } from "../pages/conversation/conversation";
 import { EditCommentPage } from "../pages/edit-comment/edit-comment";
@@ -28,6 +30,7 @@ import { JOrgPage } from "../pages/j-org/j-org";
 import { JOrgSelPage } from "../pages/j-org-sel/j-org-sel";
 import { JProfilePage } from "../pages/j-profile/j-profile";
 import { JRenderPage } from "../pages/j-render/j-render";
+import { JReqPage } from "../pages/j-req/j-req";
 import { JSignupPage } from "../pages/j-signup/j-signup";
 import { JSettingsPage } from '../pages/j-settings/j-settings';
 import { JournalistsPage } from "../pages/journalists/journalists";
@@ -46,6 +49,8 @@ import { OJournosPage } from "../pages/o-journos/o-journos";
 import { OProfilePage } from "../pages/o-profile/o-profile";
 import { ORenderPage } from "../pages/o-render/o-render";
 import { OrgPage } from "../pages/org/org";
+import { OrgBeatSelPage } from "../pages/org-beat-sel/org-beat-sel";
+import { OrgReassignBeatPage } from "../pages/org-reassign-beat/org-reassign-beat";
 import { OSignupPage } from "../pages/o-signup/o-signup";
 import { OSettingsPage } from '../pages/o-settings/o-settings';
 import { OrganisationsPage } from "../pages/organisations/organisations";
@@ -57,6 +62,7 @@ import { TrendPage } from "../pages/trend/trend";
 import { TagPage } from "../pages/tag/tag";
 import { UHomePage } from "../pages/u-home/u-home";
 import { UProfilePage } from "../pages/u-profile/u-profile";
+import { URenderPage } from "../pages/u-render/u-render";
 import { USignupPage } from "../pages/u-signup/u-signup";
 import { UsersPage } from "../pages/users/users";
 import { USettingsPage } from '../pages/u-settings/u-settings';
@@ -75,11 +81,16 @@ import { RenderProvider } from '../providers/render/render';
 import { ConversationProvider } from '../providers/conversation/conversation';
 import { AddressProvider } from '../providers/address/address';
 import { UploadProvider } from '../providers/upload/upload';
+import { SettingsProvider } from '../providers/settings/settings';
+import { ServeProvider } from '../providers/serve/serve';
+import { OrgJsProvider } from '../providers/org-js/org-js';
 
 @NgModule({
     declarations: [
         MyApp,
         HomePage,
+        BioPage,
+        ChangeBeatPage,
         CommentPage,
         ConversationPage,
         EditCommentPage,
@@ -97,6 +108,7 @@ import { UploadProvider } from '../providers/upload/upload';
         JournoPage,
         JProfilePage,
         JRenderPage,
+        JReqPage,
         JSignupPage,
         JSettingsPage,
         JournalistsPage,
@@ -115,6 +127,8 @@ import { UploadProvider } from '../providers/upload/upload';
         OProfilePage,
         ORenderPage,
         OrgPage,
+        OrgBeatSelPage,
+        OrgReassignBeatPage,
         OSignupPage,
         OSettingsPage,
         OrganisationsPage,
@@ -126,6 +140,7 @@ import { UploadProvider } from '../providers/upload/upload';
         TagPage,
         UHomePage,
         UProfilePage,
+        URenderPage,
         USignupPage,
         UsersPage,
         USettingsPage,
@@ -140,6 +155,8 @@ import { UploadProvider } from '../providers/upload/upload';
     entryComponents: [
         MyApp,
         HomePage,
+        BioPage,
+        ChangeBeatPage,
         CommentPage,
         ConversationPage,
         EditCommentPage,
@@ -156,6 +173,7 @@ import { UploadProvider } from '../providers/upload/upload';
         JOrgSelPage,
         JProfilePage,
         JRenderPage,
+        JReqPage,
         JSignupPage,
         JSettingsPage,
         JournalistsPage,
@@ -174,6 +192,8 @@ import { UploadProvider } from '../providers/upload/upload';
         OProfilePage,
         ORenderPage,
         OrgPage,
+        OrgBeatSelPage,
+        OrgReassignBeatPage,
         OSignupPage,
         OSettingsPage,
         OrganisationsPage,
@@ -185,6 +205,7 @@ import { UploadProvider } from '../providers/upload/upload';
         TagPage,
         UHomePage,
         UProfilePage,
+        URenderPage,
         USignupPage,
         UsersPage,
         USettingsPage,
@@ -210,7 +231,10 @@ import { UploadProvider } from '../providers/upload/upload';
     RenderProvider,
     ConversationProvider,
     AddressProvider,
-    UploadProvider
+    UploadProvider,
+    SettingsProvider,
+    ServeProvider,
+    OrgJsProvider
     ]
 })
 export class AppModule { }

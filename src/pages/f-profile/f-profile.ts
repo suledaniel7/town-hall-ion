@@ -5,7 +5,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressProvider } from '../../providers/address/address';
 
 import { FCommsPage } from "../f-comms/f-comms";
-import { FSettingsPage } from "../f-settings/f-settings";
+import { JSettingsPage } from '../j-settings/j-settings';
 @IonicPage()
 @Component({
     selector: 'page-f-profile',
@@ -34,7 +34,7 @@ export class FProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(FSettingsPage);
+        this.navCtrl.push(JSettingsPage);
     }
 
     load() {

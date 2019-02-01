@@ -64,4 +64,8 @@ export class SignupProvider {
             fed_const: fed_const
         });
     }
+
+    update_bio(bio: string): Observable<any> {
+        return this.http.post(`${this.api}/set-bio`, {bio: bio});
+    }
 }

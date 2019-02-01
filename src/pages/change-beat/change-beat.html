@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <ion-row>
+            <ion-col (click)="closeModal(false)" class="left">
+                <ion-item>
+                    <ion-icon name="arrow-back"></ion-icon>
+                </ion-item>
+            </ion-col>
+            <ion-col class="center">
+                <ion-item>Select District</ion-item>
+            </ion-col>
+            <ion-col>
+                <ion-item (click)="closeModal(true)">
+                    <ion-icon name="checkmark" item-end></ion-icon>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <div *ngFor="let state of item?.states">
+            <ion-list-header>{{state.name}}</ion-list-header>
+            <div *ngFor="let dist of state.districts">
+                <ion-item id="dist-{{dist.code}}" (click)="select(dist.code)">{{dist.name}}</ion-item>
+            </div>
+        </div>
+    </ion-list>
+</ion-content>

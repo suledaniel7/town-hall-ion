@@ -7,6 +7,7 @@ import { ORenderPage } from "../o-render/o-render";
 import { LRenderPage } from "../l-render/l-render";
 
 import { SearchProvider } from "../../providers/search/search";
+import { URenderPage } from '../u-render/u-render';
 
 @IonicPage()
 @Component({
@@ -26,9 +27,8 @@ export class SearchPage {
     //trends
     tr_item = null;
     tr_active = true;
-    //suggestions
+    suggestions: Array<string>;
     s_item = null;
-    sugg_active = false;
 
     constructor(
         public navCtrl: NavController,
@@ -43,7 +43,29 @@ export class SearchPage {
         console.log('ionViewDidLoad SearchPage');
     }
 
+    autofill() {
+        document.getElementById('suggDiv').className = 'suggestions';
+        this.searchProv.autofill(this.term).subscribe(data => {
+            if (data.success) {
+                this.s_item = {
+                    suggestions: data.item
+                }
+            }
+        });
+    }
+
+    blur() {
+        setTimeout(() => {
+            document.getElementById('suggDiv').className = 'suggestions hidden';
+        }, 200);
+    }
+
+    focus() {
+        document.getElementById('suggDiv').className = 'suggestions';
+    }
+
     search() {
+        document.getElementById('suggDiv').className = 'suggestions hidden';
         let wsp = /^\s*$/;
         let search_term: string = this.term;
         if (!wsp.test(this.term)) {
@@ -160,6 +182,7 @@ export class SearchPage {
     }
 
     sugg_search(s_name, s_type) {
+        document.getElementById('suggDiv').className = 'suggestions hidden';
         this.term = s_name;
         this.activeTab = s_type;
         this.search();
@@ -174,6 +197,9 @@ export class SearchPage {
         }
         else if (ac_type == 'l') {
             this.navCtrl.push(LRenderPage, { code: username });
+        }
+        else if (ac_type == 'u') {
+            this.navCtrl.push(URenderPage, { username: username });
         }
     }
 

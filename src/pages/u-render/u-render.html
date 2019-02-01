@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{item?.user.username}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div *ngIf="errOc">
+        <button ion-button full>Reload</button>
+    </div>
+    <div *ngIf="item?.user">
+        <div class="profileDets">
+            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar" class="center-block profileAvatar">
+            <h3 class="center">{{item.user.f_name}}</h3>
+            <h6 class="center grey-text">@{{item.user.username}}</h6>
+        </div>
+        <br>
+        <div *ngIf="item.user.bio" class="bioDiv center">
+            <h5>Bio</h5>
+            {{item.user.bio}}
+        </div>
+        <br><br>
+        <div class="userDetsDiv center">
+            <strong>Username: </strong>{{item.user.username}}
+            <br>
+            <strong>State: </strong>{{item.user.state}}
+            <br>
+            <strong>Federal Constituency: </strong> <span class="primary" (click)="render_profile(item.user.fed_const)">{{item.f_c_name}}</span>
+            <br>
+            <strong>Senatorial District: </strong> <span class="primary" (click)="render_profile(item.user.sen_dist)">{{item.s_d_name}}</span>
+            <br>
+            <strong>Joined on: </strong>{{item.user.date_joined}}
+        </div>
+    </div>
+    <hr>
+</ion-content>

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { SignupProvider } from "../../providers/signup/signup";
 
-import { UploadPage } from '../upload/upload';
+import { BioPage } from '../bio/bio';
 
 @IonicPage()
 @Component({
@@ -100,7 +100,7 @@ export class USignupPage {
                                 this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
                                     u_loader.dismiss();
                                     if (resp.success) {
-                                        this.navCtrl.setRoot(UploadPage, { u_type: 'u', photo_type: 'Avatar' });
+                                        this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
                                         this.navCtrl.popToRoot();
                                     }
                                     else {

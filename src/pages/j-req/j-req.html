@@ -1,0 +1,21 @@
+<ion-card class="j-req" id="j-req-{{journo.username}}">
+    <ion-item-sliding>
+        <ion-item>
+            <ion-avatar item-start>
+                <img src="{{imgAddress}}/{{journo.avatar}}" alt="{{journo.f_name}}'s Avatar">
+            </ion-avatar>
+            <h2>{{journo.full_name}}</h2>
+            <h3>@{{journo.username}}</h3>
+        </ion-item>
+        <ion-item-options side="right">
+            <button (click)="reject()" ion-button color="danger">
+                <ion-icon name="close"></ion-icon>
+                Reject
+            </button>
+            <button (click)="confirm()" ion-button color="primary">
+                <ion-icon name="checkmark"></ion-icon>
+                Accept
+            </button>
+        </ion-item-options>
+    </ion-item-sliding>
+</ion-card>

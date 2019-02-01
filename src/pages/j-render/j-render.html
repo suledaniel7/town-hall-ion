@@ -10,7 +10,7 @@
             <h3 class="center">{{item.user.full_name}}</h3>
             <ion-row>
                 <ion-col></ion-col>
-                <ion-col>
+                <ion-col *ngIf="item.canFollow">
                     <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
                 </ion-col>
                 <ion-col></ion-col>
@@ -19,7 +19,7 @@
                 <ion-col>
                     Reporting on: 
                     <strong>
-                        {{item.user.beatDets.name}}
+                        {{item.user.beatDets?.name}}
                     </strong>
                 </ion-col>
                 <ion-col *ngIf="item.user.orgName">

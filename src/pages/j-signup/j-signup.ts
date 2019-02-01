@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { SignupProvider } from "../../providers/signup/signup";
 
-import { UploadPage } from '../upload/upload';
+import { BioPage } from '../bio/bio';
 
 @IonicPage()
 @Component({
@@ -58,11 +58,11 @@ export class JSignupPage {
                                     u_loader.dismiss();
                                     if (data.success) {
                                         if (this.ac_type == 'm') {
-                                            this.navCtrl.setRoot(UploadPage, { u_type: 'j', photo_type: 'Avatar' });
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'j', photo_type: 'Avatar' });
                                             this.navCtrl.popToRoot();
                                         }
                                         else {
-                                            this.navCtrl.setRoot(UploadPage, { u_type: 'f', photo_type: 'Avatar' });
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'f', photo_type: 'Avatar' });
                                             this.navCtrl.popToRoot();
                                         }
                                     }

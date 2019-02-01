@@ -10,7 +10,7 @@
             <h3 class="center">{{item.user.type_exp}} {{item.user.full_name}}</h3>
             <ion-row>
                 <ion-col></ion-col>
-                <ion-col>
+                <ion-col *ngIf="item.canFollow">
                     <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
                 </ion-col>
                 <ion-col></ion-col>

@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="center">Bio</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <h3 class="center">Your Bio</h3>
+    <ion-textarea maxlength="500" class="txt-msg-br" (keyup)="count()" [(ngModel)]="bio" placeholder="Let the Community know about you">
+
+    </ion-textarea>
+    <div class="center grey-text">
+        <span class="center">{{charCount}}/500 Characters</span>
+    </div>
+    <p class="center">
+        <button ion-button (click)="save()">Save Bio</button>
+    </p>
+    <p class="center">
+        <button ion-button color="secondary" (click)="next()">Skip</button>
+    </p>
+</ion-content>

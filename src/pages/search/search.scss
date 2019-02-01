@@ -15,17 +15,18 @@
 
 .suggestions {
     position: absolute;
-    top: 2.5em;
+    top: 3.75em;
     z-index: 1;
     width: 100%;
     margin: 0 auto;
 }
 
 .suggestion {
-    width: 95%;
+    width: 97%;
+    margin: 0 auto;
     text-align: left;
     background-color: #fff;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
     border-top-width: 0;
 }
 

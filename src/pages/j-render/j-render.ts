@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
@@ -21,6 +21,7 @@ export class JRenderPage {
         public navParams: NavParams,
         private rndrProv: RenderProvider,
         private ldCtrl: LoadingController,
+        private alertCtrl: AlertController,
         public address: AddressProvider
     ) {
         this.imgAddress = this.address.getImageApi();
@@ -44,16 +45,13 @@ export class JRenderPage {
                 else {
                     this.flwBtnText = "Follow";
                 }
-                if (!this.item.canFollow) {
-                    document.getElementById('fbtn').setAttribute('disabled', 'disabled');
-                }
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             ld.dismiss();
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -85,11 +83,11 @@ export class JRenderPage {
             }
             else {
                 this.flwBtnText = "Follow";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Follow";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
@@ -108,12 +106,21 @@ export class JRenderPage {
             }
             else {
                 this.flwBtnText = "Following";
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
             this.flwBtnText = "Following";
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Connection Error", err.message);
         });
     }
 
+    newAlert(title: string, text: string) {
+        let newAl = this.alertCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

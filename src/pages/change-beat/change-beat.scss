@@ -1,0 +1,10 @@
+.activeBeat .input-wrapper {
+    color: white;
+    background-color: color($colors, primary);
+}
+
+.normal .input-wrapper {
+    color: initial;
+    background-color: initial;
+    font-size: initial;
+}

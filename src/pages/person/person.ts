@@ -7,6 +7,7 @@ import { ORenderPage } from "../o-render/o-render";
 import { LRenderPage } from "../l-render/l-render";
 
 import { AddressProvider } from '../../providers/address/address';
+import { URenderPage } from '../u-render/u-render';
 
 @IonicPage()
 @Component({
@@ -43,6 +44,9 @@ export class PersonPage {
         }
         else if (ac_type == 'l') {
             this.navCtrl.push(LRenderPage, { code: username });
+        }
+        else if (ac_type == 'u') {
+            this.navCtrl.push(URenderPage, { username: username });
         }
     }
 

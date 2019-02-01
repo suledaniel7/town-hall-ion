@@ -39,6 +39,10 @@ export class ProfileProvider {
         return this.http.get(`${this.api}`);
     }
 
+    o_profile_r(): Observable<any>{
+        return this.http.get(`${this.api}/?pg=root`);
+    }
+
     o_profile_h(): Observable<any>{
         return this.http.get(`${this.api}/?pg=home`);
     }

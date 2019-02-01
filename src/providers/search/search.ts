@@ -11,7 +11,11 @@ export class SearchProvider {
         this.api = this.address.getApi();
     }
 
-    search(type, term): Observable<any>{
+    autofill(term: string): Observable<any>{
+        return this.http.post(`${this.api}/autofill`, {term: term});
+    }
+
+    search(type: string, term: string): Observable<any>{
         return this.http.get(`${this.api}/search/${type}/${term}`);
     }
 
