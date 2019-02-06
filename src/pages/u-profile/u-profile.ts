@@ -4,8 +4,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { ProfileProvider } from "../../providers/profile/profile";
 import { AddressProvider } from '../../providers/address/address';
 
-import { USettingsPage } from "../u-settings/u-settings";
 import { LRenderPage } from '../l-render/l-render';
+import { SettingsPage } from '../settings/settings';
 
 @IonicPage()
 @Component({
@@ -92,7 +92,7 @@ export class UProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(USettingsPage);
+        this.navCtrl.push(SettingsPage, {u_type: 'u'});
     }
 
     newAlert(title: string, text: string){

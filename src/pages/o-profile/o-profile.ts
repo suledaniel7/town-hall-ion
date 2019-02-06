@@ -5,7 +5,8 @@ import { ProfileProvider } from "../../providers/profile/profile";
 import { AddressProvider } from '../../providers/address/address';
 
 import { OCommsPage } from "../o-comms/o-comms";
-import { OSettingsPage } from "../o-settings/o-settings";
+import { SettingsPage } from '../settings/settings';
+import { FollowersPage } from '../followers/followers';
 
 @IonicPage()
 @Component({
@@ -69,10 +70,16 @@ export class OProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(OSettingsPage);
+        this.navCtrl.push(SettingsPage, { u_type: 'o' });
     }
 
-    newAlert(title: string, text: string){
+    followers() {
+        if (this.user.username) {
+            this.navCtrl.push(FollowersPage, { username: this.user.username });
+        }
+    }
+
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

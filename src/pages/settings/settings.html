@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Settings</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-item-group>
+        <ion-item-divider color="light">Account</ion-item-divider>
+        <ion-item (click)="settings()">
+            Edit Account Details
+            <ion-icon name="arrow-dropright" item-end></ion-icon>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+        <ion-item-divider class="center" color="light"></ion-item-divider>
+        <ion-item class="center">
+            <button (click)="logout()" color="secondary" ion-button>
+                Logout
+            </button>
+        </ion-item>
+    </ion-item-group>
+</ion-content>

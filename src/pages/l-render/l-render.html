@@ -29,6 +29,13 @@
                         {{flwrsText}}
                     </strong>
                 </ion-col>
+                <ion-col (click)="followers()">
+                    <strong>
+                        {{item.user.followersNo}}
+                        <br>
+                        Followers
+                    </strong>
+                </ion-col>
             </ion-row>
         </div>
         <hr>

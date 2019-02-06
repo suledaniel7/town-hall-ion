@@ -50,12 +50,13 @@ export class USignupPage {
 
         s_loader.present();
         this.signupProv.load_states().subscribe(data => {
+            s_loader.dismiss();
             if (data.success) {
-                s_loader.dismiss();
                 this.item = data.item;
                 this.statesLoaded = true;
             }
         }, err => {
+            s_loader.dismiss();
             this.newAlert("Error", err.message);
         });
     }
@@ -72,6 +73,9 @@ export class USignupPage {
             this.districts = data.item;
             this.districtsLoading = false;
             this.districtsLoaded = true;
+        }, err => {
+            d_loader.dismiss();
+            this.newAlert("Error", err.message);
         });
     }
 
@@ -107,14 +111,17 @@ export class USignupPage {
                                         this.newAlert("Signup Error", resp.reason);
                                     }
                                 }, (err)=>{
+                                    u_loader.dismiss();
                                     this.newAlert("Connection Error", err.message);
                                 });
                             }
                         }, (err)=>{
+                            u_loader.dismiss();
                             this.newAlert("Connection Error", err.message);
                         });
                     }
                 }, (err)=>{
+                    u_loader.dismiss();
                     this.newAlert("Connection Error", err.message);
                 });
             }

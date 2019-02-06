@@ -9,6 +9,13 @@
                         {{item.user.district}}
                     </strong>
                 </ion-col>
+                <ion-col (click)="followers()">
+                    <strong>
+                        {{item.user.followersNo}}
+                        <br>
+                        Followers
+                    </strong>
+                </ion-col>
                 <ion-col>
                     <strong>
                         {{item.district.const_num}}

@@ -36,14 +36,15 @@ export class LHomePage {
         loader.present();
 
         this.profileProv.l_profile_h().subscribe(data => {
+            loader.dismiss();
             if (data.success) {
-                loader.dismiss();
                 this.item = data.item;
             }
             else {
                 this.newAlert("Error", data.reason);
             }
         }, (err) => {
+            loader.dismiss();
             this.newAlert("Connection Error", err.message);
             let confirmed = true;
             let confirm = this.alertCtrl.create({
@@ -75,7 +76,7 @@ export class LHomePage {
         this.navCtrl.push(LCommsPage);
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alertCtrl.create({
             title: title,
             subTitle: text,

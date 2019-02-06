@@ -28,9 +28,7 @@ export class HomePage {
         private signedIn: SignedInProvider,
         private alCtrl: AlertController
     ) {
-
         this.load();
-
     }
 
     load() {

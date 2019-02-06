@@ -26,4 +26,8 @@ export class RenderProvider {
     req_type(username: string): Observable<any> {
         return this.http.get(`${this.api}/req-type/${username}`);
     }
+
+    followers(username: string): Observable<any> {
+        return this.http.get(`${this.api}/followers/${username}`);
+    }
 }

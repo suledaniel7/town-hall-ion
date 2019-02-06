@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from "ngx-socket-io";
 
 import { ProfileProvider } from "../../providers/profile/profile";
 
@@ -16,7 +17,8 @@ export class UHomePage {
         private alertCtrl: AlertController,
         private ldCtrl: LoadingController,
         public navParams: NavParams,
-        private profProv: ProfileProvider
+        private profProv: ProfileProvider,
+        private socket: Socket
     ) {
         this.load();
     }

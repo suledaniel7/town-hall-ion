@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Followers</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div *ngFor="let follower of item?.followers">
+        <ion-card>
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="{{imgAddress}}/{{follower.avatar}}" alt="{{follower.f_name}}'s Avatar">
+                </ion-avatar>
+                <h2 (click)="blind_profile(follower.username)">{{follower.full_name}}</h2>
+                <p>@{{follower.username}}</p>
+                <p class="grey-text">{{follower.description}}</p>
+            </ion-item>
+        </ion-card>
+    </div>
+    <div *ngIf="!item?.followers">
+        <h3 class="center grey-text">{{errText}}</h3>
+    </div>
+</ion-content>

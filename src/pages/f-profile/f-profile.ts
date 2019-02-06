@@ -5,7 +5,9 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressProvider } from '../../providers/address/address';
 
 import { FCommsPage } from "../f-comms/f-comms";
-import { JSettingsPage } from '../j-settings/j-settings';
+import { SettingsPage } from '../settings/settings';
+import { FollowersPage } from '../followers/followers';
+
 @IonicPage()
 @Component({
     selector: 'page-f-profile',
@@ -34,7 +36,7 @@ export class FProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(JSettingsPage);
+        this.navCtrl.push(SettingsPage, {u_type: 'j'});
     }
 
     load() {
@@ -48,6 +50,12 @@ export class FProfilePage {
         }, err => {
             this.newAlert("Communication Error", err.message);
         });
+    }
+
+    followers() {
+        if (this.item.user.username) {
+            this.navCtrl.push(FollowersPage, { username: this.item.user.username });
+        }
     }
 
     newAlert(title: string, text: string){

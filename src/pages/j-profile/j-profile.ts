@@ -5,7 +5,8 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressProvider } from '../../providers/address/address';
 
 import { JCommsPage } from "../j-comms/j-comms";
-import { JSettingsPage } from "../j-settings/j-settings";
+import { SettingsPage } from '../settings/settings';
+import { FollowersPage } from '../followers/followers';
 
 @IonicPage()
 @Component({
@@ -35,7 +36,7 @@ export class JProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(JSettingsPage);
+        this.navCtrl.push(SettingsPage, {u_type: 'j'});
     }
 
     load() {
@@ -52,6 +53,12 @@ export class JProfilePage {
         }, err => {
             alert("An error occured. Error: " + err.message);
         });
+    }
+
+    followers() {
+        if (this.item.user.username) {
+            this.navCtrl.push(FollowersPage, { username: this.item.user.username });
+        }
     }
 
 }

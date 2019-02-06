@@ -1,6 +1,6 @@
 .cardy {
     border-radius: 10px;
-    height: 35vh;
+    height: 200px;
     width: 150px;
     padding: 1%;
     text-align: center;
@@ -11,11 +11,12 @@
 }
 
 .avatar {
-    height: 20vh;
+    height: 120px;
     width: 100%;
     margin: 0 auto;
     overflow-y: auto;
     margin-bottom: 5px;
+    border-radius: 50%;
 }
 
 .name {

@@ -74,8 +74,14 @@ export class JSignupPage {
                                     this.newAlert("Connection Error", err.message);
                                 });
                             }
+                        }, err => {
+                            u_loader.dismiss();
+                            this.newAlert("Connection Error", err.message);
                         });
                     }
+                }, err => {
+                    u_loader.dismiss();
+                    this.newAlert("Connection Error", err.message);
                 });
             }
             else {

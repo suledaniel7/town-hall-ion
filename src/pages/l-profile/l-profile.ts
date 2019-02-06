@@ -5,7 +5,8 @@ import { ProfileProvider } from "../../providers/profile/profile";
 import { AddressProvider } from '../../providers/address/address';
 
 import { LCommsPage } from '../l-comms/l-comms';
-import { LSettingsPage } from "../l-settings/l-settings";
+import { SettingsPage } from '../settings/settings';
+import { FollowersPage } from '../followers/followers';
 
 @IonicPage()
 @Component({
@@ -41,14 +42,15 @@ export class LProfilePage {
         loader.present();
 
         this.profileProv.l_profile_p().subscribe(data => {
-            if (data.success) {
                 loader.dismiss();
+            if (data.success) {
                 this.item = data.item;
             }
             else {
                 this.newAlert("Error", data.reason);
             }
         }, (err) => {
+            loader.dismiss();
             this.newAlert("Connection Error", err.message);
             let confirmed = true;
             let confirm = this.alertCtrl.create({
@@ -81,7 +83,13 @@ export class LProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(LSettingsPage);
+        this.navCtrl.push(SettingsPage, {u_type: 'l'});
+    }
+
+    followers() {
+        if (this.item.user.code) {
+            this.navCtrl.push(FollowersPage, { username: this.item.user.code });
+        }
     }
 
     newAlert(title: string, text: string){

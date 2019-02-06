@@ -8,6 +8,7 @@ import { FileChooser } from "@ionic-native/file-chooser"
 import { FilePath } from "@ionic-native/file-path";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { HttpClientModule } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 
 import { MyApp } from './app.component';
 import { HomePage } from "../pages/home/home";
@@ -19,6 +20,7 @@ import { EditCommentPage } from "../pages/edit-comment/edit-comment";
 import { EditMessagePage } from "../pages/edit-message/edit-message";
 import { FCommsPage } from "../pages/f-comms/f-comms";
 import { FHomePage } from "../pages/f-home/f-home";
+import { FollowersPage } from "../pages/followers/followers";
 import { FProfilePage } from "../pages/f-profile/f-profile";
 import { FSettingsPage } from "../pages/f-settings/f-settings";
 import { FreelancersPage } from "../pages/freelancers/freelancers";
@@ -56,6 +58,7 @@ import { OSettingsPage } from '../pages/o-settings/o-settings';
 import { OrganisationsPage } from "../pages/organisations/organisations";
 import { PersonPage } from "../pages/person/person";
 import { SearchPage } from "../pages/search/search";
+import { SettingsPage } from "../pages/settings/settings";
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from "../pages/signup/signup";
 import { TrendPage } from "../pages/trend/trend";
@@ -84,6 +87,9 @@ import { UploadProvider } from '../providers/upload/upload';
 import { SettingsProvider } from '../providers/settings/settings';
 import { ServeProvider } from '../providers/serve/serve';
 import { OrgJsProvider } from '../providers/org-js/org-js';
+
+// const config: SocketIoConfig = {url: 'http://192.168.43.55:8095', options: {}};
+const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
 
 @NgModule({
     declarations: [
@@ -134,6 +140,8 @@ import { OrgJsProvider } from '../providers/org-js/org-js';
         OrganisationsPage,
         PersonPage,
         SearchPage,
+        SettingsPage,
+        FollowersPage,
         SigninPage,
         SignupPage,
         TrendPage,
@@ -149,7 +157,8 @@ import { OrgJsProvider } from '../providers/org-js/org-js';
     imports: [
         BrowserModule,
         HttpClientModule,
-        IonicModule.forRoot(MyApp)
+        IonicModule.forRoot(MyApp),
+        SocketIoModule.forRoot(config),
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -199,6 +208,8 @@ import { OrgJsProvider } from '../providers/org-js/org-js';
         OrganisationsPage,
         PersonPage,
         SearchPage,
+        SettingsPage,
+        FollowersPage,
         SigninPage,
         SignupPage,
         TrendPage,

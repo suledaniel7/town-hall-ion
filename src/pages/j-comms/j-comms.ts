@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { MessageProvider } from "../../providers/message/message";
 import { AddressProvider } from '../../providers/address/address';
@@ -23,7 +24,8 @@ export class JCommsPage {
         public navParams: NavParams,
         private messageProv: MessageProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.messageProv.load_image().subscribe(data => {
@@ -65,6 +67,8 @@ export class JCommsPage {
         if (this.validMesssage) {
             this.messageProv.post_message('j', this.message, this.m_type).subscribe(data => {
                 if (data.success) {
+                    //notify server that message has been sent out
+                    this.socket.emit('message_sent', {timestamp: data.timestamp, beats: data.beats});
                     this.navCtrl.pop();
                 }
                 else {

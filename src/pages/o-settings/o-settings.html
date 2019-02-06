@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Settings</ion-title>
+        <ion-title>Edit Account Details</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content *ngIf="item">
@@ -47,11 +47,6 @@
                 <button ion-button color="primary" (click)="validate()">Update</button>
             </ion-item>
             <ion-item-divider class="center" color="light"></ion-item-divider>
-            <ion-item class="center">
-                <button (click)="logout()" color="secondary" ion-button>
-                    Logout
-                </button>
-            </ion-item>
             <ion-item class="danger">Delete Account</ion-item>
         </ion-list>
     </div>

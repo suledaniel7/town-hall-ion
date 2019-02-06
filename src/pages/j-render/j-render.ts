@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
 
+import { FollowersPage } from '../followers/followers';
+
 @IonicPage()
 @Component({
     selector: 'page-j-render',
@@ -112,6 +114,12 @@ export class JRenderPage {
             this.flwBtnText = "Following";
             this.newAlert("Connection Error", err.message);
         });
+    }
+
+    followers() {
+        if (this.username) {
+            this.navCtrl.push(FollowersPage, { username: this.username });
+        }
     }
 
     newAlert(title: string, text: string) {
