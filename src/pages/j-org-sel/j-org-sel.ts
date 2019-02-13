@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { JAccountProvider } from '../../providers/j-account/j-account';
-import { JournalistsPage } from '../journalists/journalists';
+import { Socket } from "ngx-socket-io";
 
+import { JAccountProvider } from '../../providers/j-account/j-account';
+
+import { JournalistsPage } from '../journalists/journalists';
 
 @IonicPage()
 @Component({
@@ -18,7 +20,8 @@ export class JOrgSelPage {
         public navParams: NavParams,
         private jAcProv: JAccountProvider,
         private alertCtrl: AlertController,
-        private ldCtrl: LoadingController
+        private ldCtrl: LoadingController,
+        private socket: Socket
     ) {
         let ld1 = this.ldCtrl.create({
             content: "Loading Town Hall Organisations..."
@@ -72,6 +75,7 @@ export class JOrgSelPage {
         this.jAcProv.j_org_sub(username).subscribe(data => {
             ld2.dismiss();
             if (data.success) {
+                this.socket.emit('j_request', {username: data.username});
                 this.navCtrl.setRoot(JournalistsPage);
                 this.navCtrl.popToRoot();
             }

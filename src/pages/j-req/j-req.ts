@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { AddressProvider } from '../../providers/address/address';
 import { OrgJsProvider } from '../../providers/org-js/org-js';
@@ -24,7 +25,8 @@ export class JReqPage {
         private ldCtrl: LoadingController,
         private alCtrl: AlertController,
         private mdCtrl: ModalController,
-        private j_req: OrgJsProvider
+        private j_req: OrgJsProvider,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
     }
@@ -68,8 +70,8 @@ export class JReqPage {
                 md1.onDidDismiss((success)=>{
                     if(success){
                         this.check();
-                        //wait for live reload
-                        location.reload();
+                        this.socket.emit('accept_j', this.username);
+                        this.socket.emit('changed_profile', this.username);
                     }
                 });
                 md1.present();

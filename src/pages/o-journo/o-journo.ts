@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Input } from "@angular/core";
 import { IonicPage, NavController, NavParams, ModalController, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { AddressProvider } from '../../providers/address/address';
 import { OrgJsProvider } from '../../providers/org-js/org-js';
@@ -23,7 +24,8 @@ export class OJournoPage {
         private ldCtrl: LoadingController,
         private alCtrl: AlertController,
         private jReqProv: OrgJsProvider,
-        private mdCtrl: ModalController
+        private mdCtrl: ModalController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
     }
@@ -90,6 +92,7 @@ export class OJournoPage {
             ld1.dismiss();
             if(data.success){
                 document.getElementById(`o-journo-${this.journalist.username}`).className = 'hidden';
+                this.socket.emit('changed_profile', this.username);
             }
             else {
                 this.newAlert("Error", data.reason);

@@ -6,7 +6,7 @@
         </div>
         <hr>
         <br>
-        <ion-list inset>
+        <ion-list id="btm-margin" inset>
             <ion-item><strong>State: </strong><span id="">{{item.user.state}}</span></ion-item>
             <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">{{item.rep.district}}</span></ion-item>
             <ion-item (click)="profile(item.rep.code)"><strong>Representative: </strong><span color="secondary" id="">{{item.rep.full_name}}</span></ion-item>

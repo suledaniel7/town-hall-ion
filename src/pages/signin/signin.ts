@@ -7,6 +7,7 @@ import { UsersPage } from "../users/users";
 import { JournalistsPage } from "../journalists/journalists";
 import { OrganisationsPage } from '../organisations/organisations';
 import { LegislatorsPage } from "../legislators/legislators";
+import { FreelancersPage } from '../freelancers/freelancers';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,7 @@ export class SigninPage {
         public navParams: NavParams,
         private signinProv: SigninProvider,
         private alCtrl: AlertController
-        ) {
+    ) {
     }
 
     ionViewDidLoad() {
@@ -49,17 +50,22 @@ export class SigninPage {
             if (!wsp.test(this.email) && !wsp.test(this.password)) {
                 this.signinProv.signinUser(this.email, this.password).subscribe(data => {
                     loader.dismiss();
-                    if(data.success){
-                        if(data.u_type == 'u'){
+                    if (data.success) {
+                        if (data.u_type == 'u') {
                             this.navCtrl.setRoot(UsersPage);
                         }
-                        else if(data.u_type == 'j'){
-                            this.navCtrl.setRoot(JournalistsPage);
+                        else if (data.u_type == 'j') {
+                            if (data.j_type === 'm') {
+                                this.navCtrl.setRoot(JournalistsPage);
+                            }
+                            else {
+                                this.navCtrl.setRoot(FreelancersPage);
+                            }
                         }
-                        else if(data.u_type == 'o'){
+                        else if (data.u_type == 'o') {
                             this.navCtrl.setRoot(OrganisationsPage);
                         }
-                        else if(data.u_type == 'l'){
+                        else if (data.u_type == 'l') {
                             this.navCtrl.setRoot(LegislatorsPage);
                         }
                         this.navCtrl.popToRoot();
@@ -68,7 +74,7 @@ export class SigninPage {
                         this.err = data.reason;
                         this.clearErr();
                     }
-                }, (err)=>{
+                }, (err) => {
                     loader.dismiss();
                     this.newAlert("Connection Error", err.message);
                 });
@@ -92,7 +98,7 @@ export class SigninPage {
         }, 5000);
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

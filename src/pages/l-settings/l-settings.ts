@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App, IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { LogoutProvider } from "../../providers/logout/logout";
 
@@ -20,7 +21,7 @@ export class LSettingsPage {
     n_pass: string = '';
     c_pass: string = '';
     gender: string;
-    item: object;
+    item: any;
 
     constructor(
         public navCtrl: NavController,
@@ -29,7 +30,8 @@ export class LSettingsPage {
         private logProv: LogoutProvider,
         private alCtrl: AlertController,
         private ldCtrl: LoadingController,
-        private settingsProv: SettingsProvider
+        private settingsProv: SettingsProvider,
+        private socket: Socket
     ) {
         this.load();
     }
@@ -101,6 +103,7 @@ export class LSettingsPage {
                 this.n_pass = '';
                 this.c_pass = '';
                 this.newAlert("Updated", "Update successful!");
+                this.socket.emit('changed_profile', this.item.code);
             }
             else {
                 this.newAlert("Update Info", data.reason);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, ViewController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { OrgJsProvider } from '../../providers/org-js/org-js';
 
@@ -21,7 +22,8 @@ export class OrgReassignBeatPage {
         private orgJProv: OrgJsProvider,
         private ldCtrl: LoadingController,
         private viewCtrl: ViewController,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.f_name = this.navParams.get('f_name');
         this.l_name = this.navParams.get('l_name');
@@ -80,6 +82,7 @@ export class OrgReassignBeatPage {
         this.orgJProv.reassign_j(this.username, this.o_username, code).subscribe(data => {
             ld2.dismiss();
             if (data.success) {
+                this.socket.emit('assign_j', this.username);
                 this.closeModal(data.item);
             }
             else {

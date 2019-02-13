@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 import { MessageProvider } from "../../providers/message/message";
@@ -26,7 +26,8 @@ export class OCommsPage {
         private profProv: ProfileProvider,
         private messageProv: MessageProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private viewCtrl: ViewController
     ) {
         this.imgAddress = this.address.getImageApi();
         this.profProv.o_profile_c().subscribe(data => {
@@ -38,25 +39,6 @@ export class OCommsPage {
             }
         }, err => {
             this.newAlert("Connection Error", err.message);
-            setTimeout(()=>{
-                this.autoretry()
-            }, 10000);
-        });
-    }
-
-    autoretry() {
-        this.profProv.o_profile_c().subscribe(data => {
-            if (data.success) {
-                this.item = data.item;
-            }
-            else {
-                this.autoretry();
-            }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
-            setTimeout(()=>{
-                this.autoretry();
-            }, 10000);
         });
     }
 
@@ -65,7 +47,7 @@ export class OCommsPage {
     }
 
     back() {
-        this.navCtrl.pop();
+        this.viewCtrl.dismiss({ success: false });
     }
 
     count() {
@@ -88,7 +70,7 @@ export class OCommsPage {
             }
             this.messageProv.post_message('o', this.message, this.m_type, this.selBeats).subscribe(data => {
                 if (data.success) {
-                    this.navCtrl.pop();
+                    this.viewCtrl.dismiss({ success: true, timestamp: data.timestamp, beats: data.beats });
                 }
                 else {
                     this.newAlert("Error", data.reason);
@@ -99,7 +81,7 @@ export class OCommsPage {
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

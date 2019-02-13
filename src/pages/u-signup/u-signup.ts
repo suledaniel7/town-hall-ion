@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { SignupProvider } from "../../providers/signup/signup";
 
@@ -35,7 +36,8 @@ export class USignupPage {
         public navParams: NavParams,
         private signupProv: SignupProvider,
         private ldCtrl: LoadingController,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.load_states();
     }
@@ -104,23 +106,25 @@ export class USignupPage {
                                 this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
                                     u_loader.dismiss();
                                     if (resp.success) {
+                                        this.socket.emit('changed_profile', this.sen_dist);
+                                        this.socket.emit('changed_profile', this.fed_const);
                                         this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
                                         this.navCtrl.popToRoot();
                                     }
                                     else {
                                         this.newAlert("Signup Error", resp.reason);
                                     }
-                                }, (err)=>{
+                                }, (err) => {
                                     u_loader.dismiss();
                                     this.newAlert("Connection Error", err.message);
                                 });
                             }
-                        }, (err)=>{
+                        }, (err) => {
                             u_loader.dismiss();
                             this.newAlert("Connection Error", err.message);
                         });
                     }
-                }, (err)=>{
+                }, (err) => {
                     u_loader.dismiss();
                     this.newAlert("Connection Error", err.message);
                 });
@@ -156,7 +160,7 @@ export class USignupPage {
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

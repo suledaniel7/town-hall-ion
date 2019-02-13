@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -19,6 +19,7 @@ export class JHomePage {
         public navParams: NavParams,
         private profProv: ProfileProvider,
         private alCtrl: AlertController,
+        private mdCtrl: ModalController,
         private socket: Socket
     ) {
         this.load();
@@ -32,9 +33,16 @@ export class JHomePage {
             if(this.item.beat_msgs){
                 let p_msgs = this.item.beat_msgs;
                 let c_msgs = [msg];
-                c_msgs.concat(p_msgs);
-                this.item.beat_msgs = c_msgs;
+                this.item.beat_msgs = c_msgs.concat(p_msgs);
             }
+        }
+    }
+
+    assigned(beat: any){
+        if(this.item){
+            this.item.user.beatDets = beat;
+            this.item.free = true;
+            this.item.exp = null;
         }
     }
 
@@ -43,10 +51,16 @@ export class JHomePage {
             if (data.success) {
                 this.item = data.item;
                 this.socket.emit('conn', {username: data.item.user.username});
-                this.socket.on('message', (m_item: any)=>{
+                this.socket.on('msg', (m_item: any)=>{
                     if(m_item.page.indexOf('h') !== -1){
                         this.prepend(m_item.message);
                     }
+                });
+                this.socket.on('self_message', (message: any)=>{
+                    this.prepend(message);
+                });
+                this.socket.on('j_assigned', (beat: any)=>{
+                    this.assigned(beat);
                 });
                 if (!data.item.free) {
                     this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
@@ -61,7 +75,15 @@ export class JHomePage {
     }
 
     compose() {
-        this.navCtrl.push(JCommsPage);
+        // this.navCtrl.push(JCommsPage);
+        let md1 = this.mdCtrl.create(JCommsPage);
+        md1.onDidDismiss((data)=>{
+            if(data.success){
+                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
+                this.socket.emit('changed_profile', data.timestamp);
+            }
+        });
+        md1.present();
     }
 
     newAlert(title: string, text: string){

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 
 import { MessageProvider } from "../../providers/message/message";
 import { AddressProvider } from '../../providers/address/address';
@@ -22,7 +22,8 @@ export class LCommsPage {
         public navParams: NavParams,
         private messageProv: MessageProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private viewCtrl: ViewController
     ) {
         this.imgAddress = this.address.getImageApi();
         this.messageProv.load_image().subscribe(data => {
@@ -44,7 +45,7 @@ export class LCommsPage {
     }
 
     back() {
-        this.navCtrl.pop();
+        this.viewCtrl.dismiss({ success: false });
     }
 
     count() {
@@ -64,7 +65,7 @@ export class LCommsPage {
         if (this.validMesssage) {
             this.messageProv.post_message('l', this.message).subscribe(data => {
                 if (data.success) {
-                    this.navCtrl.pop();
+                    this.viewCtrl.dismiss({ success: true,  timestamp: data.timestamp, beats: data.beats});
                 }
                 else {
                     this.newAlert("Error", data.reason);

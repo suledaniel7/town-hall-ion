@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 import { AddressProvider } from '../../providers/address/address';
@@ -25,31 +26,44 @@ export class OProfilePage {
         public navParams: NavParams,
         private profProv: ProfileProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private mdCtrl: ModalController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
+        this.load();
+    }
+
+    prepend(msg: any){
+        if(this.item){
+            if(this.item.messages){
+                let p_msgs = this.item.messages;
+                let c_msgs = [msg];
+                this.item.messages = c_msgs.concat(p_msgs);
+            }
+        }
+    }
+
+    reload(newUserDets: any){
+        if(this.item){
+            this.item.user = newUserDets;
+        }
+    }
+
+    load() {
         this.profProv.o_profile_p().subscribe(data => {
             if (data.success) {
                 this.item = data.item;
                 this.user = data.item.user;
                 this.messages = data.item.messages;
                 this.errOcc = false;
-            }
-            else {
-                this.errOcc = true;
-                this.newAlert("Error", data.reason);
-            }
-        }, err => {
-            this.errOcc = true;
-            this.newAlert("Connection Error", err.message);
-        });
-    }
-
-    retry() {
-        this.profProv.o_profile_p().subscribe(data => {
-            if (data.success) {
-                this.item = data.item;
-                this.errOcc = false;
+                this.socket.emit('conn', {username: data.item.user.username});
+                this.socket.on('self_message', (message: any)=>{
+                    this.prepend(message);
+                });
+                this.socket.on('profile_changed', (ret_d: any)=>{
+                    this.reload(ret_d.newUser);
+                });
             }
             else {
                 this.errOcc = true;
@@ -66,7 +80,14 @@ export class OProfilePage {
     }
 
     compose() {
-        this.navCtrl.push(OCommsPage);
+        let md1 = this.mdCtrl.create(OCommsPage);
+        md1.onDidDismiss((data)=>{
+            if(data.success){
+                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
+                this.socket.emit('changed_profile', data.timestamp);
+            }
+        });
+        md1.present();
     }
 
     settings() {

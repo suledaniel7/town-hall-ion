@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import { Socket } from "ngx-socket-io";
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 
@@ -18,6 +18,7 @@ export class UHomePage {
         private ldCtrl: LoadingController,
         public navParams: NavParams,
         private profProv: ProfileProvider,
+        private mdCtrl: ModalController,
         private socket: Socket
     ) {
         this.load();
@@ -25,6 +26,16 @@ export class UHomePage {
 
     ionViewDidLoad() {
 
+    }
+
+    prepend(msg: any){
+        if(this.item){
+            if(this.item.messages){
+                let p_msgs = this.item.messages;
+                let c_msgs = [msg];
+                this.item.messages = c_msgs.concat(p_msgs);
+            }
+        }
     }
 
     load() {
@@ -39,6 +50,15 @@ export class UHomePage {
             loader.dismiss();
             if (data.success) {
                 this.item = data.item;
+                this.socket.emit('conn', {username: data.item.user.username});
+                this.socket.on('msg', (m_item: any)=>{
+                    if(m_item.page.indexOf('h') !== -1){
+                        this.prepend(m_item.message);
+                    }
+                });
+                this.socket.on('self_message', (message: any)=>{
+                    this.prepend(message);
+                });
             }
             else {
                 this.newAlert("Error Loading Profile", data.reason);

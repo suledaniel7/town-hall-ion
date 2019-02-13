@@ -18,11 +18,9 @@ import { CommentPage } from "../pages/comment/comment";
 import { ConversationPage } from "../pages/conversation/conversation";
 import { EditCommentPage } from "../pages/edit-comment/edit-comment";
 import { EditMessagePage } from "../pages/edit-message/edit-message";
-import { FCommsPage } from "../pages/f-comms/f-comms";
 import { FHomePage } from "../pages/f-home/f-home";
 import { FollowersPage } from "../pages/followers/followers";
 import { FProfilePage } from "../pages/f-profile/f-profile";
-import { FSettingsPage } from "../pages/f-settings/f-settings";
 import { FreelancersPage } from "../pages/freelancers/freelancers";
 import { JBeatSelPage } from "../pages/j-beat-sel/j-beat-sel";
 import { JCommsPage } from "../pages/j-comms/j-comms";
@@ -101,10 +99,8 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         ConversationPage,
         EditCommentPage,
         EditMessagePage,
-        FCommsPage,
         FHomePage,
         FProfilePage,
-        FSettingsPage,
         FreelancersPage,
         JBeatSelPage,
         JCommsPage,
@@ -170,10 +166,8 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         ConversationPage,
         EditCommentPage,
         EditMessagePage,
-        FCommsPage,
         FHomePage,
         FProfilePage,
-        FSettingsPage,
         FreelancersPage,
         JBeatSelPage,
         JCommsPage,

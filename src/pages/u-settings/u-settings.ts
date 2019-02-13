@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App, IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { LogoutProvider } from "../../providers/logout/logout";
 
@@ -42,7 +43,8 @@ export class USettingsPage {
         private logProv: LogoutProvider,
         private settingsProv: SettingsProvider,
         private signupProv: SignupProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.load();
     }
@@ -164,6 +166,7 @@ export class USettingsPage {
                 }
                 else {
                     this.newAlert("Updated", "Update successful!");
+                    this.socket.emit('changed_profile', this.username);
                 }
             }
             else {

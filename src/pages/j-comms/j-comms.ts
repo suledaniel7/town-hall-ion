@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { Socket } from 'ngx-socket-io';
+import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 
 import { MessageProvider } from "../../providers/message/message";
 import { AddressProvider } from '../../providers/address/address';
@@ -25,7 +24,7 @@ export class JCommsPage {
         private messageProv: MessageProvider,
         public address: AddressProvider,
         private alCtrl: AlertController,
-        private socket: Socket
+        private viewCtrl: ViewController
     ) {
         this.imgAddress = this.address.getImageApi();
         this.messageProv.load_image().subscribe(data => {
@@ -47,7 +46,7 @@ export class JCommsPage {
     }
 
     back() {
-        this.navCtrl.pop();
+        this.viewCtrl.dismiss({ success: false });
     }
 
     count() {
@@ -67,9 +66,7 @@ export class JCommsPage {
         if (this.validMesssage) {
             this.messageProv.post_message('j', this.message, this.m_type).subscribe(data => {
                 if (data.success) {
-                    //notify server that message has been sent out
-                    this.socket.emit('message_sent', {timestamp: data.timestamp, beats: data.beats});
-                    this.navCtrl.pop();
+                    this.viewCtrl.dismiss({ success: true,  timestamp: data.timestamp, beats: data.beats});
                 }
                 else {
                     this.newAlert("Error", data.reason);
@@ -80,7 +77,7 @@ export class JCommsPage {
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

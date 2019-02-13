@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App, IonicPage, NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { LogoutProvider } from "../../providers/logout/logout";
 import { SettingsProvider } from '../../providers/settings/settings';
@@ -21,6 +22,7 @@ export class JSettingsPage {
     password: string = '';
     n_pass: string = '';
     c_pass: string = '';
+    init_org: string;
     org: string;
     beat: string;
     item: object;
@@ -34,7 +36,8 @@ export class JSettingsPage {
         private settingsProv: SettingsProvider,
         private logProv: LogoutProvider,
         private alCtrl: AlertController,
-        private mdCtrl: ModalController
+        private mdCtrl: ModalController,
+        private socket: Socket
     ) {
         this.load();
     }
@@ -60,6 +63,7 @@ export class JSettingsPage {
                 this.email = user.email;
                 if(item.formal){
                     this.org = user.organisation;
+                    this.init_org = user.organisation;
                 }
                 else {
                     this.beat = user.beat;
@@ -127,6 +131,12 @@ export class JSettingsPage {
                 }
                 else {
                     this.newAlert("Updated", "Update successful!");
+                    this.socket.emit('changed_profile', this.username);
+                    if(this.org){
+                        if(this.org !== this.init_org){
+                            this.socket.emit('changed_profile', this.init_org);
+                        }
+                    }
                 }
             }
             else {

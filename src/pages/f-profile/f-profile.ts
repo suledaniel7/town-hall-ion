@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressProvider } from '../../providers/address/address';
 
-import { FCommsPage } from "../f-comms/f-comms";
+import { JCommsPage } from "../j-comms/j-comms";
 import { SettingsPage } from '../settings/settings';
 import { FollowersPage } from '../followers/followers';
 
@@ -21,7 +22,9 @@ export class FProfilePage {
         public navParams: NavParams,
         private profProv: ProfileProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private mdCtrl: ModalController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.load();
@@ -32,17 +35,47 @@ export class FProfilePage {
     }
 
     compose() {
-        this.navCtrl.push(FCommsPage);
+        let md1 = this.mdCtrl.create(JCommsPage);
+        md1.onDidDismiss((data)=>{
+            if(data.success){
+                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
+                this.socket.emit('changed_profile', data.timestamp);
+            }
+        });
+        md1.present();
     }
 
     settings() {
         this.navCtrl.push(SettingsPage, {u_type: 'j'});
     }
 
+    prepend(msg: any){
+        if(this.item){
+            if(this.item.messages){
+                let p_msgs = this.item.messages;
+                let c_msgs = [msg];
+                this.item.messages = c_msgs.concat(p_msgs);
+            }
+        }
+    }
+
+    reload(newUserDets: any){
+        if(this.item){
+            this.item.user = newUserDets;
+        }
+    }
+
     load() {
         this.profProv.j_profile_p().subscribe(data => {
             if (data.success) {
                 this.item = data.item;
+                this.socket.emit('conn', {username: data.item.user.username});
+                this.socket.on('self_message', (message: any)=>{
+                    this.prepend(message);
+                });
+                this.socket.on('profile_changed', (ret_d: any)=>{
+                    this.reload(ret_d.newUser);
+                });
             }
             else {
                 this.newAlert("Error", data.reason);

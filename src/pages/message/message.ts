@@ -204,7 +204,11 @@ export class MessagePage {
                     handler: () => {
                         this.messageProv.del_message(timestamp).subscribe(data => {
                             if (data.success) {
-                                document.getElementById(timestamp).remove();
+                                for(let i=0; i<3; i++){
+                                    if(document.getElementById(timestamp)){
+                                        document.getElementById(timestamp).remove();
+                                    }
+                                }
                             }
                             else {
                                 this.newAlert("Error", data.reason);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
@@ -24,7 +25,8 @@ export class ORenderPage {
         private rndrProv: RenderProvider,
         private ldCtrl: LoadingController,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
@@ -74,6 +76,7 @@ export class ORenderPage {
         this.flwBtnText = "Loading...";
         this.rndrProv.follow(this.username).subscribe(data => {
             if (data.success) {
+                this.socket.emit('changed_profile', this.username);
                 this.item.user.followersNo++;
                 if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Follower";
@@ -97,6 +100,7 @@ export class ORenderPage {
         this.flwBtnText = "Loading...";
         this.rndrProv.unfollow(this.username).subscribe(data => {
             if (data.success) {
+                this.socket.emit('changed_profile', this.username);
                 this.item.user.followersNo--;
                 if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Follower";

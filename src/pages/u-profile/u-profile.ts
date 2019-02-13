@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from "../../providers/profile/profile";
 import { AddressProvider } from '../../providers/address/address';
@@ -22,7 +23,8 @@ export class UProfilePage {
         public ldCtrl: LoadingController,
         public navParams: NavParams,
         private profProv: ProfileProvider,
-        public address: AddressProvider
+        public address: AddressProvider,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.load();
@@ -30,6 +32,12 @@ export class UProfilePage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad UProfilePage');
+    }
+
+    reload(newUserDets: any){
+        if(this.item){
+            this.item.user = newUserDets;
+        }
     }
 
     load() {
@@ -45,6 +53,10 @@ export class UProfilePage {
             if (data.success) {
                 loader.dismiss();
                 this.item = data.item;
+                this.socket.emit('conn', {username: data.item.user.username});
+                this.socket.on('profile_changed', (ret_d: any)=>{
+                    this.reload(ret_d.newUser);
+                });
             }
             else {
                 loader.dismiss();

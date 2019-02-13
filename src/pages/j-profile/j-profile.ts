@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { Socket } from "ngx-socket-io";
 
 import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressProvider } from '../../providers/address/address';
@@ -21,7 +22,10 @@ export class JProfilePage {
         public navCtrl: NavController,
         public navParams: NavParams,
         private profProv: ProfileProvider,
-        public address: AddressProvider
+        public address: AddressProvider,
+        private alCtrl: AlertController,
+        private mdCtrl: ModalController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.load();
@@ -32,11 +36,50 @@ export class JProfilePage {
     }
 
     compose() {
-        this.navCtrl.push(JCommsPage);
+        let md1 = this.mdCtrl.create(JCommsPage);
+        md1.onDidDismiss((data)=>{
+            if(data.success){
+                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
+                this.socket.emit('changed_profile', data.timestamp);
+            }
+        });
+        md1.present();
     }
 
     settings() {
         this.navCtrl.push(SettingsPage, {u_type: 'j'});
+    }
+
+    prepend(msg: any){
+        if(this.item){
+            if(this.item.messages){
+                let p_msgs = this.item.messages;
+                let c_msgs = [msg];
+                this.item.messages = c_msgs.concat(p_msgs);
+            }
+        }
+    }
+
+    reload(newUserDets: any){
+        if(this.item){
+            this.item.user = newUserDets;
+            if(newUserDets.beat.length > 0){
+                this.item.exp = null;
+                this.item.free = true;
+            }
+            else {
+                this.item.exp = "Your request to " + this.item.user.orgName + " is still pending.";
+                this.item.free = false;
+            }
+        }
+    }
+
+    assigned(beat: any){
+        if(this.item){
+            this.item.user.beatDets = beat;
+            this.item.free = true;
+            this.item.exp = null;
+        }
     }
 
     load() {
@@ -46,12 +89,22 @@ export class JProfilePage {
                 if (!data.item.free) {
                     this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
                 }
+                this.socket.emit('conn', {username: data.item.user.username});
+                this.socket.on('self_message', (message: any)=>{
+                    this.prepend(message);
+                });
+                this.socket.on('profile_changed', (ret_d: any)=>{
+                    this.reload(ret_d.newUser);
+                });
+                this.socket.on('j_assigned', (beat: any)=>{
+                    this.assigned(beat);
+                });
             }
             else {
-                alert(data.reason);
+                this.newAlert("Error", data.reason);
             }
         }, err => {
-            alert("An error occured. Error: " + err.message);
+            this.newAlert("Communication Error", err.message);
         });
     }
 
@@ -61,4 +114,13 @@ export class JProfilePage {
         }
     }
 
+    newAlert(title: string, text: string){
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }
