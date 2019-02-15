@@ -86,8 +86,8 @@ import { SettingsProvider } from '../providers/settings/settings';
 import { ServeProvider } from '../providers/serve/serve';
 import { OrgJsProvider } from '../providers/org-js/org-js';
 
-// const config: SocketIoConfig = {url: 'http://192.168.43.55:8095', options: {}};
-const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
+const config: SocketIoConfig = {url: 'http://192.168.43.55:8095', options: {}};
+// const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
 
 @NgModule({
     declarations: [

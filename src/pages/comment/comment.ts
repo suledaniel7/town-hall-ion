@@ -1,17 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController, LoadingController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { EditCommentPage } from "../edit-comment/edit-comment";
-
 import { JRenderPage } from "../j-render/j-render";
 import { ORenderPage } from "../o-render/o-render";
 import { LRenderPage } from "../l-render/l-render";
 import { TagPage } from "../tag/tag";
+import { URenderPage } from '../u-render/u-render';
 
 import { ConversationProvider } from "../../providers/conversation/conversation";
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
-import { URenderPage } from '../u-render/u-render';
 
 @IonicPage()
 @Component({
@@ -34,7 +34,8 @@ export class CommentPage {
         public alertCtrl: AlertController,
         private ldCtrl: LoadingController,
         private rndrProv: RenderProvider,
-        public address: AddressProvider
+        public address: AddressProvider,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
     }
@@ -188,6 +189,8 @@ export class CommentPage {
                     handler: () => {
                         this.convProv.del_comment(timestamp).subscribe(data => {
                             if (data.success) {
+                                let m_timestamp = this.comment.m_timestamp;
+                                this.socket.emit('comment', {m_timestamp: m_timestamp});
                                 document.getElementById(timestamp).remove();
                             }
                             else {

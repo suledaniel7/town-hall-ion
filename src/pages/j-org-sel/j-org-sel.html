@@ -4,6 +4,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <div class="center">
+        <button (click)="logout()" color="secondary" ion-button>
+            Logout
+        </button>
+    </div>
     <ion-list *ngFor="let org of item?.organisations" inset radio-group>
         <ion-item>
             <ion-label>{{org.name}}</ion-label>

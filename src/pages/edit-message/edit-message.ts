@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { MessageProvider } from '../../providers/message/message';
 import { AddressProvider } from '../../providers/address/address';
@@ -27,7 +28,8 @@ export class EditMessagePage {
         public navParams: NavParams,
         private messageProv: MessageProvider,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.m_item = navParams.get('m_item');
@@ -79,6 +81,7 @@ export class EditMessagePage {
                 }
                 this.messageProv.edit_message(this.message, this.m_type, this.ac_type, this.m_item.m_timestamp, this.selBeats).subscribe(data => {
                     if (data.success) {
+                        this.socket.emit('edit', {username: data.username, timestamp: data.timestamp, beats: data.beats});
                         this.navCtrl.pop();
                     }
                     else {

@@ -4,9 +4,15 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <div *ngFor="let state of item?.states">
-        <h4 class="center grey-text">{{state.name}}</h4>
-        <ion-list radio-group>
+    <div class="center">
+        <button (click)="logout()" color="secondary" ion-button>
+            Logout
+        </button>
+    </div>
+    <br><br>
+    <ion-list radio-group>
+        <div *ngFor="let state of item?.states">
+            <h4 class="center grey-text">{{state.name}}</h4>
             <ion-list-header class="uppercase">Federal Constituencies</ion-list-header>
             <ion-item *ngFor="let dist of state.fed_consts">
                 <ion-label>{{dist.name}}</ion-label>
@@ -17,6 +23,6 @@
                 <ion-label>{{dist.name}}</ion-label>
                 <ion-radio (ionSelect)="confirm(dist.name, dist.code)"></ion-radio>
             </ion-item>
-        </ion-list>
-    </div>
+        </div>
+    </ion-list>
 </ion-content>

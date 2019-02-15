@@ -4,7 +4,7 @@ import { FollowersPage } from './followers';
 
 @NgModule({
   declarations: [
-    FollowersPage,
+    // FollowersPage,
   ],
   imports: [
     IonicPageModule.forChild(FollowersPage),

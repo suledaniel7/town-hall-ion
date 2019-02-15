@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, App } from 'ionic-angular';
 
+import { LogoutProvider } from "../../providers/logout/logout";
 import { JAccountProvider } from '../../providers/j-account/j-account';
+
 import { FreelancersPage } from "../freelancers/freelancers";
+import { SigninPage } from '../signin/signin';
 
 @IonicPage()
 @Component({
@@ -15,7 +18,9 @@ export class JBeatSelPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
+        public app: App,
         private jAcProv: JAccountProvider,
+        private logProv: LogoutProvider,
         private alertCtrl: AlertController,
         private ldCtrl: LoadingController
     ) {
@@ -40,6 +45,20 @@ export class JBeatSelPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad JBeatSelPage');
+    }
+
+    logout() {
+        this.logProv.logout().subscribe(data => {
+            if (data.success) {
+                this.app.getRootNav().setRoot(SigninPage);
+                this.navCtrl.popToRoot();
+            }
+            else {
+                this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
+            }
+        }, (err) => {
+            this.newAlert("Connection Error", err.message);
+        });
     }
 
     confirm(b_name, b_code) {

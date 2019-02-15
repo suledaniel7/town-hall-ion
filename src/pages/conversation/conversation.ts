@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { JRenderPage } from '../j-render/j-render';
 import { ORenderPage } from '../o-render/o-render';
@@ -27,7 +28,8 @@ export class ConversationPage {
         private convProv: ConversationProvider,
         private ldCtrl: LoadingController,
         public address: AddressProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
         this.m_timestamp = this.navParams.get('timestamp');
@@ -79,6 +81,8 @@ export class ConversationPage {
                     let h_comms = this.c_item.comments;
                     let n_comm = [data.comment];
                     this.c_item.comments = n_comm.concat(h_comms);
+                    let m_timestamp = data.comment.m_timestamp;
+                    this.socket.emit('comment', {m_timestamp: m_timestamp});
                 }
                 else {
                     this.newAlert("Error", data.reason);

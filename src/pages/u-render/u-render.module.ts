@@ -4,7 +4,7 @@ import { URenderPage } from './u-render';
 
 @NgModule({
   declarations: [
-    URenderPage,
+    // URenderPage,
   ],
   imports: [
     IonicPageModule.forChild(URenderPage),

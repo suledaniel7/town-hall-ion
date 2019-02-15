@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from "../../providers/profile/profile";
+import { OrgJsProvider } from '../../providers/org-js/org-js';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ export class OJournosPage {
         public navParams: NavParams,
         private profProv: ProfileProvider,
         private alCtrl: AlertController,
+        private jReqProv: OrgJsProvider,
         private socket: Socket
     ) {
         this.load();
@@ -84,6 +86,14 @@ export class OJournosPage {
                         this.insertJ(ret_d.journo);
                     }
                 });
+                this.socket.on('rem_req', (username: any)=>{
+                    if(document.getElementById(`j-req-${username}`)){
+                        document.getElementById(`j-req-${username}`).remove();
+                    }
+                });
+                this.socket.on('j_post', (username: string)=>{
+                    this.updateTimestamp(username);
+                });
             }
             else {
                 this.errOcc = true;
@@ -92,6 +102,21 @@ export class OJournosPage {
         }, (err) => {
             this.errOcc = true;
             this.newAlert("Connection Error", err.message);
+        });
+    }
+
+    updateTimestamp(username: string){
+        let timeSpan = document.getElementById(`time-j-${username}`);
+
+        this.jReqProv.req_j_msgs(username).subscribe(data => {
+            if (data.success) {
+                if (timeSpan && data.msg) {
+                    timeSpan.innerText = `${data.time}, ${data.date}`;
+                }
+                else if (!data.msg && timeSpan) {
+                    timeSpan.innerText = 'N/A';
+                }
+            }
         });
     }
 

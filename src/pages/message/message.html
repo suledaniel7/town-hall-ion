@@ -19,7 +19,7 @@
     <ion-row>
         <ion-col>
             <button (click)="conversation()" ion-button icon-start clear small>
-                <ion-icon active="false" name="chatbubbles"></ion-icon>({{message.comments_no}})
+                <ion-icon active="false" name="chatbubbles"></ion-icon><span id="comm-count-{{message.m_timestamp}}">({{message.comments_no}})</span>
             </button>
         </ion-col>
         <ion-col *ngIf="!originator">

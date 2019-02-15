@@ -4,7 +4,7 @@ import { JBeatSelPage } from './j-beat-sel';
 
 @NgModule({
   declarations: [
-    JBeatSelPage,
+    // JBeatSelPage,
   ],
   imports: [
     IonicPageModule.forChild(JBeatSelPage),

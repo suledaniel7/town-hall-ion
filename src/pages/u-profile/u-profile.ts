@@ -53,7 +53,6 @@ export class UProfilePage {
             if (data.success) {
                 loader.dismiss();
                 this.item = data.item;
-                this.socket.emit('conn', {username: data.item.user.username});
                 this.socket.on('profile_changed', (ret_d: any)=>{
                     this.reload(ret_d.newUser);
                 });

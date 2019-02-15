@@ -4,7 +4,7 @@ import { JOrgSelPage } from './j-org-sel';
 
 @NgModule({
   declarations: [
-    JOrgSelPage,
+    // JOrgSelPage,
   ],
   imports: [
     IonicPageModule.forChild(JOrgSelPage),

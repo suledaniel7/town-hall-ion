@@ -122,6 +122,9 @@ export class JSettingsPage {
         this.settingsProv.update_j(this.bio, this.f_name, this.l_name, this.username, this.email, this.password, this.n_pass, this.org, this.beat).subscribe((data)=>{
             ld2.dismiss();
             if(data.success){
+                if(data.ch_org){
+                    this.socket.emit('ch_org', {username: this.username, org: this.org});
+                }
                 this.password = '';
                 this.n_pass = '';
                 this.c_pass = '';

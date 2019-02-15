@@ -4,7 +4,7 @@ import { OJournoPage } from './o-journo';
 
 @NgModule({
   declarations: [
-    OJournoPage,
+    // OJournoPage,
   ],
   imports: [
     IonicPageModule.forChild(OJournoPage),

@@ -4,7 +4,7 @@ import { EditMessagePage } from './edit-message';
 
 @NgModule({
   declarations: [
-    EditMessagePage,
+    // EditMessagePage,
   ],
   imports: [
     IonicPageModule.forChild(EditMessagePage),

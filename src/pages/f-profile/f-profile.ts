@@ -69,7 +69,6 @@ export class FProfilePage {
         this.profProv.j_profile_p().subscribe(data => {
             if (data.success) {
                 this.item = data.item;
-                this.socket.emit('conn', {username: data.item.user.username});
                 this.socket.on('self_message', (message: any)=>{
                     this.prepend(message);
                 });

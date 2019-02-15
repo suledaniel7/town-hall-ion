@@ -4,7 +4,7 @@ import { OCommsPage } from './o-comms';
 
 @NgModule({
   declarations: [
-    OCommsPage,
+    // OCommsPage,
   ],
   imports: [
     IonicPageModule.forChild(OCommsPage),

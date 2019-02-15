@@ -4,7 +4,7 @@ import { BioPage } from './bio';
 
 @NgModule({
   declarations: [
-    BioPage,
+    // BioPage,
   ],
   imports: [
     IonicPageModule.forChild(BioPage),

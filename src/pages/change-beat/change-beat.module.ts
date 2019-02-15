@@ -4,7 +4,7 @@ import { ChangeBeatPage } from './change-beat';
 
 @NgModule({
   declarations: [
-    ChangeBeatPage,
+    // ChangeBeatPage,
   ],
   imports: [
     IonicPageModule.forChild(ChangeBeatPage),

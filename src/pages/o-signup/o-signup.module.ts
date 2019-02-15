@@ -4,7 +4,7 @@ import { OSignupPage } from './o-signup';
 
 @NgModule({
   declarations: [
-    OSignupPage,
+    // OSignupPage,
   ],
   imports: [
     IonicPageModule.forChild(OSignupPage),

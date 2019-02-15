@@ -4,7 +4,7 @@ import { OrgReassignBeatPage } from './org-reassign-beat';
 
 @NgModule({
   declarations: [
-    OrgReassignBeatPage,
+    // OrgReassignBeatPage,
   ],
   imports: [
     IonicPageModule.forChild(OrgReassignBeatPage),

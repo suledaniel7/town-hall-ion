@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, App } from 'ionic-angular';
 import { Socket } from "ngx-socket-io";
 
 import { JAccountProvider } from '../../providers/j-account/j-account';
+import { LogoutProvider } from "../../providers/logout/logout";
 
 import { JournalistsPage } from '../journalists/journalists';
+import { SigninPage } from '../signin/signin';
 
 @IonicPage()
 @Component({
@@ -18,9 +20,11 @@ export class JOrgSelPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
+        public app: App,
         private jAcProv: JAccountProvider,
         private alertCtrl: AlertController,
         private ldCtrl: LoadingController,
+        private logProv: LogoutProvider,
         private socket: Socket
     ) {
         let ld1 = this.ldCtrl.create({
@@ -44,6 +48,20 @@ export class JOrgSelPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad JOrgSelPage');
+    }
+
+    logout() {
+        this.logProv.logout().subscribe(data => {
+            if (data.success) {
+                this.app.getRootNav().setRoot(SigninPage);
+                this.navCtrl.popToRoot();
+            }
+            else {
+                this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
+            }
+        }, (err) => {
+            this.newAlert("Connection Error", err.message);
+        });
     }
 
     confirm(o_name, o_username) {

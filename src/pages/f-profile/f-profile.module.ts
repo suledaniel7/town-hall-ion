@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { FProfilePage } from './f-profile';
-import { MessagePage } from '../message/message';
+// import { MessagePage } from '../message/message';
 
 @NgModule({
   declarations: [
-    FProfilePage,
-    MessagePage,
+    // FProfilePage,
+    // MessagePage,
   ],
   imports: [
     IonicPageModule.forChild(FProfilePage),

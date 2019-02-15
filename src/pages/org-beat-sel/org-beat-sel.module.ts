@@ -4,7 +4,7 @@ import { OrgBeatSelPage } from './org-beat-sel';
 
 @NgModule({
   declarations: [
-    OrgBeatSelPage,
+    // OrgBeatSelPage,
   ],
   imports: [
     IonicPageModule.forChild(OrgBeatSelPage),

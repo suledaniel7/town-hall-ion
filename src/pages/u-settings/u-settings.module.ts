@@ -4,7 +4,7 @@ import { USettingsPage } from './u-settings';
 
 @NgModule({
   declarations: [
-    USettingsPage,
+    // USettingsPage,
   ],
   imports: [
     IonicPageModule.forChild(USettingsPage),

@@ -59,6 +59,26 @@ export class JReqPage {
         conf_alert.present();
     }
 
+    rej_confirm(){
+        let conf_alert = this.alCtrl.create({
+            title: "Reject Journalist",
+            message: `Do you want to reject ${this.journo.f_name} ${this.journo.l_name} | @${this.journo.username}?`,
+            buttons: [
+                {
+                    text: "No"
+                },
+                {
+                    text: "Yes",
+                    handler: () => {
+                        this.reject();
+                    }
+                }
+            ]
+        });
+
+        conf_alert.present();
+    }
+
     accept(){
         let ld1 = this.ldCtrl.create({content: "Accepting Journalist"});
         ld1.present();
@@ -72,6 +92,7 @@ export class JReqPage {
                         this.check();
                         this.socket.emit('accept_j', this.username);
                         this.socket.emit('changed_profile', this.username);
+                        this.socket.emit('j_acc', {username: this.j_username});
                     }
                 });
                 md1.present();
@@ -92,6 +113,7 @@ export class JReqPage {
             ld2.dismiss();
             if(data.success){
                 this.check();
+                this.socket.emit('j_rej', {username: this.j_username});
             }
             else {
                 this.newAlert("Error", data.reason);

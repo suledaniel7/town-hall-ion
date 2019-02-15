@@ -41,6 +41,7 @@ export class JProfilePage {
             if(data.success){
                 this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
                 this.socket.emit('changed_profile', data.timestamp);
+                this.socket.emit('new_j_post');
             }
         });
         md1.present();
@@ -89,9 +90,13 @@ export class JProfilePage {
                 if (!data.item.free) {
                     this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
                 }
-                this.socket.emit('conn', {username: data.item.user.username});
                 this.socket.on('self_message', (message: any)=>{
                     this.prepend(message);
+                });
+                this.socket.on('msg', (m_item: any)=>{
+                    if(m_item.page.indexOf('h') !== -1){
+                        this.prepend(m_item.message);
+                    }
                 });
                 this.socket.on('profile_changed', (ret_d: any)=>{
                     this.reload(ret_d.newUser);

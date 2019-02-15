@@ -4,7 +4,7 @@ import { OrganisationsPage } from './organisations';
 
 @NgModule({
   declarations: [
-    OrganisationsPage,
+    // OrganisationsPage,
   ],
   imports: [
     IonicPageModule.forChild(OrganisationsPage),

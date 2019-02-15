@@ -4,7 +4,7 @@ import { JournoPage } from './journo';
 
 @NgModule({
   declarations: [
-    JournoPage,
+    // JournoPage,
   ],
   imports: [
     IonicPageModule.forChild(JournoPage),

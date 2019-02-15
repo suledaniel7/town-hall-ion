@@ -41,6 +41,13 @@ export class OHomePage {
         }
     }
 
+    edit(timestamp: string, newMsg: any){
+        let msgItem = document.getElementById(timestamp);
+        if(msgItem){
+            msgItem.textContent = newMsg.message;
+        }
+    }
+
     load() {
         let loader = this.ldCtrl.create({
             showBackdrop: true,
@@ -53,7 +60,6 @@ export class OHomePage {
             loader.dismiss();
             if (data.success) {
                 this.item = data.item;
-                this.socket.emit('conn', {username: data.item.user.username});
                 this.socket.on('msg', (m_item: any)=>{
                     if(m_item.page.indexOf('h') !== -1){
                         this.prepend(m_item.message);
@@ -61,6 +67,11 @@ export class OHomePage {
                 });
                 this.socket.on('self_message', (message: any)=>{
                     this.prepend(message);
+                });
+                this.socket.on('edited', (ret_d: any)=>{
+                    if(ret_d.page === 'h'){
+                        this.edit(ret_d.message.m_timestamp, ret_d.message);
+                    }
                 });
             }
             else {

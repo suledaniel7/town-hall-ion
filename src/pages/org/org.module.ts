@@ -4,7 +4,7 @@ import { OrgPage } from './org';
 
 @NgModule({
   declarations: [
-    OrgPage,
+    // OrgPage,
   ],
   imports: [
     IonicPageModule.forChild(OrgPage),

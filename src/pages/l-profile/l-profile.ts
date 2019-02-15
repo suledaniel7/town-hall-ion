@@ -64,7 +64,6 @@ export class LProfilePage {
                 loader.dismiss();
             if (data.success) {
                 this.item = data.item;
-                this.socket.emit('conn', {username: data.item.user.code});
                 this.socket.on('self_message', (message: any)=>{
                     this.prepend(message);
                 });

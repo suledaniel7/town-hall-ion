@@ -66,7 +66,7 @@ export class JCommsPage {
         if (this.validMesssage) {
             this.messageProv.post_message('j', this.message, this.m_type).subscribe(data => {
                 if (data.success) {
-                    this.viewCtrl.dismiss({ success: true,  timestamp: data.timestamp, beats: data.beats});
+                    this.viewCtrl.dismiss({ success: true, timestamp: data.timestamp, beats: data.beats});
                 }
                 else {
                     this.newAlert("Error", data.reason);

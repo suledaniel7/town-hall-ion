@@ -4,7 +4,7 @@ import { LegisPage } from './legis';
 
 @NgModule({
   declarations: [
-    LegisPage,
+    // LegisPage,
   ],
   imports: [
     IonicPageModule.forChild(LegisPage),

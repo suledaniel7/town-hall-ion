@@ -31,6 +31,10 @@ export class OJournoPage {
     }
 
     ngAfterViewInit() {
+        this.updateTimestamp();
+    }
+
+    updateTimestamp(){
         this.username = this.journalist.username;
 
         let timeSpan = document.getElementById(`time-j-${this.username}`);
@@ -93,6 +97,7 @@ export class OJournoPage {
             if(data.success){
                 document.getElementById(`o-journo-${this.journalist.username}`).className = 'hidden';
                 this.socket.emit('changed_profile', this.username);
+                this.socket.emit('j_rem', {username: this.journalist.username});
             }
             else {
                 this.newAlert("Error", data.reason);

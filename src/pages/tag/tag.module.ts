@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TagPage } from './tag';
-import { MessagePage } from '../message/message';
+// import { MessagePage } from '../message/message';
 
 @NgModule({
   declarations: [
-    TagPage,
-    MessagePage,
+    // TagPage,
+    // MessagePage,
   ],
   imports: [
     IonicPageModule.forChild(TagPage),

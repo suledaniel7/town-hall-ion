@@ -77,6 +77,7 @@ export class LRenderPage {
         this.rndrProv.follow(this.username).subscribe(data => {
             if (data.success) {
                 this.socket.emit('changed_profile', this.username);
+                this.socket.emit('follow');
                 this.item.user.followersNo++;
                 if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Constituent";
@@ -101,6 +102,7 @@ export class LRenderPage {
         this.rndrProv.unfollow(this.username).subscribe(data => {
             if (data.success) {
                 this.socket.emit('changed_profile', this.username);
+                this.socket.emit('follow');
                 this.item.user.followersNo--;
                 if (this.item.user.followersNo = 1) {
                     this.flwrsText = "Constituent";

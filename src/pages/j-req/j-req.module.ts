@@ -4,7 +4,7 @@ import { JReqPage } from './j-req';
 
 @NgModule({
   declarations: [
-    JReqPage,
+    // JReqPage,
   ],
   imports: [
     IonicPageModule.forChild(JReqPage),

@@ -26,4 +26,8 @@ export class JAccountProvider {
     j_org_sub(org): Observable<any> {
         return this.http.post(`${this.api}/organisations/request`, {organisation: org});
     }
+
+    status(): Observable<any> {
+        return this.http.get(`${this.api}/j-stat`);
+    }
 }

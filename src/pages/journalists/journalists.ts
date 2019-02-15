@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+
+import { JAccountProvider } from "../../providers/j-account/j-account";
+
 import { JHomePage } from "../j-home/j-home";
 import { JOrgPage } from "../j-org/j-org";
 import { JProfilePage } from "../j-profile/j-profile";
 import { SearchPage } from "../search/search";
+import { JOrgSelPage } from '../j-org-sel/j-org-sel';
+import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
 
 @IonicPage()
 @Component({
@@ -16,12 +21,39 @@ export class JournalistsPage {
     tab3Root = JOrgPage;
     tab4Root = JProfilePage;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
-        
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private alCtrl: AlertController,
+        private jAcProv: JAccountProvider
+    ) {
+        this.jAcProv.status().subscribe((data) => {
+            if (data.success) {
+                if (!data.status) {
+                    this.navCtrl.setRoot(JOrgSelPage);
+                    this.navCtrl.popToRoot();
+                }
+            }
+            else {
+                this.newAlert("Error", data.reason);
+            }
+        }, (err) => {
+            this.newAlert("Connection Error", err.message);
+        });
+
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad JournalistsPage');
     }
 
+    newAlert(title: string, text: string) {
+        let newAl = this.alCtrl.create({
+            title: title,
+            subTitle: text,
+            buttons: ['Ok']
+        });
+
+        return newAl.present();
+    }
 }

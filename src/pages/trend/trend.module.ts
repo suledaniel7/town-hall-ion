@@ -4,7 +4,7 @@ import { TrendPage } from './trend';
 
 @NgModule({
   declarations: [
-    TrendPage,
+    // TrendPage,
   ],
   imports: [
     IonicPageModule.forChild(TrendPage),

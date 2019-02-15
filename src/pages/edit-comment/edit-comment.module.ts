@@ -4,7 +4,7 @@ import { EditCommentPage } from './edit-comment';
 
 @NgModule({
   declarations: [
-    EditCommentPage,
+    // EditCommentPage,
   ],
   imports: [
     IonicPageModule.forChild(EditCommentPage),

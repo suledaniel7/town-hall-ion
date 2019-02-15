@@ -4,7 +4,7 @@ import { UploadPage } from './upload';
 
 @NgModule({
   declarations: [
-    UploadPage,
+    // UploadPage,
   ],
   imports: [
     IonicPageModule.forChild(UploadPage),

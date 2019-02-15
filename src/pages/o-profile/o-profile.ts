@@ -57,7 +57,6 @@ export class OProfilePage {
                 this.user = data.item.user;
                 this.messages = data.item.messages;
                 this.errOcc = false;
-                this.socket.emit('conn', {username: data.item.user.username});
                 this.socket.on('self_message', (message: any)=>{
                     this.prepend(message);
                 });

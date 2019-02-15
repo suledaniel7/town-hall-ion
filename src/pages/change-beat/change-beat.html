@@ -19,11 +19,20 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <div *ngFor="let state of item?.states">
-            <ion-list-header>{{state.name}}</ion-list-header>
-            <div *ngFor="let dist of state.districts">
-                <ion-item id="dist-{{dist.code}}" (click)="select(dist.code)">{{dist.name}}</ion-item>
+        <ion-list radio-group>
+            <div *ngFor="let state of item?.states">
+                <h4 class="center grey-text">{{state.name}}</h4>
+                <ion-list-header class="uppercase">Federal Constituencies</ion-list-header>
+                <ion-item *ngFor="let dist of state.fed_consts">
+                    <ion-label>{{dist.name}}</ion-label>
+                    <ion-radio (ionSelect)="select(dist.code)"></ion-radio>
+                </ion-item>
+                <ion-list-header class="uppercase">Senatorial Districts</ion-list-header>
+                <ion-item *ngFor="let dist of state.sen_dists">
+                    <ion-label>{{dist.name}}</ion-label>
+                    <ion-radio (ionSelect)="select(dist.code)"></ion-radio>
+                </ion-item>
             </div>
-        </div>
+        </ion-list>
     </ion-list>
 </ion-content>

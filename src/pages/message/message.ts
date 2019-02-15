@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Input } from "@angular/core";
 import { IonicPage, NavController, NavParams, ModalController, AlertController, LoadingController } from 'ionic-angular';
+import { Socket } from 'ngx-socket-io';
 
 import { EditMessagePage } from "../edit-message/edit-message";
 import { JRenderPage } from "../j-render/j-render";
@@ -36,7 +37,8 @@ export class MessagePage {
         public alertCtrl: AlertController,
         private ldCtrl: LoadingController,
         private rndrProv: RenderProvider,
-        public address: AddressProvider
+        public address: AddressProvider,
+        private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
     }
@@ -54,8 +56,23 @@ export class MessagePage {
         this.message.message = this.extractMentions(this.message.message);
     }
 
+    updateCommCount(m_timestamp: string, num: any){
+        let cSpan = document.getElementById(`comm-count-${m_timestamp}`);
+        if(cSpan){
+            cSpan.innerText = `(${num})`;
+        }
+    }
+
     ngAfterViewInit() {
         this.affixIds();
+        let timestamp = this.message.m_timestamp;
+        this.socket.on('comment_count', (data: any)=>{
+            let m_timestamp = data.m_timestamp;
+            let num = data.num;
+            if(m_timestamp === timestamp){
+                this.updateCommCount(m_timestamp, num);
+            }
+        });
     }
 
     extractTags(message) {
