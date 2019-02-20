@@ -3,6 +3,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <ion-card *ngIf="c_item" class="message" id="{{c_item?.message.m_timestamp}}">
         <ion-item>
             <ion-avatar item-start>

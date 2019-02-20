@@ -14,6 +14,7 @@ import { SigninPage } from '../signin/signin';
 })
 export class JBeatSelPage {
     item: any;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -24,12 +25,21 @@ export class JBeatSelPage {
         private alertCtrl: AlertController,
         private ldCtrl: LoadingController
     ) {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld1 = this.ldCtrl.create({
             content: "Loading Town Hall Districts..."
         });
 
         ld1.present();
         this.jAcProv.j_beat_render().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 this.item = data;
@@ -37,9 +47,10 @@ export class JBeatSelPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -56,8 +67,8 @@ export class JBeatSelPage {
             else {
                 this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -98,7 +109,7 @@ export class JBeatSelPage {
             }
         }, err => {
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

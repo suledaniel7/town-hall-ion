@@ -198,12 +198,20 @@ export class MessagePage {
             this.messageProv.req_message('m', this.message.m_timestamp).subscribe(data => {
                 if (data.success) {
                     this.message = data.item.message;
+                    let username = this.message.sender;
+                    let timestamp = this.message.m_timestamp;
+                    let beats = this.message.beats;
+                    this.socket.emit('edit', {username: username, timestamp: timestamp, beats: beats});
+                    let mTextEl = document.getElementById(`p-${this.message.m_timestamp}`);
+                    if(mTextEl){
+                        mTextEl.innerText = this.message.message;
+                    }
                 }
                 else {
                     this.newAlert("Connection Error", data.reason);
                 }
-            }, err => {
-                this.newAlert("Connection Error", err.message);
+            }, () => {
+                this.newAlert("Connection Error", "Please check your connection");
             });
         });
     }
@@ -221,6 +229,8 @@ export class MessagePage {
                     handler: () => {
                         this.messageProv.del_message(timestamp).subscribe(data => {
                             if (data.success) {
+                                this.socket.emit('deletion', {timestamp: timestamp, sender: this.message.sender, beats: this.message.beats});
+                                this.socket.emit('changed_profile', timestamp);
                                 for(let i=0; i<3; i++){
                                     if(document.getElementById(timestamp)){
                                         document.getElementById(timestamp).remove();
@@ -230,8 +240,8 @@ export class MessagePage {
                             else {
                                 this.newAlert("Error", data.reason);
                             }
-                        }, err => {
-                            this.newAlert("Connection Error", err.message);
+                        }, () => {
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
                 }
@@ -264,8 +274,8 @@ export class MessagePage {
                             else {
                                 this.newAlert("Error", data.reason);
                             }
-                        }, err => {
-                            this.newAlert("Connection Error", err.message);
+                        }, () => {
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
                 }
@@ -300,9 +310,9 @@ export class MessagePage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

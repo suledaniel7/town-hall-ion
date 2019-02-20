@@ -1,7 +1,9 @@
 <div id="main">
     <h1 class="center">Town Hall</h1>
     <div class="errorDiv">{{err}}</div>
-    <div class="center" *ngIf="errSit">
-        <button ion-button (click)="retry()">Retry</button>
-    </div>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
 </div>

@@ -21,6 +21,7 @@ export class ConversationPage {
     btnColor: string = "light";
     validComment: boolean = false;
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -33,9 +34,18 @@ export class ConversationPage {
     ) {
         this.imgAddress = this.address.getImageApi();
         this.m_timestamp = this.navParams.get('timestamp');
-        let ld = ldCtrl.create({ content: "Loading Conversation..." });
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
+        let ld = this.ldCtrl.create({ content: "Loading Conversation..." });
         ld.present();
-        convProv.load_conv(this.m_timestamp).subscribe(data => {
+        this.convProv.load_conv(this.m_timestamp).subscribe(data => {
+            this.errOc = false;
             ld.dismiss();
             if (data.success) {
                 this.c_item = {};
@@ -46,9 +56,10 @@ export class ConversationPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -87,9 +98,9 @@ export class ConversationPage {
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, err => {
+            }, () => {
                 ld1.dismiss();
-                this.newAlert("Connection Error", err.message);
+                this.newAlert("Connection Error", "Please check your connection");
             });
         }
     }

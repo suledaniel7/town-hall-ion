@@ -4,6 +4,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div class="center">
         <button color="secondary" (click)="closeModal('false')" ion-button>Cancel</button>
     </div>

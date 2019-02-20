@@ -18,6 +18,7 @@ export class JRenderPage {
     flwBtnText: string;
     username: string;
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -29,11 +30,20 @@ export class JRenderPage {
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
         ld.present();
         let username = this.navParams.get('username');
         this.username = username;
         this.rndrProv.render_profile(username).subscribe(data => {
+            this.errOc = false;
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
@@ -53,9 +63,10 @@ export class JRenderPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -91,9 +102,9 @@ export class JRenderPage {
                 this.flwBtnText = "Follow";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Follow";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -116,9 +127,9 @@ export class JRenderPage {
                 this.flwBtnText = "Following";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Following";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

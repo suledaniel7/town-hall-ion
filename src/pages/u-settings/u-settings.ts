@@ -34,6 +34,7 @@ export class USettingsPage {
     item: object;
     notif: string;
     btnColor: string = 'light';
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -49,6 +50,10 @@ export class USettingsPage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
 
     }
@@ -59,6 +64,7 @@ export class USettingsPage {
         });
         ld1.present();
         this.settingsProv.render().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 let item = data.item;
@@ -83,9 +89,10 @@ export class USettingsPage {
             else {
                 this.newAlert("Account Error", data.reason);
             }
-        }, (err) => {
+        }, () => {
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -106,10 +113,10 @@ export class USettingsPage {
                     this.u_state = this.curr_state;
                     this.newAlert("State Error", data.reason);
                 }
-            }, (err) => {
+            }, () => {
                 this.u_state = this.curr_state;
                 ld2.dismiss();
-                this.newAlert("Connection Error", err.message);
+                this.newAlert("Connection Error", "Please check your connection");
             });
         }
     }
@@ -160,6 +167,9 @@ export class USettingsPage {
                 this.password = '';
                 this.n_pass = '';
                 this.c_pass = '';
+                if(data.ch_dist){
+                    this.socket.emit('recompile', {username: this.username});
+                }
                 if(data.logout){
                     this.newAlert("Updated", "Update successful! However, you would have to log in once more because you changed your username");
                     this.logout();
@@ -172,9 +182,9 @@ export class USettingsPage {
             else {
                 this.newAlert("Update Info", data.reason);
             }
-        }, (err)=>{
+        }, ()=>{
             ld3.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -187,8 +197,8 @@ export class USettingsPage {
             else {
                 this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

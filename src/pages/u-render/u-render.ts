@@ -12,9 +12,9 @@ import { LRenderPage } from '../l-render/l-render';
 })
 export class URenderPage {
     item: any;
-    errOc: boolean;
     username: string;
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -24,6 +24,8 @@ export class URenderPage {
         private alertCtrl: AlertController,
         public address: AddressProvider
     ) {
+        let username = this.navParams.get('username');
+        this.username = username;
         this.load();
     }
 
@@ -31,23 +33,24 @@ export class URenderPage {
         this.imgAddress = this.address.getImageApi();
         let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
         ld.present();
-        let username = this.navParams.get('username');
-        this.username = username;
-        this.rndrProv.render_profile(username).subscribe(data => {
+        this.rndrProv.render_profile(this.username).subscribe(data => {
+            this.errOc = false;
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
-                this.errOc = false;
             }
             else {
                 this.newAlert("Error", data.reason);
-                this.errOc = true;
             }
-        }, err => {
+        }, () => {
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
             this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
+    }
+
+    refresh(){
+        this.load();
     }
 
     ionViewDidLoad() {

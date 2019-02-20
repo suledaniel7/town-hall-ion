@@ -16,6 +16,8 @@ import { SigninPage } from '../signin/signin';
 export class JOrgSelPage {
     selOrg: any = '';
     item: any;
+    r_item: any;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -27,12 +29,21 @@ export class JOrgSelPage {
         private logProv: LogoutProvider,
         private socket: Socket
     ) {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld1 = this.ldCtrl.create({
             content: "Loading Town Hall Organisations..."
         });
 
         ld1.present();
         this.jAcProv.j_org_render().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 this.item = data.item;
@@ -40,9 +51,30 @@ export class JOrgSelPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
+        });
+
+        this.jAcProv.reason().subscribe(data => {
+            if(data.success){
+                this.r_item = data.item;
+                let tmp_item = data.item;
+                if(tmp_item.rejection){
+                    if(tmp_item.removed){
+                        this.r_item.reason = `You were removed from ${tmp_item.organisation}. Please reapply to another Organisation`;
+                    }
+                    else {
+                        this.r_item.reason = `Your request to ${tmp_item.organisation} was declined. Please apply to another Organisation`;
+                    }
+                }
+            }
+            else {
+                this.newAlert("Error", data.reason);
+            }
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");            
         });
     }
 
@@ -59,8 +91,8 @@ export class JOrgSelPage {
             else {
                 this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -93,16 +125,16 @@ export class JOrgSelPage {
         this.jAcProv.j_org_sub(username).subscribe(data => {
             ld2.dismiss();
             if (data.success) {
-                this.socket.emit('j_request', {username: data.username});
+                this.socket.emit('j_request', {username: data.username, o_username: username});
                 this.navCtrl.setRoot(JournalistsPage);
                 this.navCtrl.popToRoot();
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

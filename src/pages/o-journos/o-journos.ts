@@ -12,9 +12,10 @@ import { OrgJsProvider } from '../../providers/org-js/org-js';
 })
 export class OJournosPage {
     item: any;
-    errOcc = false;
     username: string;
     pending_reqs: boolean;
+    exp: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -27,8 +28,37 @@ export class OJournosPage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
 
+    }
+
+    checkJs() {
+        if (this.item) {
+            if ((this.item.journos && !this.item.pending_reqs) || (!this.item.journos && this.item.pending_reqs)) {
+                let len = this.item.journos.length;
+                if (len > 0) {
+                    this.exp = null;
+                }
+                else {
+                    this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+                }
+            }
+            else if(this.item.journos){
+                if(this.item.journos.length > 0){
+                    this.exp = null;
+                }
+            }
+            else {
+                this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+            }
+        }
+        else {
+            this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+        }
     }
 
     insertJ(journo: any) {
@@ -39,16 +69,16 @@ export class OJournosPage {
                 let c_f_l = journo.l_name[0];
                 let journos = this.item.journos;
                 let lt = journos.length;
-                for(let i=0; i<lt; i++){
+                for (let i = 0; i < lt; i++) {
                     let curr_j = journos[i];
                     let tmp_f_l = curr_j.l_name[0];
-                    if(c_f_l < tmp_f_l && !changed_index){
+                    if (c_f_l < tmp_f_l && !changed_index) {
                         index = i;
                         changed_index = true;
                         break;
                     }
                 }
-                if(index === -1){
+                if (index === -1) {
                     this.item.journos.push(journo);
                 }
                 else {
@@ -58,54 +88,71 @@ export class OJournosPage {
                     this.item.journos = pre_arr.concat(post_arr);
                 }
             }
+            else {
+                this.item.journos = [journo];
+            }
+            this.checkJs();
         }
     }
 
-    appendReq(journo: any){
-        if(this.item){
-            if(this.item.user.pending_reqs){
+    appendReq(journo: any) {
+        if (this.item) {
+            if (this.item.user.pending_reqs) {
+                this.item.pending_reqs = true;
                 this.item.user.pending_reqs.push(journo);
+            }
+            else {
+                this.item.pending_reqs = true;
+                this.item.user.pending_reqs = [journo];
             }
         }
     }
 
     load() {
         this.profProv.o_profile_j().subscribe(data => {
+            this.errOc = false;
             if (data.success) {
-                this.errOcc = false;
                 this.item = data.item;
+                this.checkJs();
                 this.username = this.item.user.username;
-                this.socket.emit('conn', {username: data.item.user.username});
-                this.socket.on('j_req', (ret_d: any)=>{
-                    if(ret_d.page === 'j'){
+                this.socket.on('j_req', (ret_d: any) => {
+                    if (ret_d.page === 'j') {
                         this.appendReq(ret_d.journo);
+                        this.checkJs();
                     }
                 });
-                this.socket.on('new_j', (ret_d: any)=>{
-                    if(ret_d.page === 'j'){
+                this.socket.on('new_j', (ret_d: any) => {
+                    if (ret_d.page === 'j') {
                         this.insertJ(ret_d.journo);
+                        this.checkJs();
                     }
                 });
-                this.socket.on('rem_req', (username: any)=>{
-                    if(document.getElementById(`j-req-${username}`)){
+                this.socket.on('rem_req', (username: any) => {
+                    if (document.getElementById(`j-req-${username}`)) {
                         document.getElementById(`j-req-${username}`).remove();
+                        this.checkJs();
                     }
                 });
-                this.socket.on('j_post', (username: string)=>{
+                this.socket.on('j_post', (username: string) => {
                     this.updateTimestamp(username);
+                });
+                this.socket.on('j_removed', (username: string) => {
+                    if (document.getElementById(`o-journo-${username}`)) {
+                        document.getElementById(`o-journo-${username}`).remove();
+                        this.checkJs();
+                    }
                 });
             }
             else {
-                this.errOcc = true;
                 this.newAlert("Error", data.reason);
             }
-        }, (err) => {
-            this.errOcc = true;
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
-    updateTimestamp(username: string){
+    updateTimestamp(username: string) {
         let timeSpan = document.getElementById(`time-j-${username}`);
 
         this.jReqProv.req_j_msgs(username).subscribe(data => {

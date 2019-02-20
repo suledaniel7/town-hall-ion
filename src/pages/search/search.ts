@@ -29,6 +29,7 @@ export class SearchPage {
     tr_active = true;
     suggestions: Array<string>;
     s_item = null;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -36,6 +37,10 @@ export class SearchPage {
         private searchProv: SearchProvider,
         private alCtrl: AlertController
     ) {
+        this.load_trends();
+    }
+
+    refresh(){
         this.load_trends();
     }
 
@@ -149,8 +154,8 @@ export class SearchPage {
             else {
                 this.newAlert("Invalid Search Request", data.reason);
             }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
     g_curr() {
@@ -165,6 +170,7 @@ export class SearchPage {
 
     load_trends() {
         this.searchProv.load_trends().subscribe(data => {
+            this.errOc = false;
             if (data.success) {
                 this.tr_item = {};
                 this.tr_item.trends = data.trends;
@@ -172,8 +178,9 @@ export class SearchPage {
             else {
                 this.newAlert("Trend Error", "An error occured on our end while loading trends. Please try again later");
             }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

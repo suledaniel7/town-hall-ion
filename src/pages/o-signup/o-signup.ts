@@ -90,23 +90,23 @@ export class OSignupPage {
                                         this.err = data.reason;
                                         this.clearErr();
                                     }
-                                }, (err)=>{
-                                    this.err = err.message;
+                                }, ()=>{
+                                    this.err = "Please check your connection";
                                     this.clearErr();
                                 });
                             }
-                        }, (err)=>{
-                            this.err = err.message;
+                        }, ()=>{
+                            this.err = "Please check your connection";
                             this.clearErr();
                         });
                     }
-                }, (err)=>{
-                    this.err = err.message;
+                }, ()=>{
+                    this.err = "Please check your connection";
                     this.clearErr();
                 });
             }
-        }, (err)=>{
-            this.err = err.message;
+        }, ()=>{
+            this.err = "Please check your connection";
             this.clearErr();
         });
     }

@@ -8,7 +8,6 @@ import { JOrgPage } from "../j-org/j-org";
 import { JProfilePage } from "../j-profile/j-profile";
 import { SearchPage } from "../search/search";
 import { JOrgSelPage } from '../j-org-sel/j-org-sel';
-import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
 
 @IonicPage()
 @Component({
@@ -20,6 +19,7 @@ export class JournalistsPage {
     tab2Root = SearchPage;
     tab3Root = JOrgPage;
     tab4Root = JProfilePage;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -27,7 +27,16 @@ export class JournalistsPage {
         private alCtrl: AlertController,
         private jAcProv: JAccountProvider
     ) {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         this.jAcProv.status().subscribe((data) => {
+            this.errOc = false;
             if (data.success) {
                 if (!data.status) {
                     this.navCtrl.setRoot(JOrgSelPage);
@@ -37,10 +46,10 @@ export class JournalistsPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
-
     }
 
     ionViewDidLoad() {

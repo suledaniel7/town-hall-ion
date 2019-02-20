@@ -16,6 +16,7 @@ import { SettingsPage } from '../settings/settings';
 export class UProfilePage {
     item: any;
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -30,13 +31,19 @@ export class UProfilePage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
         console.log('ionViewDidLoad UProfilePage');
     }
 
     reload(newUserDets: any){
         if(this.item){
-            this.item.user = newUserDets;
+            this.item.user = newUserDets.user;
+            this.item.rep = newUserDets.rep;
+            this.item.sen = newUserDets.sen;
         }
     }
 
@@ -50,6 +57,7 @@ export class UProfilePage {
         loader.present();
 
         this.profProv.u_profile_p().subscribe(data => {
+            this.errOc = false;
             if (data.success) {
                 loader.dismiss();
                 this.item = data.item;
@@ -61,40 +69,10 @@ export class UProfilePage {
                 loader.dismiss();
                 this.newAlert("Error Loading Info", data.reason);
             }
-        }, (err) => {
+        }, () => {
             loader.dismiss();
-            this.newAlert("Connection Error", err.message);
-            let confirmed = false;
-            let confirm = this.alertCtrl.create({
-                title: "Retry?",
-                message: "Should we try again in ten seconds?",
-                buttons: [
-                    {
-                        text: 'Yes',
-                        handler: () => {
-                            confirmed = true;
-                        }
-                    },
-                    {
-                        text: 'No',
-                        handler: () => {
-                            confirmed = false;
-                        }
-                    }
-                ]
-            });
-            confirm.present().then(() => {
-                if (confirmed) {
-                    setTimeout(() => {
-                        this.load();
-                    }, 10000);
-                }
-            }).catch((reason) => {
-                let al1 = this.alertCtrl.create({
-                    message: `An error occured. ${reason}`
-                });
-                al1.present();
-            });
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

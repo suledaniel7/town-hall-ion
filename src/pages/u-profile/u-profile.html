@@ -1,4 +1,9 @@
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
             <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{f_name}}'s Avatar" class="center-block profileAvatar">
@@ -8,11 +13,16 @@
         <br>
         <ion-list id="btm-margin" inset>
             <ion-item><strong>State: </strong><span id="">{{item.user.state}}</span></ion-item>
-            <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">{{item.rep.district}}</span></ion-item>
-            <ion-item (click)="profile(item.rep.code)"><strong>Representative: </strong><span color="secondary" id="">{{item.rep.full_name}}</span></ion-item>
-            <ion-item><strong>Senatorial District: </strong><span color="secondary" id="">{{item.sen.district}}</span></ion-item>
-            <ion-item (click)="profile(item.sen.code)"><strong>Senator: </strong><span color="secondary" id="">{{item.sen.full_name}}</span></ion-item>
-            <ion-item><strong>Date Joined: </strong><span color="secondary" id="">{{item.user.date_joined}}</span></ion-item>
+            <ion-item><strong>Federal Constituency: </strong><span color="secondary" id="">{{item.rep.district}}</span>
+            </ion-item>
+            <ion-item (click)="profile(item.rep.code)"><strong>Representative: </strong><span color="secondary"
+                    id="">{{item.rep.full_name}}</span></ion-item>
+            <ion-item><strong>Senatorial District: </strong><span color="secondary" id="">{{item.sen.district}}</span>
+            </ion-item>
+            <ion-item (click)="profile(item.sen.code)"><strong>Senator: </strong><span color="secondary"
+                    id="">{{item.sen.full_name}}</span></ion-item>
+            <ion-item><strong>Date Joined: </strong><span color="secondary" id="">{{item.user.date_joined}}</span>
+            </ion-item>
         </ion-list>
     </div>
     <ion-fab bottom right>

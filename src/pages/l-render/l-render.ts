@@ -18,6 +18,9 @@ export class LRenderPage {
     flwBtnText: string;
     username: string;
     imgAddress: string;
+    plur1Text: string = "Constituents";
+    plur2Text: string = "Followers";
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -29,20 +32,26 @@ export class LRenderPage {
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
-        let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
-        ld.present();
         let code = this.navParams.get('code');
         this.username = code;
-        this.rndrProv.render_profile(code).subscribe(data => {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
+        let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
+        ld.present();
+        
+        this.rndrProv.render_profile(this.username).subscribe(data => {
+            this.errOc = false;
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
-                if (this.item.user.followersNo == 1) {
-                    this.flwrsText = "Constituent";
-                }
-                else {
-                    this.flwrsText = "Constituents";
-                }
+                this.plurals();
+                
                 if (this.item.following) {
                     this.flwBtnText = "Following";
                 }
@@ -53,9 +62,10 @@ export class LRenderPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -79,21 +89,17 @@ export class LRenderPage {
                 this.socket.emit('changed_profile', this.username);
                 this.socket.emit('follow');
                 this.item.user.followersNo++;
-                if (this.item.user.followersNo == 1) {
-                    this.flwrsText = "Constituent";
-                }
-                else {
-                    this.flwrsText = "Constituents";
-                }
+                
+                this.plurals();
                 this.flwBtnText = "Following";
             }
             else {
                 this.flwBtnText = "Follow";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Follow";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -104,27 +110,48 @@ export class LRenderPage {
                 this.socket.emit('changed_profile', this.username);
                 this.socket.emit('follow');
                 this.item.user.followersNo--;
-                if (this.item.user.followersNo = 1) {
-                    this.flwrsText = "Constituent";
-                }
-                else {
-                    this.flwrsText = "Constituents";
-                }
+                
+                this.plurals();
                 this.flwBtnText = "Follow";
             }
             else {
                 this.flwBtnText = "Following";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Following";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
     followers() {
         if (this.username) {
             this.navCtrl.push(FollowersPage, { username: this.username });
+        }
+    }
+
+    plurals() {
+        if (this.item) {
+            if (this.item.user) {
+                let fCount = this.item.const_num;
+                if (fCount === 1) {
+                    this.plur1Text = "Constituent";
+                }
+                else {
+                    this.plur1Text = "Constituents";
+                }
+            }
+        }
+        if (this.item) {
+            if (this.item.user) {
+                let mCount = this.item.user.followersNo;
+                if (mCount === 1) {
+                    this.plur2Text = "Follower";
+                }
+                else {
+                    this.plur2Text = "Followers";
+                }
+            }
         }
     }
 

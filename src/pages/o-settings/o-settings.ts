@@ -23,6 +23,7 @@ export class OSettingsPage {
     n_pass: string = '';
     c_pass: string = '';
     verification: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -37,6 +38,10 @@ export class OSettingsPage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
 
     }
@@ -47,6 +52,7 @@ export class OSettingsPage {
         });
         ld1.present();
         this.settingsProv.render().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if(data.success){
                 this.item = data.item;
@@ -61,9 +67,10 @@ export class OSettingsPage {
             else {
                 this.newAlert("Account Error", data.reason);
             }
-        }, (err) => {
+        }, () => {
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -113,9 +120,9 @@ export class OSettingsPage {
             else {
                 this.newAlert("Update Info", data.reason);
             }
-        }, (err)=>{
+        }, ()=>{
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -128,8 +135,8 @@ export class OSettingsPage {
             else {
                 this.newAlert("Logout Error", "Something went wrong while logging you out. Please restart the app");
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

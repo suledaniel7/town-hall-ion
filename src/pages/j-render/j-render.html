@@ -4,9 +4,15 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
-            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar" class="center-block profileAvatar">
+            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar"
+                class="center-block profileAvatar">
             <h3 class="center">{{item.user.full_name}}</h3>
             <ion-row>
                 <ion-col></ion-col>
@@ -17,7 +23,7 @@
             </ion-row>
             <ion-row class="center">
                 <ion-col>
-                    Reporting on: 
+                    Reporting on:
                     <strong>
                         {{item.user.beatDets?.name}}
                     </strong>

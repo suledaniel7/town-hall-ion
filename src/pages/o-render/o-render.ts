@@ -18,6 +18,9 @@ export class ORenderPage {
     flwBtnText: string;
     username: string;
     imgAddress: string;
+    plur1Text: string = "Journalists";
+    plur2Text: string = "Followers";
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -29,20 +32,25 @@ export class ORenderPage {
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
-        let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
-        ld.present();
         let username = this.navParams.get('username');
         this.username = username;
-        this.rndrProv.render_profile(username).subscribe(data => {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
+        let ld = this.ldCtrl.create({ content: "Loading Profile Info" });
+        ld.present();
+        this.rndrProv.render_profile(this.username).subscribe(data => {
+            this.errOc = false;
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
-                if (this.item.user.followersNo == 1) {
-                    this.flwrsText = "Follower";
-                }
-                else {
-                    this.flwrsText = "Followers";
-                }
+                this.plurals();
+                
                 if (this.item.following) {
                     this.flwBtnText = "Following";
                 }
@@ -51,11 +59,12 @@ export class ORenderPage {
                 }
             }
             else {
-                this.newAlert("Loading Error", data.reason);
+                this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -79,21 +88,17 @@ export class ORenderPage {
                 this.socket.emit('changed_profile', this.username);
                 this.socket.emit('follow');
                 this.item.user.followersNo++;
-                if (this.item.user.followersNo == 1) {
-                    this.flwrsText = "Follower";
-                }
-                else {
-                    this.flwrsText = "Followers";
-                }
+                
+                this.plurals();
                 this.flwBtnText = "Following";
             }
             else {
                 this.flwBtnText = "Follow";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Follow";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -104,22 +109,43 @@ export class ORenderPage {
                 this.socket.emit('changed_profile', this.username);
                 this.socket.emit('follow');
                 this.item.user.followersNo--;
-                if (this.item.user.followersNo == 1) {
-                    this.flwrsText = "Follower";
-                }
-                else {
-                    this.flwrsText = "Followers";
-                }
+                
+                this.plurals();
                 this.flwBtnText = "Follow";
             }
             else {
                 this.flwBtnText = "Following";
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             this.flwBtnText = "Following";
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
+    }
+
+    plurals() {
+        if (this.item) {
+            if (this.item.user) {
+                let jCount = this.item.user.journo_num;
+                if (jCount === 1) {
+                    this.plur1Text = "Journalist";
+                }
+                else {
+                    this.plur1Text = "Journalists";
+                }
+            }
+        }
+        if (this.item) {
+            if (this.item.user) {
+                let fCount = this.item.user.followersNo;
+                if (fCount === 1) {
+                    this.plur2Text = "Follower";
+                }
+                else {
+                    this.plur2Text = "Followers";
+                }
+            }
+        }
     }
 
     followers() {

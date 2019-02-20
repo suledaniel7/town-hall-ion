@@ -1,7 +1,15 @@
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div class="center grey-text" *ngIf="exp">
+        {{exp}}
+    </div>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.beat_msgs">
-            <page-message [message]="message"></page-message>
+            <page-message [username]="item.user.username" [message]="message"></page-message>
         </div>
     </div>
     <ion-fab bottom right>

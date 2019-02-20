@@ -4,6 +4,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
             <img src="{{imgAddress}}/{{item.user.avatar}}" alt="User Avatar" class="center-block profileAvatar">
@@ -26,14 +31,14 @@
                     <strong>
                         {{item.const_num}}
                         <br>
-                        {{flwrsText}}
+                        {{plur1Text}}
                     </strong>
                 </ion-col>
                 <ion-col (click)="followers()">
                     <strong>
                         {{item.user.followersNo}}
                         <br>
-                        Followers
+                        {{plur2Text}}
                     </strong>
                 </ion-col>
             </ion-row>

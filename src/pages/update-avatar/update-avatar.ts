@@ -6,17 +6,12 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from "@ionic-nati
 import { AddressProvider } from '../../providers/address/address';
 import { UploadProvider } from '../../providers/upload/upload';
 
-import { UsersPage } from '../users/users';
-import { OrganisationsPage } from '../organisations/organisations';
-import { LegislatorsPage } from '../legislators/legislators';
-import { JBeatSelPage } from "../j-beat-sel/j-beat-sel";
-import { JOrgSelPage } from "../j-org-sel/j-org-sel";
 @IonicPage()
 @Component({
-    selector: 'page-upload',
-    templateUrl: 'upload.html',
+    selector: 'page-update-avatar',
+    templateUrl: 'update-avatar.html',
 })
-export class UploadPage {
+export class UpdateAvatarPage {
     u_type: string;
     server_address: string;
     img_address: string;
@@ -35,13 +30,12 @@ export class UploadPage {
         private ldCtrl: LoadingController
     ) {
         this.photo_type = this.navParams.get('photo_type');
-        this.u_type = this.navParams.get('u_type');
         this.server_address = this.address.getApi();
         this.img_address = this.address.getImageApi();
     }
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad UploadPage');
+        console.log('ionViewDidLoad UpdateAvatarPage');
     }
 
     select() {
@@ -51,23 +45,23 @@ export class UploadPage {
                 fileKey: 'avatar',
                 fileName: 'avatar'
             }
-            
+
             let ld1 = this.ldCtrl.create({
                 content: "Processing Image",
             });
 
             ld1.present();
-            fileTransfer.upload(uri, this.server_address+"/upload_img", options).then((data)=>{
+            fileTransfer.upload(uri, this.server_address + "/upload_img", options).then((data) => {
                 ld1.dismiss();
                 let data_obj = JSON.parse(data.response);
-                if(data_obj.success){
+                if (data_obj.success) {
                     this.fileUri = this.img_address + '/' + data_obj.file.uri;
                     this.final_obj = data_obj.file;
                 }
                 else {
                     this.newAlert("Error", data_obj.reason);
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 ld1.dismiss();
                 this.newAlert("Error", err);
             });
@@ -76,27 +70,27 @@ export class UploadPage {
         });
     }
 
-    upload(){
+    upload() {
         let ld2 = this.ldCtrl.create({
             content: "Uploading Image"
         });
         ld2.present();
-        this.uplProv.confirm_upload(this.final_obj).subscribe((data)=>{
+        this.uplProv.confirm_upload(this.final_obj).subscribe((data) => {
             ld2.dismiss();
-            if(data.success){
-                this.newAlert("Success", "Image uploaded successfully");
-                this.skip();
+            if (data.success) {
+                this.newAlert("Success", "Image updated successfully");
+                this.navCtrl.pop();
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, ()=>{
+        }, () => {
             ld2.dismiss();
             this.newAlert("Error", "Please check your connection");
         });
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             message: text,
@@ -104,31 +98,5 @@ export class UploadPage {
         });
 
         return newAl.present();
-    }
-
-    skip(){
-        if(this.u_type === 'u'){
-            this.navCtrl.setRoot(UsersPage);
-            this.navCtrl.popToRoot();
-        }
-        else if(this.u_type === 'j'){
-            this.navCtrl.setRoot(JOrgSelPage);
-            this.navCtrl.popToRoot();
-        }
-        else if(this.u_type === 'f'){
-            this.navCtrl.setRoot(JBeatSelPage);
-            this.navCtrl.popToRoot();
-        }
-        else if(this.u_type === 'o'){
-            this.navCtrl.setRoot(OrganisationsPage);
-            this.navCtrl.popToRoot();
-        }
-        else if(this.u_type === 'l'){
-            this.navCtrl.setRoot(LegislatorsPage);
-            this.navCtrl.popToRoot();
-        }
-        else {
-            this.newAlert("Error", "Invalid User Account Type");
-        }
     }
 }

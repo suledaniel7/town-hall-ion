@@ -16,6 +16,7 @@ export class OJournoPage {
     imgAddress: string;
     @Input() journalist: any;
     username: string;
+    o_username: string;
 
     constructor(
         public navCtrl: NavController,
@@ -32,9 +33,10 @@ export class OJournoPage {
 
     ngAfterViewInit() {
         this.updateTimestamp();
+        this.o_username = this.journalist.organisation;
     }
 
-    updateTimestamp(){
+    updateTimestamp() {
         this.username = this.journalist.username;
 
         let timeSpan = document.getElementById(`time-j-${this.username}`);
@@ -58,8 +60,8 @@ export class OJournoPage {
             username: this.journalist.username,
             o_username: this.journalist.organisation
         });
-        md1.onDidDismiss((data)=>{
-            if(data.success){
+        md1.onDidDismiss((data) => {
+            if (data.success) {
                 this.journalist.beatDets.name = data.dist_name;
 
                 this.journalist.beatDets.type = data.type;
@@ -90,22 +92,54 @@ export class OJournoPage {
     }
 
     removeJ() {
-        let ld1 = this.ldCtrl.create({content: "Removing Journalist"});
+        let ld1 = this.ldCtrl.create({ content: "Removing Journalist" });
         ld1.present();
         this.jReqProv.remove_j(this.journalist.username).subscribe(data => {
             ld1.dismiss();
-            if(data.success){
+            if (data.success) {
                 document.getElementById(`o-journo-${this.journalist.username}`).className = 'hidden';
-                this.socket.emit('changed_profile', this.username);
-                this.socket.emit('j_rem', {username: this.journalist.username});
+                this.socket.emit('changed_profile', this.o_username);
+                this.socket.emit('recompile', { username: this.o_username });
+                this.socket.emit('j_rem', { username: this.journalist.username });
+                this.check();
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
+    }
+
+    check(){
+        let journos = document.getElementsByClassName('o-journo').length;
+        let reqs = document.getElementsByClassName('j-req').length;
+
+        if(journos > 0 && reqs > 0){
+            if (document.getElementById('jReqHeader')) {
+                document.getElementById('jReqHeader').className = 'center grey-text';
+            }
+            if (document.getElementById('yJHeader')) {
+                document.getElementById('yJHeader').className = 'center grey-text';
+            }
+        }
+        else if(journos > 0 && reqs === 0){
+            if (document.getElementById('jReqHeader')) {
+                document.getElementById('jReqHeader').className = 'hidden';
+            }
+            if (document.getElementById('yJHeader')) {
+                document.getElementById('yJHeader').className = 'hidden';
+            }
+        }
+        else if(journos === 0 && reqs > 0) {
+            if (document.getElementById('jReqHeader')) {
+                document.getElementById('jReqHeader').className = 'center grey-text';
+            }
+            if (document.getElementById('yJHeader')) {
+                document.getElementById('yJHeader').className = 'hidden';
+            }
+        }
     }
 
     newAlert(title: string, text: string) {

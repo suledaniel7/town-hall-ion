@@ -57,9 +57,9 @@ export class USignupPage {
                 this.item = data.item;
                 this.statesLoaded = true;
             }
-        }, err => {
+        }, () => {
             s_loader.dismiss();
-            this.newAlert("Error", err.message);
+            this.newAlert("Error", "Please check your connection");
         });
     }
 
@@ -75,9 +75,9 @@ export class USignupPage {
             this.districts = data.item;
             this.districtsLoading = false;
             this.districtsLoaded = true;
-        }, err => {
+        }, () => {
             d_loader.dismiss();
-            this.newAlert("Error", err.message);
+            this.newAlert("Error", "Please check your connection");
         });
     }
 
@@ -114,19 +114,19 @@ export class USignupPage {
                                     else {
                                         this.newAlert("Signup Error", resp.reason);
                                     }
-                                }, (err) => {
+                                }, () => {
                                     u_loader.dismiss();
-                                    this.newAlert("Connection Error", err.message);
+                                    this.newAlert("Connection Error", "Please check your connection");
                                 });
                             }
-                        }, (err) => {
+                        }, () => {
                             u_loader.dismiss();
-                            this.newAlert("Connection Error", err.message);
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
-                }, (err) => {
+                }, () => {
                     u_loader.dismiss();
-                    this.newAlert("Connection Error", err.message);
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else {

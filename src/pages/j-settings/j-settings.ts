@@ -27,6 +27,7 @@ export class JSettingsPage {
     beat: string;
     item: object;
     notif: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -42,6 +43,10 @@ export class JSettingsPage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
 
     }
@@ -52,6 +57,7 @@ export class JSettingsPage {
         });
         ld1.present();
         this.settingsProv.render().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 let item = data.item;
@@ -77,9 +83,10 @@ export class JSettingsPage {
             else {
                 this.newAlert("Account Error", data.reason);
             }
-        }, (err) => {
+        }, () => {
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -123,7 +130,12 @@ export class JSettingsPage {
             ld2.dismiss();
             if(data.success){
                 if(data.ch_org){
-                    this.socket.emit('ch_org', {username: this.username, org: this.org});
+                    this.socket.emit('ch_org', {username: this.username, org: this.org, init_org: this.init_org});
+                    this.socket.emit('recompile', {username: this.username});
+                    this.socket.emit('recompile', {username: this.init_org});
+                }
+                if(data.ch_beat){
+                    this.socket.emit('recompile', {username: this.username});
                 }
                 this.password = '';
                 this.n_pass = '';
@@ -145,9 +157,9 @@ export class JSettingsPage {
             else {
                 this.newAlert("Update Info", data.reason);
             }
-        }, (err)=>{
+        }, ()=>{
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -160,8 +172,8 @@ export class JSettingsPage {
             else {
                 this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");
             }
-        }, (err) => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

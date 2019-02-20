@@ -4,6 +4,14 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div *ngIf="r_item?.rejection">
+        <h5 class="center grey-text">{{r_item.reason}}</h5>
+    </div>
     <div class="center">
         <button (click)="logout()" color="secondary" ion-button>
             Logout

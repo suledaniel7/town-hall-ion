@@ -19,6 +19,7 @@ export class OCommsPage {
     selBeats: any = "all";
     m_type: string = "o";
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -30,15 +31,25 @@ export class OCommsPage {
         private viewCtrl: ViewController
     ) {
         this.imgAddress = this.address.getImageApi();
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         this.profProv.o_profile_c().subscribe(data => {
+            this.errOc = false;
             if (data.success) {
                 this.item = data.item;
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -75,8 +86,8 @@ export class OCommsPage {
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, err => {
-                this.newAlert("Connection Error", err.message);
+            }, () => {
+                this.newAlert("Connection Error", "Please check your connection");
             });
         }
     }

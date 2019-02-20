@@ -1,4 +1,9 @@
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
             <img src="{{imgAddress}}/{{item.user.avatar}}" alt="User Avatar" class="center-block profileAvatar">
@@ -13,14 +18,14 @@
                     <strong>
                         {{item.user.followersNo}}
                         <br>
-                        Followers
+                        {{plur1Text}}
                     </strong>
                 </ion-col>
                 <ion-col>
                     <strong>
                         {{item.district.const_num}}
                         <br>
-                        Constituents
+                        {{plur2Text}}
                     </strong>
                 </ion-col>
                 <ion-col>
@@ -30,6 +35,9 @@
         </div>
         <hr>
         <br>
+    </div>
+    <div class="center grey-text" *ngIf="exp">
+        {{exp}}
     </div>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.messages">

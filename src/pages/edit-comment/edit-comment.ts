@@ -60,8 +60,8 @@ export class EditCommentPage {
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, err => {
-                this.newAlert("Connection Error", err.message);
+            }, () => {
+                this.newAlert("Connection Error", "Please check your connection");
             });
         }
     }

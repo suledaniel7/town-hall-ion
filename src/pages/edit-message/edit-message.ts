@@ -87,8 +87,8 @@ export class EditMessagePage {
                     else {
                         this.newAlert("Error", data.reason);
                     }
-                }, err => {
-                    this.newAlert("Connection Error", err.message);
+                }, () => {
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else if (this.ac_type == 'j') {
@@ -99,8 +99,8 @@ export class EditMessagePage {
                     else {
                         this.newAlert("Error", data.reason);
                     }
-                }, err => {
-                    this.newAlert("Connection Error", err.message);
+                }, (err) => {
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else if (this.ac_type == 'l') {
@@ -111,8 +111,8 @@ export class EditMessagePage {
                     else {
                         this.newAlert("Error", data.reason);
                     }
-                }, err => {
-                    this.newAlert("Connection Error", err.message);
+                }, () => {
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
         }

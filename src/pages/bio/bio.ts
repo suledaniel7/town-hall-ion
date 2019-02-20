@@ -47,9 +47,9 @@ export class BioPage {
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, (err)=>{
+            }, ()=>{
                 ld1.dismiss();
-                this.newAlert("Connection Error", err.message);
+                this.newAlert("Connection Error", "Please check your connection");
             })
         }
     }

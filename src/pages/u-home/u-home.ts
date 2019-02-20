@@ -11,6 +11,8 @@ import { ProfileProvider } from "../../providers/profile/profile";
 })
 export class UHomePage {
     item: any;
+    exp: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -23,26 +25,62 @@ export class UHomePage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
 
     }
 
-    prepend(msg: any){
-        if(this.item){
-            if(this.item.messages){
+    prepend(msg: any) {
+        if (this.item) {
+            if (this.item.messages) {
                 let p_msgs = this.item.messages;
                 let c_msgs = [msg];
                 this.item.messages = c_msgs.concat(p_msgs);
             }
+            else {
+                this.item.messages = [msg];
+            }
+            this.checkMsgs();
         }
     }
 
-    reload(msgs: any){
-        if(this.item){
+    checkMsgs() {
+        if (this.item) {
+            if (this.item.messages) {
+                let len = this.item.messages.length;
+                if (len > 0) {
+                    this.exp = null;
+                }
+                else {
+                    this.exp = "You currently have no messages on your Feed. Follow journalists, legislators or organisations, preferably those of them verified by Town Hall to populate your Feed";
+                }
+            }
+            else {
+                this.exp = "You currently have no messages on your Feed. Follow journalists, legislators or organisations, preferably those of them verified by Town Hall to populate your Feed";
+            }
+        }
+        else {
+            this.exp = "You currently have no messages on your Feed. Follow journalists, legislators or organisations, preferably those of them verified by Town Hall to populate your Feed";
+        }
+    }
+
+    reload(msgs: any) {
+        if (this.item) {
             this.item.messages = msgs;
         }
         else {
-            this.item = {messages: msgs};
+            this.item = { messages: msgs };
+        }
+        this.checkMsgs();
+    }
+
+    edit(timestamp: string, newMsg: any) {
+        let msgItem = document.getElementById(`p-${timestamp}`);
+        if (msgItem) {
+            document.getElementById(`p-${timestamp}`).textContent = newMsg.message;
         }
     }
 
@@ -55,52 +93,51 @@ export class UHomePage {
         loader.present();
 
         this.profProv.u_profile_h().subscribe(data => {
+            this.errOc = false;
+            this.socket.disconnect();
+            this.socket.connect();
             loader.dismiss();
             if (data.success) {
                 this.item = data.item;
-                this.socket.on('msg', (m_item: any)=>{
-                    if(m_item.page.indexOf('h') !== -1){
+                this.checkMsgs();
+                this.socket.on('msg', (m_item: any) => {
+                    if (m_item.page.indexOf('h') !== -1) {
                         this.prepend(m_item.message);
                     }
                 });
-                this.socket.on('self_message', (message: any)=>{
+                this.socket.on('self_message', (message: any) => {
                     this.prepend(message);
                 });
-                this.socket.on('following', (f_data: any)=>{
-                    if(f_data.page === 'h'){
+                this.socket.on('following', (f_data: any) => {
+                    if (f_data.page === 'h') {
                         this.reload(f_data.messages);
                     }
+                });
+                this.socket.on('edited', (ret_d: any) => {
+                    if (ret_d.page.indexOf('h') !== -1) {
+                        this.edit(ret_d.message.m_timestamp, ret_d.message);
+                    }
+                });
+                this.socket.on('deletion_comp', (ret_d) => {
+                    if (ret_d.page.indexOf('h') !== -1) {
+                        if (document.getElementById(ret_d.timestamp)) {
+                            document.getElementById(ret_d.timestamp).remove();
+                            this.checkMsgs();
+                        }
+                    }
+                });
+                this.socket.on('recompiled', (ret_d) => {
+                    let msgs = ret_d.messages;
+                    this.reload(msgs);
                 });
             }
             else {
                 this.newAlert("Error Loading Profile", data.reason);
             }
-        }, (err) => {
+        }, () => {
             loader.dismiss();
-            this.newAlert("Connection Error", err.message);
-            let confirmed = true;
-            let confirm = this.alertCtrl.create({
-                title: "Retry?",
-                message: "Should we try again in ten seconds?",
-                buttons: [
-                    {
-                        text: 'Yes',
-                        handler: () => {
-                            confirmed = true;
-                        }
-                    },
-                    {
-                        text: 'No',
-                        handler: () => {
-                            confirmed = false;
-                        }
-                    }
-                ]
-            });
-            confirm.present();
-            if (confirmed) {
-                setTimeout(this.load, 10000);
-            }
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

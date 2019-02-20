@@ -170,8 +170,8 @@ export class CommentPage {
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, err => {
-                this.newAlert("Connection Error", err.message);
+            }, () => {
+                this.newAlert("Connection Error", "Please check your connection");
             });
         });
     }
@@ -196,8 +196,8 @@ export class CommentPage {
                             else {
                                 this.newAlert("Error", data.reason);
                             }
-                        }, err => {
-                            this.newAlert("Connection Error", err.message);
+                        }, () => {
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
                 }
@@ -230,8 +230,8 @@ export class CommentPage {
                             else {
                                 this.newAlert("Error", data.reason);
                             }
-                        }, err => {
-                            this.newAlert("Connection Error", err.message);
+                        }, () => {
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
                 }
@@ -266,9 +266,9 @@ export class CommentPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

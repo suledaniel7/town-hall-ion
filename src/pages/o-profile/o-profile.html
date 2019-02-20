@@ -1,20 +1,28 @@
 <ion-content>
-    <div *ngIf="errOcc">
-        <button ion-button full (click)="load()">Retry</button>
-    </div>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
-            <img src="{{imgAddress}}/{{item.user.logo}}" alt="{{item.user.name}}'s Avatar" class="center-block profileAvatar">
+            <img src="{{imgAddress}}/{{item.user.logo}}" alt="{{item.user.name}}'s Avatar"
+                class="center-block profileAvatar">
             <h3 class="center">{{item.user.name}}</h3>
             <ion-row class="center">
                 <ion-col>
-                    <strong>{{item.user.journo_num}}<br><span id="plur">Journalists</span></strong>
+                    <strong>
+                        {{item.user.journo_num}}
+                        <br>
+                        {{plur1Text}}
+                    </strong>
                 </ion-col>
                 <ion-col (click)="followers()">
-                    <strong>{{item.user.followersNo}}<br>Unique <span id="plur2">Followers</span></strong>
-                </ion-col>
-                <ion-col>
-                    <strong>{{item.user.messages_no}}<br><span id="plur3">Messages</span></strong>
+                    <strong>
+                        {{item.user.followersNo}}
+                        <br>
+                        {{plur2Text}}
+                    </strong>
                 </ion-col>
                 <ion-col>
                     <ion-icon (click)="settings()" name="settings" class="icon"></ion-icon>
@@ -23,6 +31,9 @@
         </div>
         <hr>
         <br>
+    </div>
+    <div class="center grey-text" *ngIf="exp">
+        {{exp}}
     </div>
     <div>
         <div class="messages" id="messages">

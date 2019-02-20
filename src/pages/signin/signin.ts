@@ -74,9 +74,9 @@ export class SigninPage {
                         this.err = data.reason;
                         this.clearErr();
                     }
-                }, (err) => {
+                }, () => {
                     loader.dismiss();
-                    this.newAlert("Connection Error", err.message);
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else {

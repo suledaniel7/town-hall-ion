@@ -19,7 +19,7 @@ import { LegislatorsPage } from "../legislators/legislators";
 })
 export class HomePage {
     err: string = '';
-    errSit = false;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -28,6 +28,10 @@ export class HomePage {
         private signedIn: SignedInProvider,
         private alCtrl: AlertController
     ) {
+        this.load();
+    }
+
+    refresh(){
         this.load();
     }
 
@@ -40,6 +44,7 @@ export class HomePage {
         loader.present();
 
         this.signedIn.isSignedIn().subscribe(data => {
+            this.errOc = false;
             if (data.active) {
                 loader.dismiss();
                 let u_type = data.u_type;
@@ -90,15 +95,11 @@ export class HomePage {
                 this.navCtrl.setRoot(SigninPage);
                 this.navCtrl.popToRoot();
             }
-        }, (err) => {
+        }, () => {
             loader.dismiss();
-            this.errSit = true;
-            this.err = err.message;
+            this.errOc = true;
+            this.err = "Connection Error";
         });
-    }
-
-    retry() {
-        this.load();
     }
 
     newAlert(title: string, text: string) {

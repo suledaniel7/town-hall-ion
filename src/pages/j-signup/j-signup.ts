@@ -69,19 +69,19 @@ export class JSignupPage {
                                     else {
                                         this.newAlert("Error", data.reason);
                                     }
-                                }, err => {
+                                }, () => {
                                     u_loader.dismiss();
-                                    this.newAlert("Connection Error", err.message);
+                                    this.newAlert("Connection Error", "Please check your connection");
                                 });
                             }
-                        }, err => {
+                        }, () => {
                             u_loader.dismiss();
-                            this.newAlert("Connection Error", err.message);
+                            this.newAlert("Connection Error", "Please check your connection");
                         });
                     }
-                }, err => {
+                }, () => {
                     u_loader.dismiss();
-                    this.newAlert("Connection Error", err.message);
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else {

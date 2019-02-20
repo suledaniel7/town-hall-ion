@@ -17,6 +17,8 @@ export class FollowersPage {
     item: any;
     imgAddress: any;
     errText: string = '';
+    username: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -27,10 +29,19 @@ export class FollowersPage {
         public address: AddressProvider,
     ) {
         this.imgAddress = this.address.getImageApi();
-        let username = this.navParams.get('username');
+        this.username = this.navParams.get('username');
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld1 = this.ldCtrl.create({content: "Loading Followers"});
         ld1.present();
-        this.rndrProv.followers(username).subscribe(data => {
+        this.rndrProv.followers(this.username).subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if(data.success){
                 this.item = {
@@ -46,9 +57,10 @@ export class FollowersPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err =>{
+        }, () =>{
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -83,7 +95,7 @@ export class FollowersPage {
             }
         }, err => {
             ld.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

@@ -29,13 +29,14 @@ export class JReqPage {
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
+        this.check(true);
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad JReqPage');
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
         this.j_username = this.journo.username;
     }
 
@@ -59,7 +60,7 @@ export class JReqPage {
         conf_alert.present();
     }
 
-    rej_confirm(){
+    rej_confirm() {
         let conf_alert = this.alCtrl.create({
             title: "Reject Journalist",
             message: `Do you want to reject ${this.journo.f_name} ${this.journo.l_name} | @${this.journo.username}?`,
@@ -79,20 +80,20 @@ export class JReqPage {
         conf_alert.present();
     }
 
-    accept(){
-        let ld1 = this.ldCtrl.create({content: "Accepting Journalist"});
+    accept() {
+        let ld1 = this.ldCtrl.create({ content: "Accepting Journalist" });
         ld1.present();
-        this.j_req.accept_j(this.j_username, this.username).subscribe(data=>{
+        this.j_req.accept_j(this.j_username, this.username).subscribe(data => {
             ld1.dismiss();
-            if(data.success){
+            if (data.success) {
                 //assign beat
-                let md1 = this.mdCtrl.create(OrgBeatSelPage, {f_name: this.journo.f_name, l_name: this.journo.l_name, username: this.journo.username, o_username: this.username});
-                md1.onDidDismiss((success)=>{
-                    if(success){
-                        this.check();
-                        this.socket.emit('accept_j', this.username);
+                let md1 = this.mdCtrl.create(OrgBeatSelPage, { f_name: this.journo.f_name, l_name: this.journo.l_name, username: this.journo.username, o_username: this.username });
+                md1.onDidDismiss((success) => {
+                    if (success) {
+                        this.check(false);
                         this.socket.emit('changed_profile', this.username);
-                        this.socket.emit('j_acc', {username: this.j_username});
+                        this.socket.emit('j_acc', { username: this.j_username });
+                        this.socket.emit('recompile', {username: this.username});
                     }
                 });
                 md1.present();
@@ -100,43 +101,57 @@ export class JReqPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, (err)=>{
+        }, () => {
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
-    reject(){
-        let ld2 = this.ldCtrl.create({content: "Rejecting Journalist"});
+    reject() {
+        let ld2 = this.ldCtrl.create({ content: "Rejecting Journalist" });
         ld2.present();
-        this.j_req.reject_j(this.j_username, this.username).subscribe(data=>{
+        this.j_req.reject_j(this.j_username, this.username).subscribe(data => {
             ld2.dismiss();
-            if(data.success){
-                this.check();
-                this.socket.emit('j_rej', {username: this.j_username});
+            if (data.success) {
+                this.check(false);
+                this.socket.emit('j_rej', { username: this.j_username });
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, (err)=>{
+        }, () => {
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
-    check(){
+    check(clarity) {
         let reqs = document.getElementsByClassName('j-req').length;
         reqs = reqs - this.requests;
         //clear this one out
-        document.getElementById(`j-req-${this.j_username}`).className = 'hidden';
-        if(reqs === 0){
+        if (!clarity) {
+            document.getElementById(`j-req-${this.j_username}`).remove();
+        }
+        if (reqs === 0) {
             //empty out
-            document.getElementById('jReqHeader').className = 'hidden';
-            document.getElementById('yJHeader').className = 'hidden';
+            if (document.getElementById('jReqHeader')) {
+                document.getElementById('jReqHeader').className = 'hidden';
+            }
+            if (document.getElementById('yJHeader')) {
+                document.getElementById('yJHeader').className = 'hidden';
+            }
+        }
+        else {
+            if (document.getElementById('jReqHeader')) {
+                document.getElementById('jReqHeader').className = 'center grey-text';
+            }
+            if (document.getElementById('yJHeader')) {
+                document.getElementById('yJHeader').className = 'center grey-text';
+            }
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

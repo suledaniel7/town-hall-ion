@@ -1,5 +1,11 @@
 <ion-content>
-    <ion-searchbar name="searchTerm" id="searchBar" (ionFocus)="focus()" (ionBlur)="blur()" (ionInput)="autofill()" (keyup.enter)="search()" [(ngModel)]="term" showCancelButton="true"></ion-searchbar>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <ion-searchbar name="searchTerm" id="searchBar" (ionFocus)="focus()" (ionBlur)="blur()" (ionInput)="autofill()"
+        (keyup.enter)="search()" [(ngModel)]="term" showCancelButton="true"></ion-searchbar>
     <div class="suggestions" id="suggDiv">
         <div class="suggestion">
             <div *ngFor="let suggestion of s_item?.suggestions">

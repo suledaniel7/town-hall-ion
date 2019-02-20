@@ -3,6 +3,11 @@
         <ion-title>Edit Account Details</ion-title>
     </ion-navbar>
 </ion-header>
+<ion-fab center middle *ngIf="errOc">
+    <button (click)="refresh()" color="light" ion-fab mini>
+        <ion-icon color="primary" name="refresh"></ion-icon>
+    </button>
+</ion-fab>
 <ion-content *ngIf="item">
     <div>
         <ion-list padding>

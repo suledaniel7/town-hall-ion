@@ -4,6 +4,14 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div class="center grey-text" *ngIf="exp">
+        {{exp}}
+    </div>
     <div class="messages" id="messages">
         <div *ngFor="let message of item?.org_msgs">
             <page-message [username]="item.user.username" [message]="message"></page-message>

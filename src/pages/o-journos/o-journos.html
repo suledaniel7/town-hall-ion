@@ -4,6 +4,11 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.pending_reqs">
         <h5 class="center grey-text" id="jReqHeader">Journalist Requests</h5>
         <ion-list>
@@ -12,8 +17,11 @@
             </div>
         </ion-list>
     </div>
+    <div class="center grey-text" *ngIf="exp">
+        {{exp}}
+    </div>
     <ion-list>
-        <h4 *ngIf="item?.pending_reqs" id="yJHeader" class="center grey-text">Your Journalists</h4>
+        <h4 *ngIf="item?.pending_reqs && item?.journos" id="yJHeader" class="center grey-text">Your Journalists</h4>
         <div class="journalists" *ngFor="let journalist of item?.journos">
             <page-o-journo [journalist]="journalist"></page-o-journo>
         </div>

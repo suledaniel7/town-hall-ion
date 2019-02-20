@@ -1,4 +1,9 @@
 <ion-content>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div class="messages" id="messages">
         <div class="utilityDiv" id="utilityDiv">{{utilityText}}</div>
         <div *ngIf="item?.sourceSelNull">
@@ -15,6 +20,10 @@
             <div class="grey-text center larger mt" *ngIf="item?.noOrgs">
                 We currently have no Organisations that report on your Legislators
             </div>
+        </div>
+        <div class="center grey-text" *ngIf="exp">
+            <br><br>
+            {{exp}}
         </div>
         <div *ngFor="let message of item?.messages">
             <page-message [username]="item.user.username" [message]="message"></page-message>

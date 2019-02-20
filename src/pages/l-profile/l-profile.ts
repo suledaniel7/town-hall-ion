@@ -17,6 +17,10 @@ import { FollowersPage } from '../followers/followers';
 export class LProfilePage {
     item: any;
     imgAddress: string;
+    exp: string;
+    plur1Text: string = "Followers";
+    plur2Text: string = "Constituents";
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -32,82 +36,116 @@ export class LProfilePage {
         this.load();
     }
 
+    refresh(){
+        this.load();
+    }
+
     ionViewDidLoad() {
         console.log('ionViewDidLoad LProfilePage');
     }
 
-    prepend(msg: any){
-        if(this.item){
-            if(this.item.messages){
+    prepend(msg: any) {
+        if (this.item) {
+            if (this.item.messages) {
                 let p_msgs = this.item.messages;
                 let c_msgs = [msg];
                 this.item.messages = c_msgs.concat(p_msgs);
+                this.plurals();
+                this.checkMsgs();
             }
         }
     }
 
-    reload(newUserDets: any){
-        if(this.item){
-            this.item.user = newUserDets;
+    checkMsgs() {
+        if (this.item) {
+            if (this.item.messages) {
+                let len = this.item.messages.length;
+                if (len > 0) {
+                    this.exp = null;
+                }
+                else {
+                    this.exp = "You have not created any Town Hall posts. Compose a post using the + icon in the lower right-hand corner of your device.";
+                }
+            }
+            else {
+                this.exp = "You have not created any Town Hall posts. Compose a post using the + icon in the lower right-hand corner of your device.";
+            }
+        }
+        else {
+            this.exp = "You have not created any Town Hall posts. Compose a post using the + icon in the lower right-hand corner of your device.";
+        }
+    }
+
+    plurals() {
+        if (this.item) {
+            if (this.item.user) {
+                let fCount = this.item.user.followersNo;
+                if (fCount === 1) {
+                    this.plur1Text = "Follower";
+                }
+                else {
+                    this.plur1Text = "Followers";
+                }
+            }
+        }
+        if (this.item) {
+            if (this.item.user) {
+                let mCount = this.item.user.const_num;
+                if (mCount === 1) {
+                    this.plur2Text = "Constituent";
+                }
+                else {
+                    this.plur2Text = "Constituents";
+                }
+            }
+        }
+    }
+
+    reload(newUserDets: any) {
+        if (this.item) {
+            this.item.user = newUserDets.user;
+            this.item.district = newUserDets.district;
+            this.plurals();
+            this.checkMsgs();
         }
     }
 
     load() {
         let loader = this.ldCtrl.create({
-            showBackdrop: true,
-            content: "Please wait...",
+            content: "Loading Profile Info",
         });
 
         loader.present();
 
         this.profileProv.l_profile_p().subscribe(data => {
-                loader.dismiss();
+            this.errOc = false;
+            loader.dismiss();
             if (data.success) {
                 this.item = data.item;
-                this.socket.on('self_message', (message: any)=>{
+                this.plurals();
+                this.checkMsgs();
+                this.socket.on('self_message', (message: any) => {
                     this.prepend(message);
                 });
-                this.socket.on('profile_changed', (ret_d: any)=>{
+                this.socket.on('profile_changed', (ret_d: any) => {
                     this.reload(ret_d.newUser);
                 });
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, (err) => {
+        }, () => {
+            this.errOc = true;
             loader.dismiss();
-            this.newAlert("Connection Error", err.message);
-            let confirmed = true;
-            let confirm = this.alertCtrl.create({
-                title: "Retry?",
-                message: "Should we try again in ten seconds?",
-                buttons: [
-                    {
-                        text: 'Yes',
-                        handler: () => {
-                            confirmed = true;
-                        }
-                    },
-                    {
-                        text: 'No',
-                        handler: () => {
-                            confirmed = false;
-                        }
-                    }
-                ]
-            });
-            confirm.present();
-            if (confirmed) {
-                setTimeout(this.load, 10000);
-            }
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
     compose() {
         let md1 = this.mdCtrl.create(LCommsPage);
-        md1.onDidDismiss((data)=>{
-            if(data.success){
-                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats});
+        md1.onDidDismiss((data) => {
+            if (data.success) {
+                this.socket.emit('message_sent', { username: data.username, timestamp: data.timestamp, beats: data.beats });
                 this.socket.emit('changed_profile', data.timestamp);
             }
         });
@@ -115,7 +153,7 @@ export class LProfilePage {
     }
 
     settings() {
-        this.navCtrl.push(SettingsPage, {u_type: 'l'});
+        this.navCtrl.push(SettingsPage, { u_type: 'l' });
     }
 
     followers() {
@@ -124,7 +162,7 @@ export class LProfilePage {
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alertCtrl.create({
             title: title,
             subTitle: text,

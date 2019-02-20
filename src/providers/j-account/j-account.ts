@@ -27,6 +27,10 @@ export class JAccountProvider {
         return this.http.post(`${this.api}/organisations/request`, {organisation: org});
     }
 
+    reason(): Observable<any> {
+        return this.http.post(`${this.api}/rejection`, {});
+    }
+
     status(): Observable<any> {
         return this.http.get(`${this.api}/j-stat`);
     }

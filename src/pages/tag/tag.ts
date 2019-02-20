@@ -26,8 +26,8 @@ export class TagPage {
             else {
                 this.newAlert("Error Loading tags", data.reason);
             }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

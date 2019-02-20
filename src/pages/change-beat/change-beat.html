@@ -18,8 +18,16 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <ion-list>
         <ion-list radio-group>
+            <div class="center grey-text" *ngIf="exp">
+                <h5>{{exp}}</h5>
+            </div>
             <div *ngFor="let state of item?.states">
                 <h4 class="center grey-text">{{state.name}}</h4>
                 <ion-list-header class="uppercase">Federal Constituencies</ion-list-header>

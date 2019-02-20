@@ -21,6 +21,7 @@ export class OrganisationsPage {
     tab2Root = SearchPage;
     tab3Root = OJournosPage;
     tab4Root = OProfilePage;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -30,9 +31,18 @@ export class OrganisationsPage {
         private ldCtrl: LoadingController,
         private profProv: ProfileProvider
     ) {
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld1 = this.ldCtrl.create({ content: "Verifying Journalists" });
         ld1.present();
         this.profProv.o_profile_r().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 if (data.pending) {
@@ -45,9 +55,10 @@ export class OrganisationsPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

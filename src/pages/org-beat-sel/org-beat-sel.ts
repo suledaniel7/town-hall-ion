@@ -14,6 +14,7 @@ export class OrgBeatSelPage {
     l_name: string;
     username: string;
     o_username: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -29,12 +30,21 @@ export class OrgBeatSelPage {
         this.username = this.navParams.get('username');
         this.o_username = this.navParams.get('o_username');
 
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         let ld1 = this.ldCtrl.create({
             content: "Loading Town Hall Districts..."
         });
 
         ld1.present();
         this.orgJProv.serve_dists().subscribe(data => {
+            this.errOc = false;
             ld1.dismiss();
             if (data.success) {
                 this.item = data;
@@ -42,9 +52,10 @@ export class OrgBeatSelPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
+            this.errOc = true;
             ld1.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -81,15 +92,16 @@ export class OrgBeatSelPage {
         this.orgJProv.assign_j(this.username, this.o_username, code).subscribe(data => {
             ld2.dismiss();
             if (data.success) {
+                this.socket.emit('accept_j', {o_username: this.o_username, j_username: this.username});
                 this.socket.emit('assign_j', this.username);
                 this.closeModal(true);
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
+        }, () => {
             ld2.dismiss();
-            this.newAlert("Connection Error", err.message);
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

@@ -17,6 +17,7 @@ export class JCommsPage {
     charCount: any = 0;
     item: any;
     imgAddress: string;
+    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -27,7 +28,16 @@ export class JCommsPage {
         private viewCtrl: ViewController
     ) {
         this.imgAddress = this.address.getImageApi();
+        this.load();
+    }
+
+    refresh(){
+        this.load();
+    }
+
+    load(){
         this.messageProv.load_image().subscribe(data => {
+            this.errOc = false;
             if (data.success) {
                 this.item = {
                     avatar: data.avatar
@@ -36,8 +46,9 @@ export class JCommsPage {
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, err => {
-            this.newAlert("Connection Error", err.message);
+        }, () => {
+            this.errOc = true;
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
@@ -72,7 +83,7 @@ export class JCommsPage {
                     this.newAlert("Error", data.reason);
                 }
             }, err => {
-                this.newAlert("Connection Error", err.message);
+                this.newAlert("Connection Error", "Please check your connection");
             });
         }
     }

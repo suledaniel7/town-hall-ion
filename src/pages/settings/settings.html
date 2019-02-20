@@ -12,6 +12,13 @@
         </ion-item>
     </ion-item-group>
     <ion-item-group>
+        <ion-item-divider color="light">{{p_type}}</ion-item-divider>
+        <ion-item (click)="photo()">
+            Change {{p_type}}
+            <ion-icon name="arrow-dropright" item-end></ion-icon>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group>
         <ion-item-divider class="center" color="light"></ion-item-divider>
         <ion-item class="center">
             <button (click)="logout()" color="secondary" ion-button>

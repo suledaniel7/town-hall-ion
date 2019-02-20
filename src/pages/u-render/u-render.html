@@ -4,12 +4,15 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <div *ngIf="errOc">
-        <button ion-button full>Reload</button>
-    </div>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
     <div *ngIf="item?.user">
         <div class="profileDets">
-            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar" class="center-block profileAvatar">
+            <img src="{{imgAddress}}/{{item.user.avatar}}" alt="{{item.user.f_name}}'s Avatar"
+                class="center-block profileAvatar">
             <h3 class="center">{{item.user.f_name}}</h3>
             <h6 class="center grey-text">@{{item.user.username}}</h6>
         </div>
@@ -24,9 +27,11 @@
             <br>
             <strong>State: </strong>{{item.user.state}}
             <br>
-            <strong>Federal Constituency: </strong> <span class="primary" (click)="render_profile(item.user.fed_const)">{{item.f_c_name}}</span>
+            <strong>Federal Constituency: </strong> <span class="primary"
+                (click)="render_profile(item.user.fed_const)">{{item.f_c_name}}</span>
             <br>
-            <strong>Senatorial District: </strong> <span class="primary" (click)="render_profile(item.user.sen_dist)">{{item.s_d_name}}</span>
+            <strong>Senatorial District: </strong> <span class="primary"
+                (click)="render_profile(item.user.sen_dist)">{{item.s_d_name}}</span>
             <br>
             <strong>Joined on: </strong>{{item.user.date_joined}}
         </div>
