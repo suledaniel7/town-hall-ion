@@ -28,6 +28,7 @@ export class MessagePage {
     mentions: Array<string> = [];
     elems: Array<any> = [];
     imgAddress: string;
+    isNews: boolean;
 
     constructor(
         public navCtrl: NavController,

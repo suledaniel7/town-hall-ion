@@ -1,3 +1,9 @@
 page-o-journo {
+    .card-md h2.tag {
+        color: color($colors, primary);
+    }
 
+    .card-md h3.tag {
+        color: color($colors, primary);
+    }
 }

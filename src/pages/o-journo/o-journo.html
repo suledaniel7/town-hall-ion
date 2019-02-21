@@ -4,9 +4,9 @@
             <ion-avatar item-start>
                 <img src="{{imgAddress}}/{{journalist.avatar}}" alt="{{journalist.f_name}}'s Avatar">
             </ion-avatar>
-            <h2>{{journalist.full_name}}</h2>
+            <h2 class="tag" (click)="blind_profile(journalist.username)">{{journalist.full_name}}</h2>
             <h3>{{journalist.beatDets.name}}</h3>
-            <h3>{{journalist.beatDets.type}}{{journalist.beatDets.rep}}</h3>
+            <h3 class="tag" (click)="blind_profile(journalist.beat)">{{journalist.beatDets.type}}{{journalist.beatDets.rep}}</h3>
             <h3>Last posted: <span class="grey-text" id="time-j-{{journalist.username}}">Loading...</span></h3>
         </ion-item>
         <ion-item-options side="right">

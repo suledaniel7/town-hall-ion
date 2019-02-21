@@ -5,7 +5,13 @@ import { Socket } from 'ngx-socket-io';
 
 import { AddressProvider } from '../../providers/address/address';
 import { OrgJsProvider } from '../../providers/org-js/org-js';
+import { RenderProvider } from '../../providers/render/render';
+
 import { OrgReassignBeatPage } from '../org-reassign-beat/org-reassign-beat';
+import { JRenderPage } from '../j-render/j-render';
+import { LRenderPage } from '../l-render/l-render';
+import { ORenderPage } from '../o-render/o-render';
+import { URenderPage } from '../u-render/u-render';
 
 @IonicPage()
 @Component({
@@ -26,6 +32,7 @@ export class OJournoPage {
         private alCtrl: AlertController,
         private jReqProv: OrgJsProvider,
         private mdCtrl: ModalController,
+        private rndrProv: RenderProvider,
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
@@ -140,6 +147,37 @@ export class OJournoPage {
                 document.getElementById('yJHeader').className = 'hidden';
             }
         }
+    }
+
+    blind_profile(username) {
+        //find u_type
+        //push page or this.newAlert error
+        let ld = this.ldCtrl.create({ content: "Loading User" });
+        ld.present();
+        this.rndrProv.req_type(username).subscribe(data => {
+            ld.dismiss();
+            if (data.success) {
+                let u_type = data.u_type;
+                if (u_type == 'j') {
+                    this.navCtrl.push(JRenderPage, { username: username });
+                }
+                else if (u_type == 'l') {
+                    this.navCtrl.push(LRenderPage, { code: username });
+                }
+                else if (u_type == 'o') {
+                    this.navCtrl.push(ORenderPage, { username: username });
+                }
+                else if (u_type == 'u') {
+                    this.navCtrl.push(URenderPage, { username: username });
+                }
+            }
+            else {
+                this.newAlert("Error", data.reason);
+            }
+        }, () => {
+            ld.dismiss();
+            this.newAlert("Connection Error", "Please check your connection");
+        });
     }
 
     newAlert(title: string, text: string) {

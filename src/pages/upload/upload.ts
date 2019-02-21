@@ -46,31 +46,45 @@ export class UploadPage {
 
     select() {
         this.fc.open().then((uri) => {
-            const fileTransfer: FileTransferObject = this.transfer.create();
-            let options: FileUploadOptions = {
-                fileKey: 'avatar',
-                fileName: 'avatar'
+            let lt = uri.length;
+            let li = uri.lastIndexOf('.') + 1;
+            let ext = uri.slice(li, lt);
+            ext = ext.toLowerCase();
+            let valid = false;
+            if(ext === 'jpg' || ext === 'jpeg' || ext === 'png'){
+                valid = true;
+            }
+            if(valid){
+                const fileTransfer: FileTransferObject = this.transfer.create();
+                let options: FileUploadOptions = {
+                    fileKey: 'avatar',
+                    fileName: 'avatar'
+                }
+                
+                let ld1 = this.ldCtrl.create({
+                    content: "Processing Image"
+                });
+    
+                ld1.present();
+                fileTransfer.upload(uri, this.server_address+"/upload_img", options).then((data)=>{
+                    ld1.dismiss();
+                    let data_obj = JSON.parse(data.response);
+                    if(data_obj.success){
+                        this.fileUri = this.img_address + '/' + data_obj.file.uri;
+                        this.final_obj = data_obj.file;
+                    }
+                    else {
+                        this.newAlert("Error", data_obj.reason);
+                    }
+                }).catch((err)=>{
+                    ld1.dismiss();
+                    this.newAlert("Error", err);
+                });
+            }
+            else {
+                this.newAlert("Unsupported file type", "At this time, only jpeg and png images are supported");
             }
             
-            let ld1 = this.ldCtrl.create({
-                content: "Processing Image",
-            });
-
-            ld1.present();
-            fileTransfer.upload(uri, this.server_address+"/upload_img", options).then((data)=>{
-                ld1.dismiss();
-                let data_obj = JSON.parse(data.response);
-                if(data_obj.success){
-                    this.fileUri = this.img_address + '/' + data_obj.file.uri;
-                    this.final_obj = data_obj.file;
-                }
-                else {
-                    this.newAlert("Error", data_obj.reason);
-                }
-            }).catch((err)=>{
-                ld1.dismiss();
-                this.newAlert("Error", err);
-            });
         }).catch((err) => {
             this.newAlert("Error", err);
         });

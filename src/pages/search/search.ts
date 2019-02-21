@@ -46,12 +46,44 @@ export class SearchPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad SearchPage');
+        this.prefill();
+    }
+
+    prefill(){
+        this.searchProv.autofill(this.term).subscribe(data => {
+            if (data.success) {
+                let lt = data.item.length;
+                for(let i=0; i<lt; i++){
+                    let item = data.item[i];
+                    if(item.type === 'people'){
+                        item.name = '@'+item.name;
+                    }
+                    else if(item.type === 'tag'){
+                        item.name = '#'+item.name;
+                    }
+                }
+                this.s_item = {
+                    suggestions: data.item
+                }
+            }
+        });
+        document.getElementById('suggDiv').className = 'suggestions hidden';
     }
 
     autofill() {
         document.getElementById('suggDiv').className = 'suggestions';
         this.searchProv.autofill(this.term).subscribe(data => {
             if (data.success) {
+                let lt = data.item.length;
+                for(let i=0; i<lt; i++){
+                    let item = data.item[i];
+                    if(item.type === 'people'){
+                        item.name = '@'+item.name;
+                    }
+                    else if(item.type === 'tag'){
+                        item.name = '#'+item.name;
+                    }
+                }
                 this.s_item = {
                     suggestions: data.item
                 }
@@ -160,12 +192,15 @@ export class SearchPage {
     }
     g_curr() {
         this.g_active = true;
+        this.search();
     }
     p_curr() {
         this.p_active = true;
+        this.search();
     }
     t_curr() {
         this.t_active = true;
+        this.search();
     }
 
     load_trends() {

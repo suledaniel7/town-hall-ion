@@ -3,8 +3,8 @@
         <ion-avatar item-start>
             <img src="{{imgAddress}}/{{message.sender_avatar}}" alt="Avatar">
         </ion-avatar>
-        <h2 (click)="profile(message.sender, message.ac_type)">{{message.sender_name}}</h2>
-        <p>{{message.sender_position}}</p>
+        <h2 (click)="profile(message.sender, message.ac_type)">{{message.sender_name}}&nbsp;&nbsp;<ion-icon *ngIf="message.verified" name="checkmark-circle" color="primary"></ion-icon></h2>
+        <p><span *ngIf="message.isNews">News</span><span *ngIf="!message.isNews">Opinion</span> | {{message.sender_position}}</p>
     </ion-item>
     <ion-card-content>
         <p id="p-{{message.m_timestamp}}" [innerHTML]="message.message"></p>
