@@ -15,11 +15,15 @@
                 class="center-block profileAvatar">
             <h3 class="center">{{item.user.full_name}}</h3>
             <ion-row>
-                <ion-col></ion-col>
+                <ion-col *ngIf="item.canFollow"></ion-col>
                 <ion-col *ngIf="item.canFollow">
                     <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
                 </ion-col>
-                <ion-col></ion-col>
+                <ion-col class="center">
+                    <button ion-button icon-start clear small (click)="dm(item.user.username)">
+                        <ion-icon name="mail"></ion-icon>
+                    </button>
+                </ion-col>
             </ion-row>
             <ion-row class="center">
                 <ion-col>

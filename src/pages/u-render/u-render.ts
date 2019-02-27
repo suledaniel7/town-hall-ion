@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 
 import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
+
 import { LRenderPage } from '../l-render/l-render';
+import { ChatPage } from '../chat/chat';
 
 @IonicPage()
 @Component({
@@ -15,6 +17,7 @@ export class URenderPage {
     username: string;
     imgAddress: string;
     errOc: boolean = false;
+    c_username: string;
 
     constructor(
         public navCtrl: NavController,
@@ -38,6 +41,7 @@ export class URenderPage {
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
+                this.c_username = data.item.username;
             }
             else {
                 this.newAlert("Error", data.reason);
@@ -53,10 +57,18 @@ export class URenderPage {
         this.load();
     }
 
+    render_profile(username) {
+        this.navCtrl.push(LRenderPage, { code: username });
+    }
+
     ionViewDidLoad() {
         console.log('ionViewDidLoad URenderPage');
     }
 
+    dm(recepient: string){
+        this.navCtrl.push(ChatPage, {sender: this.c_username, recepient: recepient});
+    }
+    
     newAlert(title: string, text: string) {
         let newAl = this.alertCtrl.create({
             title: title,
@@ -65,9 +77,5 @@ export class URenderPage {
         });
 
         return newAl.present();
-    }
-
-    render_profile(username) {
-        this.navCtrl.push(LRenderPage, { code: username });
     }
 }

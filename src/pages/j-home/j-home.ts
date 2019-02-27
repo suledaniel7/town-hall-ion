@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, App } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { Socket } from 'ngx-socket-io';
 
 import { ProfileProvider } from '../../providers/profile/profile';
+import { SignedInProvider } from '../../providers/signed-in/signed-in';
 
 import { JCommsPage } from "../j-comms/j-comms";
 import { JOrgSelPage } from '../j-org-sel/j-org-sel';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -16,6 +19,8 @@ export class JHomePage {
     item: any;
     exp: string;
     errOc: boolean = false;
+    preloaded: boolean = false;
+    fin_preloaded: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -23,13 +28,36 @@ export class JHomePage {
         private profProv: ProfileProvider,
         private alCtrl: AlertController,
         private mdCtrl: ModalController,
+        private signedIn: SignedInProvider,
         private socket: Socket,
-        private app: App
+        private app: App,
+        private storage: Storage
     ) {
-        this.load();
+        this.preload();
     }
 
-    refresh(){
+    authorize() {
+        this.signedIn.authorized('j').subscribe((data) => {
+            if (!data) {
+                this.storage.set('signed_in', JSON.stringify(null)).then(() => {
+                    this.app.getRootNav().setRoot(HomePage);
+                    this.navCtrl.popToRoot();
+                }).catch((err) => {
+                    this.newAlert("Error", err);
+                });
+            }
+            else if (!data.success) {
+                this.storage.set('signed_in', JSON.stringify(null)).then(() => {
+                    this.app.getRootNav().setRoot(HomePage);
+                    this.navCtrl.popToRoot();
+                }).catch((err) => {
+                    this.newAlert("Error", err);
+                });
+            }
+        });
+    }
+
+    refresh() {
         this.load();
     }
 
@@ -108,12 +136,33 @@ export class JHomePage {
         }
     }
 
+    preload() {
+        this.storage.get('home_data').then((val) => {
+            let h_data = JSON.parse(val);
+            if (h_data) {
+                if (h_data.page = 'j') {
+                    if (h_data.item) {
+                        this.item = h_data.item;
+                        this.checkMsgs();
+                        this.preloaded = true;
+                    }
+                }
+            }
+            this.load();
+        }).catch(err => {
+            this.newAlert("Error", err);
+            this.load();
+        });
+    }
+
     load() {
         this.profProv.j_profile_h().subscribe(data => {
             this.errOc = false;
             this.socket.disconnect();
             this.socket.connect();
             if (data.success) {
+                this.authorize();
+                this.fin_preloaded = false;
                 this.item = data.item;
                 this.checkMsgs();
                 this.socket.on('msg', (m_item: any) => {
@@ -167,12 +216,33 @@ export class JHomePage {
                 if (!data.item.free) {
                     this.item.exp = "Your request to " + data.item.user.orgName + " is still pending.";
                 }
+                let tmp_item = JSON.parse(JSON.stringify(this.item));
+                let tmp_msgs = tmp_item.beat_msgs;
+                let len = tmp_msgs.length;
+                if (len > 50) {
+                    tmp_msgs = tmp_msgs.slice(0, 50);
+                }
+                tmp_item.beat_msgs = tmp_msgs;
+                this.storage.set('home_data', JSON.stringify({ page: 'j', item: tmp_item })).then(() => {
+                    this.preloaded = false;
+                }).catch((err) => {
+                    this.preloaded = false;
+                    this.newAlert("Error", err);
+                });
             }
             else {
+                if(this.preloaded){
+                    this.fin_preloaded = true;
+                }
                 this.newAlert("Error", data.reason);
             }
         }, () => {
-            this.errOc = true;
+            if(this.preloaded){
+                this.fin_preloaded = true;
+            }
+            if (!this.preloaded) {
+                this.errOc = true;
+            }
             this.newAlert("Connection Error", "Please check your connection");
         });
     }

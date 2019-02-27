@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { Socket } from 'ngx-socket-io';
 
 import { SignupProvider } from "../../providers/signup/signup";
@@ -37,7 +38,8 @@ export class USignupPage {
         private signupProv: SignupProvider,
         private ldCtrl: LoadingController,
         private alCtrl: AlertController,
-        private socket: Socket
+        private socket: Socket,
+        private storage: Storage
     ) {
         this.load_states();
     }
@@ -108,8 +110,14 @@ export class USignupPage {
                                     if (resp.success) {
                                         this.socket.emit('changed_profile', this.sen_dist);
                                         this.socket.emit('changed_profile', this.fed_const);
-                                        this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
-                                        this.navCtrl.popToRoot();
+                                        this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
+                                            this.navCtrl.popToRoot();
+                                        }).catch(err => {
+                                            this.newAlert("Error", err);
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
+                                            this.navCtrl.popToRoot();
+                                        });
                                     }
                                     else {
                                         this.newAlert("Signup Error", resp.reason);

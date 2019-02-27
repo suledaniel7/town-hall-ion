@@ -1,0 +1,11 @@
+page-chat {
+    textarea {
+        resize: none;
+        height: 1.5em;
+    }
+
+    .fixed {
+        position: absolute;
+        bottom: 0;
+    }
+}

@@ -1,0 +1,15 @@
+<ion-card padding>
+    <ion-card-header class="center">
+        <strong>{{dm.sender_name}}</strong>
+    </ion-card-header>
+    <ion-card-content>
+        {{dm.text}}
+    </ion-card-content>
+    <ion-row class="right">
+        <ion-col>
+            <ion-note>
+                {{dm.time_sent}} | {{dm.date_sent}}
+            </ion-note>
+        </ion-col>
+    </ion-row>
+</ion-card>

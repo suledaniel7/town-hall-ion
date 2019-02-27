@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Conversations</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-fab center middle *ngIf="errOc">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div>
+        <ion-list *ngFor="let convo of item?.conversations">
+            <ion-item (click)="converse(convo.c_username)">
+                <ion-avatar item-start>
+                    <img src="{{imgAddress}}/{{convo.act_avatar}}">
+                </ion-avatar>
+                <h2>{{convo.act_name}}</h2>
+                <p>{{convo.message.text}}</p>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>

@@ -67,19 +67,4 @@ export class ProfileProvider {
         return this.http.get(`${this.api}/?pg=profile`);
     }
 
-    u_home_l_connect(username: string) {
-        // this.socket.connect().then(()=>{
-        //     this.socket.emit('conn', { username: username });
-        // });
-    }
-
-    // u_home_l_update(): Observable<any> {
-    //     let observable = new Observable(observer => {
-    //         this.socket.on('message', (data: any) => {
-    //             observer.next(data);
-    //         });
-    //     });
-    //     return observable;
-    // }
-
 }

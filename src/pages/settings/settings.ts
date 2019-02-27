@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { LogoutProvider } from "../../providers/logout/logout";
 
@@ -24,7 +25,8 @@ export class SettingsPage {
         public navParams: NavParams,
         public app: App,
         private logProv: LogoutProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private storage: Storage
     ) {
         this.u_type = this.navParams.get('u_type');
         if (this.u_type === 'o') {
@@ -51,15 +53,23 @@ export class SettingsPage {
         }
     }
 
-    photo(){
-        this.navCtrl.push(UpdateAvatarPage, {photo_type: this.p_type});
+    photo() {
+        this.navCtrl.push(UpdateAvatarPage, { photo_type: this.p_type });
     }
 
     logout() {
         this.logProv.logout().subscribe(data => {
             if (data.success) {
-                this.app.getRootNav().setRoot(SigninPage);
-                this.navCtrl.popToRoot();
+                this.storage.set('signed_in', JSON.stringify(null)).then(() => {
+                    this.storage.set('home_data', JSON.stringify(null)).then(() => {
+                        this.app.getRootNav().setRoot(SigninPage);
+                        this.navCtrl.popToRoot();
+                    }).catch(ret_err => {
+                        this.newAlert("Error", ret_err);
+                    });
+                }).catch(err => {
+                    this.newAlert("Error", err);
+                });
             }
             else {
                 this.newAlert("Internal Error", "Something went wrong while logging you out. Please restart the app");

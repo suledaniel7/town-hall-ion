@@ -4,6 +4,14 @@
             <ion-icon color="primary" name="refresh"></ion-icon>
         </button>
     </ion-fab>
+    <ion-fab center top *ngIf="fin_preloaded">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div *ngIf="fin_preloaded" class="space">
+
+    </div>
     <div *ngIf="!item?.free" class="center">
         <h4 class="grey-text">{{item?.exp}}</h4>
     </div>

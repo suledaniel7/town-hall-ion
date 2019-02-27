@@ -15,4 +15,8 @@ export class SignedInProvider {
         return this.http.get(`${this.api}/signed-in`);
     }
 
+    authorized(s_type: string): Observable<any> {
+        return this.http.post(`${this.api}/authorized`, {s_type: s_type});
+    }
+
 }

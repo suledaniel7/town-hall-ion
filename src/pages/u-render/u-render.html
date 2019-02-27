@@ -15,6 +15,13 @@
                 class="center-block profileAvatar">
             <h3 class="center">{{item.user.f_name}}</h3>
             <h6 class="center grey-text">@{{item.user.username}}</h6>
+            <ion-row>
+                <ion-col class="center">
+                    <button ion-button icon-start clear small (click)="dm(item.user.username)">
+                        <ion-icon name="mail"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
         </div>
         <br>
         <div *ngIf="item.user.bio" class="bioDiv center">

@@ -8,6 +8,7 @@ import { AddressProvider } from '../../providers/address/address';
 import { JCommsPage } from "../j-comms/j-comms";
 import { SettingsPage } from '../settings/settings';
 import { FollowersPage } from '../followers/followers';
+import { ChatsPage } from '../chats/chats';
 
 @IonicPage()
 @Component({
@@ -184,6 +185,10 @@ export class JProfilePage {
         if (this.item.user.username) {
             this.navCtrl.push(FollowersPage, { username: this.item.user.username });
         }
+    }
+
+    dms(){
+        this.navCtrl.push(ChatsPage);
     }
 
     newAlert(title: string, text: string) {

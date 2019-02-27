@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { SignupProvider } from '../../providers/signup/signup';
 import { BioPage } from '../bio/bio';
@@ -25,7 +26,8 @@ export class OSignupPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
-        private signupProv: SignupProvider
+        private signupProv: SignupProvider,
+        private storage: Storage
     ) {
     }
 
@@ -83,8 +85,14 @@ export class OSignupPage {
                             else {
                                 this.signupProv.signup_o(this.name, this.username, this.email, this.email_corr, this.password, this.id).subscribe(data => {
                                     if (data.success) {
-                                        this.navCtrl.setRoot(BioPage, { u_type: 'o', photo_type: 'Logo' });
-                                        this.navCtrl.popToRoot();
+                                        this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'o', photo_type: 'Logo' });
+                                            this.navCtrl.popToRoot();
+                                        }).catch(err => {
+                                            this.err = err;
+                                            this.navCtrl.setRoot(BioPage, { u_type: 'o', photo_type: 'Logo' });
+                                            this.navCtrl.popToRoot();
+                                        });
                                     }
                                     else {
                                         this.err = data.reason;

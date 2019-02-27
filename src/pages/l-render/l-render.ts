@@ -6,6 +6,7 @@ import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
 
 import { FollowersPage } from '../followers/followers';
+import { ChatPage } from '../chat/chat';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class LRenderPage {
     plur1Text: string = "Constituents";
     plur2Text: string = "Followers";
     errOc: boolean = false;
+    c_username: string;
 
     constructor(
         public navCtrl: NavController,
@@ -50,6 +52,7 @@ export class LRenderPage {
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
+                this.c_username = data.item.username;
                 this.plurals();
                 
                 if (this.item.following) {
@@ -153,6 +156,10 @@ export class LRenderPage {
                 }
             }
         }
+    }
+
+    dm(recepient: string){
+        this.navCtrl.push(ChatPage, {sender: this.c_username, recepient: recepient});
     }
 
     newAlert(title: string, text: string){

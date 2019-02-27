@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ModalController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { SignedInProvider } from "../../providers/signed-in/signed-in";
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -12,6 +13,7 @@ import { FreelancersPage } from "../freelancers/freelancers";
 import { JournalistsPage } from "../journalists/journalists";
 import { OrganisationsPage } from "../organisations/organisations";
 import { LegislatorsPage } from "../legislators/legislators";
+import { OrgBeatSelPage } from '../org-beat-sel/org-beat-sel';
 
 @Component({
     selector: 'page-home',
@@ -24,43 +26,71 @@ export class HomePage {
     constructor(
         public navCtrl: NavController,
         private profProv: ProfileProvider,
-        private ldCtrl: LoadingController,
         private signedIn: SignedInProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private mdCtrl: ModalController,
+        private storage: Storage
     ) {
-        this.load();
+        this.preload();
     }
 
-    refresh(){
-        this.load();
+    refresh() {
+        this.preload();
+    }
+
+    preload() {
+        this.storage.get('signed_in').then((val) => {
+            let signed_in = JSON.parse(val);
+            if (signed_in) {
+                if (signed_in.status) {
+                    let u_type = signed_in.u_type;
+                    if (u_type === 'u') {
+                        this.navCtrl.setRoot(UsersPage);
+                        this.navCtrl.popToRoot();
+                    }
+                    else if (u_type === 'j') {
+                        this.navCtrl.setRoot(JournalistsPage);
+                        this.navCtrl.popToRoot();
+                    }
+                    else if (u_type === 'l') {
+                        this.navCtrl.setRoot(LegislatorsPage);
+                        this.navCtrl.popToRoot();
+                    }
+                    else if (u_type === 'o') {
+                        this.navCtrl.setRoot(OrganisationsPage);
+                        this.navCtrl.popToRoot();
+                    }
+                    else if (u_type === 'f') {
+                        this.navCtrl.setRoot(FreelancersPage);
+                        this.navCtrl.popToRoot();
+                    }
+                    else {
+                        this.load();
+                    }
+                }
+                else {
+                    this.load();
+                }
+            }
+            else {
+                this.load();
+            }
+        }).catch(err => {
+            this.newAlert("Error", err);
+        });
+
     }
 
     load() {
-        let loader = this.ldCtrl.create({
-            showBackdrop: true,
-            content: "Please wait...",
-        });
-
-        loader.present();
-
         this.signedIn.isSignedIn().subscribe(data => {
             this.errOc = false;
             if (data.active) {
-                loader.dismiss();
                 let u_type = data.u_type;
                 if (u_type == 'u') {
                     this.navCtrl.setRoot(UsersPage);
                 }
                 else if (u_type == 'j') {
-                    //check if acc is complete. In near-prod, don't localstorage.signedIn until has selected.
-                    //in fact, add a third parameter telling localstorage what page to go to... well, a second, I guess
-                    let u_loader = this.ldCtrl.create({
-                        content: "Verifying Account Status"
-                    });
-
-                    u_loader.present();
                     this.profProv.j_profile_v().subscribe(data => {
-                        u_loader.dismiss();
                         if (data.complete) {
                             if (data.redirectTo == 'm') {
                                 this.navCtrl.setRoot(JournalistsPage);
@@ -80,7 +110,27 @@ export class HomePage {
                     });
                 }
                 else if (u_type == 'o') {
-                    this.navCtrl.setRoot(OrganisationsPage);
+                    this.profProv.o_profile_r().subscribe(data => {
+                        if (data.success) {
+                            if (data.pending) {
+                                //set to req
+                                let md1 = this.mdCtrl.create(OrgBeatSelPage, { f_name: data.journo.f_name, l_name: data.journo.l_name, username: data.journo.username, o_username: data.user.username });
+
+                                md1.present();
+                                md1.onDidDismiss((success) => {
+                                    if (success) {
+                                        this.navCtrl.setRoot(OrganisationsPage);
+                                    }
+                                    else {
+                                        this.newAlert("Error", "An error occured. Please try again");
+                                    }
+                                });
+                            }
+                            else {
+                                this.navCtrl.setRoot(OrganisationsPage);
+                            }
+                        }
+                    });
                 }
                 else if (u_type == 'l') {
                     this.navCtrl.setRoot(LegislatorsPage);
@@ -91,12 +141,10 @@ export class HomePage {
                 this.navCtrl.popToRoot();
             }
             else {
-                loader.dismiss();
                 this.navCtrl.setRoot(SigninPage);
                 this.navCtrl.popToRoot();
             }
         }, () => {
-            loader.dismiss();
             this.errOc = true;
             this.err = "Connection Error";
         });

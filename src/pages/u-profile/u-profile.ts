@@ -7,6 +7,7 @@ import { AddressProvider } from '../../providers/address/address';
 
 import { LRenderPage } from '../l-render/l-render';
 import { SettingsPage } from '../settings/settings';
+import { ChatsPage } from '../chats/chats';
 
 @IonicPage()
 @Component({
@@ -82,6 +83,10 @@ export class UProfilePage {
 
     settings() {
         this.navCtrl.push(SettingsPage, {u_type: 'u'});
+    }
+
+    dms(){
+        this.navCtrl.push(ChatsPage);
     }
 
     newAlert(title: string, text: string){

@@ -9,13 +9,17 @@ import { FilePath } from "@ionic-native/file-path";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { HttpClientModule } from '@angular/common/http';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+import { IonicStorageModule } from "@ionic/storage";
 
 import { MyApp } from './app.component';
 import { HomePage } from "../pages/home/home";
 import { BioPage } from "../pages/bio/bio";
 import { ChangeBeatPage } from "../pages/change-beat/change-beat";
+import { ChatPage } from "../pages/chat/chat";
+import { ChatsPage } from "../pages/chats/chats";
 import { CommentPage } from "../pages/comment/comment";
 import { ConversationPage } from "../pages/conversation/conversation";
+import { DmPage } from "../pages/dm/dm";
 import { EditCommentPage } from "../pages/edit-comment/edit-comment";
 import { EditMessagePage } from "../pages/edit-message/edit-message";
 import { FHomePage } from "../pages/f-home/f-home";
@@ -84,9 +88,10 @@ import { UploadProvider } from '../providers/upload/upload';
 import { SettingsProvider } from '../providers/settings/settings';
 import { ServeProvider } from '../providers/serve/serve';
 import { OrgJsProvider } from '../providers/org-js/org-js';
+import { DmProvider } from '../providers/dm/dm';
 
-// const config: SocketIoConfig = {url: 'http://192.168.43.55:8095', options: {}};
-const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
+// const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
 
 @NgModule({
     declarations: [
@@ -94,8 +99,11 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         HomePage,
         BioPage,
         ChangeBeatPage,
+        ChatPage,
+        ChatsPage,
         CommentPage,
         ConversationPage,
+        DmPage,
         EditCommentPage,
         EditMessagePage,
         FHomePage,
@@ -153,6 +161,7 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         HttpClientModule,
         IonicModule.forRoot(MyApp),
         SocketIoModule.forRoot(config),
+        IonicStorageModule.forRoot()
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -160,8 +169,11 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         HomePage,
         BioPage,
         ChangeBeatPage,
+        ChatPage,
+        ChatsPage,
         CommentPage,
         ConversationPage,
+        DmPage,
         EditCommentPage,
         EditMessagePage,
         FHomePage,
@@ -228,16 +240,17 @@ const config: SocketIoConfig = {url: 'http://127.0.0.1:8095', options: {}};
         ProfileProvider,
         SignedInProvider,
         LogoutProvider,
-    JAccountProvider,
-    SearchProvider,
-    MessageProvider,
-    RenderProvider,
-    ConversationProvider,
-    AddressProvider,
-    UploadProvider,
-    SettingsProvider,
-    ServeProvider,
-    OrgJsProvider
+        JAccountProvider,
+        SearchProvider,
+        MessageProvider,
+        RenderProvider,
+        ConversationProvider,
+        AddressProvider,
+        UploadProvider,
+        SettingsProvider,
+        ServeProvider,
+        OrgJsProvider,
+    DmProvider
     ]
 })
 export class AppModule { }

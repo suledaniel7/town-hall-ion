@@ -1,9 +1,17 @@
 <ion-content>
-    <ion-fab center middle *ngIf="errOc">
+    <ion-fab center middle *ngIf="errOc && !fin_preloaded">
         <button (click)="refresh()" color="light" ion-fab mini>
             <ion-icon color="primary" name="refresh"></ion-icon>
         </button>
     </ion-fab>
+    <ion-fab center top *ngIf="fin_preloaded">
+        <button (click)="refresh()" color="light" ion-fab mini>
+            <ion-icon color="primary" name="refresh"></ion-icon>
+        </button>
+    </ion-fab>
+    <div *ngIf="fin_preloaded" class="space">
+
+    </div>
     <div class="messages" id="messages">
         <div class="utilityDiv" id="utilityDiv">{{utilityText}}</div>
         <div *ngIf="item?.sourceSelNull">

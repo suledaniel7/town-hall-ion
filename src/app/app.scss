@@ -105,10 +105,6 @@
     border-bottom: none;
 }
 
-textarea {
-    height: 30vh;
-}
-
 .followBtn {
     height: 1.75em;
     max-width: 150px;
@@ -155,4 +151,12 @@ textarea {
 
 .userDetsDiv {
     line-height: 2em;
+}
+
+.space {
+    margin-bottom: 70px;
+}
+
+textarea {
+    resize: none;
 }

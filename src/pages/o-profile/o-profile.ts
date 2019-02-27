@@ -8,6 +8,7 @@ import { AddressProvider } from '../../providers/address/address';
 import { OCommsPage } from "../o-comms/o-comms";
 import { SettingsPage } from '../settings/settings';
 import { FollowersPage } from '../followers/followers';
+import { ChatsPage } from '../chats/chats';
 
 @IonicPage()
 @Component({
@@ -159,6 +160,10 @@ export class OProfilePage {
         if (this.user.username) {
             this.navCtrl.push(FollowersPage, { username: this.user.username });
         }
+    }
+
+    dms(){
+        this.navCtrl.push(ChatsPage);
     }
 
     newAlert(title: string, text: string) {

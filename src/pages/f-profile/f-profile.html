@@ -11,6 +11,13 @@
             <h3 class="center">{{item.user.full_name}}</h3>
             <ion-row class="center">
                 <ion-col>
+                    <button ion-button icon-start clear small (click)="dms()">
+                        <ion-icon name="mail-open"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row class="center">
+                <ion-col>
                     <strong>
                         {{item.user.beatDets.name}}
                     </strong>

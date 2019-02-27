@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { SignupProvider } from "../../providers/signup/signup";
 
@@ -24,7 +25,8 @@ export class JSignupPage {
         public navParams: NavParams,
         private signupProv: SignupProvider,
         private ldCtrl: LoadingController,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private storage: Storage
     ) {
     }
 
@@ -58,12 +60,24 @@ export class JSignupPage {
                                     u_loader.dismiss();
                                     if (data.success) {
                                         if (this.ac_type == 'm') {
-                                            this.navCtrl.setRoot(BioPage, { u_type: 'j', photo_type: 'Avatar' });
-                                            this.navCtrl.popToRoot();
+                                            this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
+                                                this.navCtrl.setRoot(BioPage, { u_type: 'j', photo_type: 'Avatar' });
+                                                this.navCtrl.popToRoot();
+                                            }).catch(err => {
+                                                this.newAlert("Error", err);
+                                                this.navCtrl.setRoot(BioPage, { u_type: 'j', photo_type: 'Avatar' });
+                                                this.navCtrl.popToRoot();
+                                            });
                                         }
                                         else {
-                                            this.navCtrl.setRoot(BioPage, { u_type: 'f', photo_type: 'Avatar' });
-                                            this.navCtrl.popToRoot();
+                                            this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
+                                                this.navCtrl.setRoot(BioPage, { u_type: 'f', photo_type: 'Avatar' });
+                                                this.navCtrl.popToRoot();
+                                            }).catch(err => {
+                                                this.newAlert("Error", err);
+                                                this.navCtrl.setRoot(BioPage, { u_type: 'f', photo_type: 'Avatar' });
+                                                this.navCtrl.popToRoot();
+                                            });
                                         }
                                     }
                                     else {
@@ -115,7 +129,7 @@ export class JSignupPage {
         }
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             subTitle: text,

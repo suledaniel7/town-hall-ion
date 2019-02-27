@@ -16,7 +16,6 @@ export class FreelancersPage {
     tab1Root = FHomePage;
     tab2Root = SearchPage;
     tab3Root = FProfilePage;
-    errOc: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -33,19 +32,12 @@ export class FreelancersPage {
 
     load(){
         this.jAcProv.status().subscribe((data) => {
-            this.errOc = false;
             if (data.success) {
                 if (!data.status) {
                     this.navCtrl.setRoot(JBeatSelPage);
                     this.navCtrl.popToRoot();
                 }
             }
-            else {
-                this.newAlert("Error", data.reason);
-            }
-        }, () => {
-            this.errOc = true;
-            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

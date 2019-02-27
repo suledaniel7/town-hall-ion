@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { SignupPage } from '../signup/signup';
 import { SigninProvider } from "../../providers/signin/signin";
@@ -24,7 +25,8 @@ export class SigninPage {
         private ldCtrl: LoadingController,
         public navParams: NavParams,
         private signinProv: SigninProvider,
-        private alCtrl: AlertController
+        private alCtrl: AlertController,
+        private storage: Storage
     ) {
     }
 
@@ -37,38 +39,71 @@ export class SigninPage {
     }
 
     signin() {
-        let loader = this.ldCtrl.create({
-            showBackdrop: true,
-            content: "Please wait...",
-        });
-
-        loader.present();
-
         if (this.email && this.password) {
             let wsp = /^\s*$/;
 
             if (!wsp.test(this.email) && !wsp.test(this.password)) {
+                let loader = this.ldCtrl.create({
+                    showBackdrop: true,
+                    content: "Please wait...",
+                });
+
+                loader.present();
                 this.signinProv.signinUser(this.email, this.password).subscribe(data => {
                     loader.dismiss();
                     if (data.success) {
                         if (data.u_type == 'u') {
-                            this.navCtrl.setRoot(UsersPage);
+                            this.storage.set('signed_in', JSON.stringify({ status: true, u_type: data.u_type })).then(() => {
+                                this.navCtrl.setRoot(UsersPage);
+                                this.navCtrl.popToRoot();
+                            }).catch(err => {
+                                this.newAlert("Error", err);
+                                this.navCtrl.setRoot(UsersPage);
+                                this.navCtrl.popToRoot();
+                            });
                         }
                         else if (data.u_type == 'j') {
                             if (data.j_type === 'm') {
-                                this.navCtrl.setRoot(JournalistsPage);
+                                this.storage.set('signed_in', JSON.stringify({ status: true, u_type: data.u_type })).then(() => {
+                                    this.navCtrl.setRoot(JournalistsPage);
+                                    this.navCtrl.popToRoot();
+                                }).catch(err => {
+                                    this.newAlert("Error", err);
+                                    this.navCtrl.setRoot(JournalistsPage);
+                                    this.navCtrl.popToRoot();
+                                });
                             }
                             else {
-                                this.navCtrl.setRoot(FreelancersPage);
+                                this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'f' })).then(() => {
+                                    this.navCtrl.setRoot(FreelancersPage);
+                                    this.navCtrl.popToRoot();
+                                }).catch(err => {
+                                    this.newAlert("Error", err);
+                                    this.navCtrl.setRoot(FreelancersPage);
+                                    this.navCtrl.popToRoot();
+                                });
                             }
                         }
                         else if (data.u_type == 'o') {
-                            this.navCtrl.setRoot(OrganisationsPage);
+                            this.storage.set('signed_in', JSON.stringify({ status: true, u_type: data.u_type })).then(() => {
+                                this.navCtrl.setRoot(OrganisationsPage);
+                                this.navCtrl.popToRoot();
+                            }).catch(err => {
+                                this.newAlert("Error", err);
+                                this.navCtrl.setRoot(OrganisationsPage);
+                                this.navCtrl.popToRoot();
+                            });
                         }
                         else if (data.u_type == 'l') {
-                            this.navCtrl.setRoot(LegislatorsPage);
+                            this.storage.set('signed_in', JSON.stringify({ status: true, u_type: data.u_type })).then(() => {
+                                this.navCtrl.setRoot(LegislatorsPage);
+                                this.navCtrl.popToRoot();
+                            }).catch(err => {
+                                this.newAlert("Error", err);
+                                this.navCtrl.setRoot(LegislatorsPage);
+                                this.navCtrl.popToRoot();
+                            });
                         }
-                        this.navCtrl.popToRoot();
                     }
                     else {
                         this.err = data.reason;
@@ -80,13 +115,11 @@ export class SigninPage {
                 });
             }
             else {
-                loader.dismiss();
                 this.err = 'All fields are required';
                 this.clearErr();
             }
         }
         else {
-            loader.dismiss();
             this.err = 'All fields are required';
             this.clearErr();
         }

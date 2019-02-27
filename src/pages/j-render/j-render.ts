@@ -6,6 +6,7 @@ import { RenderProvider } from '../../providers/render/render';
 import { AddressProvider } from '../../providers/address/address';
 
 import { FollowersPage } from '../followers/followers';
+import { ChatPage } from '../chat/chat';
 
 @IonicPage()
 @Component({
@@ -19,6 +20,7 @@ export class JRenderPage {
     username: string;
     imgAddress: string;
     errOc: boolean = false;
+    c_username: string;
 
     constructor(
         public navCtrl: NavController,
@@ -47,6 +49,7 @@ export class JRenderPage {
             ld.dismiss();
             if (data.success) {
                 this.item = data.item;
+                this.c_username = data.item.username;
                 if (this.item.user.followersNo == 1) {
                     this.flwrsText = "Follower";
                 }
@@ -139,6 +142,10 @@ export class JRenderPage {
         }
     }
 
+    dm(recepient: string){
+        this.navCtrl.push(ChatPage, {sender: this.c_username, recepient: recepient});
+    }
+    
     newAlert(title: string, text: string) {
         let newAl = this.alertCtrl.create({
             title: title,
