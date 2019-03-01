@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { SignupProvider } from "../../providers/signup/signup";
 
 import { BioPage } from '../bio/bio';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
@@ -19,6 +20,7 @@ export class JSignupPage {
     password: any = '';
     pass1: any = '';
     ac_type: any = 'm';
+    auto: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -28,10 +30,16 @@ export class JSignupPage {
         private alCtrl: AlertController,
         private storage: Storage
     ) {
+        this.auto = this.navParams.get('auto');
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad JSignupPage');
+    }
+
+    back(){
+        this.navCtrl.insert(this.navCtrl.length() - 1, SignupPage);
+        this.navCtrl.pop();
     }
 
     validate() {

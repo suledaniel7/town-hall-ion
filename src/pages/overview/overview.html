@@ -1,0 +1,39 @@
+<ion-content>
+    <div class="right">
+        <button (click)="skip()" ion-button clear color="secondary">Skip Orientation</button>
+    </div>
+    <ion-slides>
+        <ion-slide>
+            <img src="/assets/imgs/icon-prev.png" alt="Town Hall Logo">
+            <h2 class="center">Welcome to Town Hall</h2>
+            <h5>Our mission is to promote legislative accountability through transparency</h5>
+            <br><br>
+            <p class="grey-text">Swipe to continue...</p>
+        </ion-slide>
+        <ion-slide>
+            <h3 class="center">Select your Account Type</h3>
+            <ion-list radio-group>
+                <ion-item>
+                    <ion-label>User</ion-label>
+                    <ion-radio checked="true" (ionSelect)="sel('u')" value="u"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Journalist</ion-label>
+                    <ion-radio (ionSelect)="sel('j')" value="j"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Organisation</ion-label>
+                    <ion-radio (ionSelect)="sel('o')" value="o"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Legislator</ion-label>
+                    <ion-radio (ionSelect)="sel('l')" value="l"></ion-radio>
+                </ion-item>
+            </ion-list>
+            <br><br>
+            <div class="center">
+                <button (click)="move()" ion-button color="primary">Next</button>
+            </div>
+        </ion-slide>
+    </ion-slides>
+</ion-content>

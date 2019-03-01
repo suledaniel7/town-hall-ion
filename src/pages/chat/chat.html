@@ -21,7 +21,7 @@
     </ion-fab>
     <div class="banner" *ngIf="isBlocked">You may no longer send messages to this User</div>
     <div class="container">
-        <div class="messageArea" *ngFor="let dm of item?.dms">
+        <div class="messageArea" id="messageArea" *ngFor="let dm of item?.dms">
             <page-dm [username]="sender" [dm]="dm"></page-dm>
         </div>
     </div>

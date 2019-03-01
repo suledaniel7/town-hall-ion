@@ -29,6 +29,7 @@ import { FreelancersPage } from "../pages/freelancers/freelancers";
 import { JBeatSelPage } from "../pages/j-beat-sel/j-beat-sel";
 import { JCommsPage } from "../pages/j-comms/j-comms";
 import { JHomePage } from "../pages/j-home/j-home";
+import { JIntroPage } from "../pages/j-intro/j-intro";
 import { JOrgPage } from "../pages/j-org/j-org";
 import { JOrgSelPage } from "../pages/j-org-sel/j-org-sel";
 import { JProfilePage } from "../pages/j-profile/j-profile";
@@ -39,6 +40,7 @@ import { JSettingsPage } from '../pages/j-settings/j-settings';
 import { JournalistsPage } from "../pages/journalists/journalists";
 import { LCommsPage } from "../pages/l-comms/l-comms";
 import { LHomePage } from "../pages/l-home/l-home";
+import { LIntroPage } from "../pages/l-intro/l-intro";
 import { LProfilePage } from "../pages/l-profile/l-profile";
 import { LRenderPage } from "../pages/l-render/l-render";
 import { LSettingsPage } from '../pages/l-settings/l-settings';
@@ -46,6 +48,7 @@ import { LegislatorsPage } from "../pages/legislators/legislators";
 import { MessagePage } from "../pages/message/message";
 import { OCommsPage } from "../pages/o-comms/o-comms";
 import { OHomePage } from "../pages/o-home/o-home";
+import { OIntroPage } from "../pages/o-intro/o-intro";
 import { OJournoPage } from "../pages/o-journo/o-journo";
 import { OJournosPage } from "../pages/o-journos/o-journos";
 import { OProfilePage } from "../pages/o-profile/o-profile";
@@ -56,7 +59,9 @@ import { OrgReassignBeatPage } from "../pages/org-reassign-beat/org-reassign-bea
 import { OSignupPage } from "../pages/o-signup/o-signup";
 import { OSettingsPage } from '../pages/o-settings/o-settings';
 import { OrganisationsPage } from "../pages/organisations/organisations";
+import { OverviewPage } from "../pages/overview/overview";
 import { PersonPage } from "../pages/person/person";
+import { PostOSigninPage } from "../pages/post-o-signin/post-o-signin";
 import { SearchPage } from "../pages/search/search";
 import { SettingsPage } from "../pages/settings/settings";
 import { SigninPage } from '../pages/signin/signin';
@@ -64,6 +69,7 @@ import { SignupPage } from "../pages/signup/signup";
 import { TrendPage } from "../pages/trend/trend";
 import { TagPage } from "../pages/tag/tag";
 import { UHomePage } from "../pages/u-home/u-home";
+import { UIntroPage } from "../pages/u-intro/u-intro";
 import { UProfilePage } from "../pages/u-profile/u-profile";
 import { URenderPage } from "../pages/u-render/u-render";
 import { USignupPage } from "../pages/u-signup/u-signup";
@@ -112,6 +118,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JBeatSelPage,
         JCommsPage,
         JHomePage,
+        JIntroPage,
         JOrgPage,
         JOrgSelPage,
         JProfilePage,
@@ -122,6 +129,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JournalistsPage,
         LCommsPage,
         LHomePage,
+        LIntroPage,
         LProfilePage,
         LRenderPage,
         LSettingsPage,
@@ -129,6 +137,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         MessagePage,
         OCommsPage,
         OHomePage,
+        OIntroPage,
         OJournoPage,
         OJournosPage,
         OProfilePage,
@@ -139,7 +148,9 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         OSignupPage,
         OSettingsPage,
         OrganisationsPage,
+        OverviewPage,
         PersonPage,
+        PostOSigninPage,
         SearchPage,
         SettingsPage,
         FollowersPage,
@@ -148,6 +159,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         TrendPage,
         TagPage,
         UHomePage,
+        UIntroPage,
         UProfilePage,
         URenderPage,
         USignupPage,
@@ -182,6 +194,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JBeatSelPage,
         JCommsPage,
         JHomePage,
+        JIntroPage,
         JOrgPage,
         JOrgSelPage,
         JProfilePage,
@@ -192,6 +205,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JournalistsPage,
         LCommsPage,
         LHomePage,
+        LIntroPage,
         LProfilePage,
         LRenderPage,
         LSettingsPage,
@@ -199,6 +213,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         MessagePage,
         OCommsPage,
         OHomePage,
+        OIntroPage,
         OJournoPage,
         OJournosPage,
         OProfilePage,
@@ -209,7 +224,9 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         OSignupPage,
         OSettingsPage,
         OrganisationsPage,
+        OverviewPage,
         PersonPage,
+        PostOSigninPage,
         SearchPage,
         SettingsPage,
         FollowersPage,
@@ -218,6 +235,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         TrendPage,
         TagPage,
         UHomePage,
+        UIntroPage,
         UProfilePage,
         URenderPage,
         USignupPage,

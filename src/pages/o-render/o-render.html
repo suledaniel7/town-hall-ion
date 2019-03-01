@@ -16,7 +16,7 @@
             <h3 class="center">{{item.user.name}}</h3>
             <ion-row>
                 <ion-col *ngIf="item.canFollow"></ion-col>
-                <ion-col *ngIf="item.canFollow">
+                <ion-col *ngIf="item.canFollow" class="center">
                     <button (click)="fClick()" ion-button class="followBtn" id="fbtn">{{flwBtnText}}</button>
                 </ion-col>
                 <ion-col class="center">

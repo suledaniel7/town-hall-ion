@@ -1,0 +1,51 @@
+<ion-content>
+    <div class="skipDiv">
+        <button (click)="skip()" ion-button clear color="light">Skip</button>
+    </div>
+    <ion-slides>
+        <ion-slide>
+            <img src="/assets/imgs/intro-icon.png" alt="Town Hall Logo">
+            <h2 class="center">Your Account</h2>
+            <p>
+                As a Legislator, your Account has two metrics: constituents and followers.
+                <br>
+                All your constituents automatically follow your Account, but are registered as constituents and not
+                followers.
+                <br>
+                Your followers are non-constituents who choose to follow your Account.
+            </p>
+            <br><br>
+            <p>Swipe to continue...</p>
+        </ion-slide>
+        <ion-slide>
+            <img src="/assets/imgs/intro-icon.png" alt="Town Hall Logo">
+            <h2 class="center">Following</h2>
+            <br><br>
+            <p>
+                Your Account may be followed by other accounts, but being a Legislator Account is not designed to follow
+                other accounts.
+            </p>
+        </ion-slide>
+        <ion-slide>
+            <img src="/assets/imgs/intro-icon.png" alt="Town Hall Logo">
+            <h2 class="center">Direct Messages</h2>
+            <p>
+                You can converse with individual users through their profiles by clicking on the message icon there,
+                while you can view all your conversations by clicking on the message icon on your profile
+            </p>
+        </ion-slide>
+        <ion-slide>
+            <img src="/assets/imgs/intro-icon.png" alt="Town Hall Logo">
+            <h2 class="center">News v. Opinion</h2>
+            <p>
+                To help our users differentiate, Town Hall posts are classified as either News or Opinion.
+                <br>
+                Being a Legislator Account, all posts from your Account are tagged as News posts.
+            </p>
+            <br>
+            <div class="center">
+                <button (click)="next()" ion-button color="light">Let's Start</button>
+            </div>
+        </ion-slide>
+    </ion-slides>
+</ion-content>

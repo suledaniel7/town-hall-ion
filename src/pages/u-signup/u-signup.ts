@@ -6,6 +6,7 @@ import { Socket } from 'ngx-socket-io';
 import { SignupProvider } from "../../providers/signup/signup";
 
 import { BioPage } from '../bio/bio';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
@@ -19,6 +20,7 @@ export class USignupPage {
     stateSel: any;
     item: any;
     districts: any;
+    auto: boolean = false;
 
     //validation info
     f_name: any = '';
@@ -41,10 +43,16 @@ export class USignupPage {
         private socket: Socket,
         private storage: Storage
     ) {
+        this.auto = this.navParams.get('auto');
         this.load_states();
     }
 
     ionViewDidLoad() {
+    }
+
+    back(){
+        this.navCtrl.insert(this.navCtrl.length() - 1, SignupPage);
+        this.navCtrl.pop();
     }
 
     load_states() {

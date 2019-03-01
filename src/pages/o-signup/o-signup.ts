@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { SignupProvider } from '../../providers/signup/signup';
+
 import { BioPage } from '../bio/bio';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
@@ -22,6 +24,7 @@ export class OSignupPage {
     validUsername: boolean = false;
     validEmail: boolean = false;
     validCMail: boolean = false;
+    auto: boolean = false;
 
     constructor(
         public navCtrl: NavController,
@@ -29,10 +32,16 @@ export class OSignupPage {
         private signupProv: SignupProvider,
         private storage: Storage
     ) {
+        this.auto = this.navParams.get('auto');
     }
 
     ionViewDidLoad() {
 
+    }
+
+    back(){
+        this.navCtrl.insert(this.navCtrl.length() - 1, SignupPage);
+        this.navCtrl.pop();
     }
 
     sub() {

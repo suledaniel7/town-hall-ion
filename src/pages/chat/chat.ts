@@ -32,7 +32,7 @@ export class ChatPage {
     ) {
         this.sender = this.navParams.get('sender');
         this.recepient = this.navParams.get('recepient');
-        this.r_name = '@'+this.recepient;
+        this.r_name = '@' + this.recepient;
         this.load();
     }
 
@@ -40,7 +40,7 @@ export class ChatPage {
         console.log('ionViewDidLoad ChatPage');
     }
 
-    back(){
+    back() {
         this.navCtrl.pop();
     }
 
@@ -65,16 +65,16 @@ export class ChatPage {
                 else {
                     this.isBlocked = true;
                 }
-                if(data.blocked){
+                if (data.blocked) {
                     this.blockedUser = true;
-                    this.b_text = 'Unblock'
+                    this.b_text = 'Unblock';
                 }
                 else {
                     this.blockedUser = false;
-                    this.b_text = 'Block'
+                    this.b_text = 'Block';
                 }
 
-                this.socket.on('new_dm', (dm: any)=>{
+                this.socket.on('new_dm', (dm: any) => {
                     this.append(dm);
                 });
             }
@@ -92,12 +92,12 @@ export class ChatPage {
         let wsp = /^\s*$/;
         if (!wsp.test(this.text)) {
             this.dmProv.create_dm(this.recepient, this.text).subscribe((data) => {
-                if(data.success){
+                if (data.success) {
                     let dm = data.dm;
                     this.text = '';
                     this.btnColor = 'secondary';
                     this.append(dm);
-                    this.socket.emit('dm', {dm: dm, recepient: this.recepient});
+                    this.socket.emit('dm', { dm: dm, recepient: this.recepient });
                 }
                 else {
                     this.newAlert("Error", data.reason);
@@ -133,32 +133,32 @@ export class ChatPage {
         }
     }
 
-    block(){
-        if(this.blockedUser){
+    block() {
+        if (this.blockedUser) {
             //unblock
-            this.dmProv.block(this.sender, this.recepient, 'u').subscribe((data)=>{
-                if(data.success){
+            this.dmProv.block(this.sender, this.recepient, 'u').subscribe((data) => {
+                if (data.success) {
                     this.blockedUser = false;
                     this.b_text = 'Block';
                 }
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, ()=> {
+            }, () => {
                 this.newAlert("Connection Error", "Please check your connection");
             });
         }
         else {
             //block
-            this.dmProv.block(this.sender, this.recepient, 'b').subscribe((data)=>{
-                if(data.success){
+            this.dmProv.block(this.sender, this.recepient, 'b').subscribe((data) => {
+                if (data.success) {
                     this.blockedUser = true;
                     this.b_text = 'Unblock';
                 }
                 else {
                     this.newAlert("Error", data.reason);
                 }
-            }, ()=> {
+            }, () => {
                 this.newAlert("Connection Error", "Please check your connection");
             });
         }

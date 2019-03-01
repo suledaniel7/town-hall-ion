@@ -1,0 +1,11 @@
+page-overview {
+    div.skipDiv {
+        background-color: color($colors, primary);
+        position: absolute;
+        display: block;
+        text-align: right;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
+}
