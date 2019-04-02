@@ -29,7 +29,6 @@ export class JReqPage {
         private socket: Socket
     ) {
         this.imgAddress = this.address.getImageApi();
-        this.check(true);
     }
 
     ionViewDidLoad() {
@@ -38,6 +37,7 @@ export class JReqPage {
 
     ngAfterViewInit() {
         this.j_username = this.journo.username;
+        this.check(true);
     }
 
     confirm() {
@@ -93,7 +93,7 @@ export class JReqPage {
                         this.check(false);
                         this.socket.emit('changed_profile', this.username);
                         this.socket.emit('j_acc', { username: this.j_username });
-                        this.socket.emit('recompile', {username: this.username});
+                        this.socket.emit('recompile', { username: this.username });
                     }
                 });
                 md1.present();
@@ -127,10 +127,11 @@ export class JReqPage {
 
     check(clarity) {
         let reqs = document.getElementsByClassName('j-req').length;
-        reqs = reqs - this.requests;
+        console.log("Requests available:", reqs);
         //clear this one out
         if (!clarity) {
             document.getElementById(`j-req-${this.j_username}`).remove();
+            reqs = reqs - this.requests;
         }
         if (reqs === 0) {
             //empty out

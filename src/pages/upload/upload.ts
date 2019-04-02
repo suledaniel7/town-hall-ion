@@ -76,17 +76,17 @@ export class UploadPage {
                     else {
                         this.newAlert("Error", data_obj.reason);
                     }
-                }).catch((err)=>{
+                }).catch(()=>{
                     ld1.dismiss();
-                    this.newAlert("Error", err);
+                    this.newAlert("Connection Error", "Please check your connection");
                 });
             }
             else {
                 this.newAlert("Unsupported file type", "At this time, only jpeg and png images are supported");
             }
             
-        }).catch((err) => {
-            this.newAlert("Error", err);
+        }).catch(() => {
+            this.newAlert("Connection Error", "Please check your connection");
         });
     }
 

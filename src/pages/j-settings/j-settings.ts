@@ -131,6 +131,7 @@ export class JSettingsPage {
             if(data.success){
                 if(data.ch_org){
                     this.socket.emit('ch_org', {username: this.username, org: this.org, init_org: this.init_org});
+                    this.init_org = this.org;
                     this.socket.emit('recompile', {username: this.username});
                     this.socket.emit('recompile', {username: this.init_org});
                 }

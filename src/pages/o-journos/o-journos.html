@@ -11,11 +11,12 @@
     </ion-fab>
     <div *ngIf="item?.pending_reqs">
         <h5 class="center grey-text" id="jReqHeader">Journalist Requests</h5>
-        <ion-list>
-            <div *ngFor="let journo of item.user.pending_reqs">
-                <page-j-req [journo]="journo" [username]="username"></page-j-req>
-            </div>
+        <ion-list *ngFor="let journo of item.pending_requests">
+            <page-j-req [journo]="journo" [username]="username"></page-j-req>
         </ion-list>
+    </div>
+    <div *ngIf="!item?.pending_reqs">
+        Okay oh
     </div>
     <div class="center grey-text" *ngIf="exp">
         {{exp}}

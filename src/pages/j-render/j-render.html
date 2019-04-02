@@ -32,7 +32,7 @@
                         {{item.user.beatDets?.name}}
                     </strong>
                 </ion-col>
-                <ion-col *ngIf="item.user.orgName">
+                <ion-col (click)="oProf(item.user.organisation)" *ngIf="item.user.orgName">
                     <strong>{{item.user.orgName}}</strong> Journalist
                 </ion-col>
                 <ion-col *ngIf="!item.user.orgName">

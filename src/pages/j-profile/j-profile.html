@@ -22,7 +22,7 @@
                         {{item.user.beatDets.name}}
                     </strong>
                 </ion-col>
-                <ion-col *ngIf="item.free">
+                <ion-col *ngIf="item.free" (click)="oProf(item.user.organisation)">
                     <strong>{{item.user.orgName}}</strong>
                 </ion-col>
                 <ion-col (click)="followers()">

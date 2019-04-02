@@ -28,7 +28,7 @@ export class OJournosPage {
         this.load();
     }
 
-    refresh(){
+    refresh() {
         this.load();
     }
 
@@ -47,8 +47,8 @@ export class OJournosPage {
                     this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
                 }
             }
-            else if(this.item.journos){
-                if(this.item.journos.length > 0){
+            else if (this.item.journos) {
+                if (this.item.journos.length > 0) {
                     this.exp = null;
                 }
             }
@@ -58,6 +58,32 @@ export class OJournosPage {
         }
         else {
             this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+        }
+
+        if(this.item.pending_reqs){
+            if(this.item.pending_requests){
+                let req_l = this.item.pending_requests.length;
+                if(req_l === 0){
+                    this.item.pending_reqs = false;
+                }
+                else {
+                    this.item.pending_reqs = true;
+                }
+            }
+            else {
+                this.item.pending_reqs = false;
+            }
+        }
+        else {
+            if(this.item.pending_requests){
+                let req_l = this.item.pending_requests.length;
+                if(req_l > 0){
+                    this.item.pending_reqs = true;
+                }
+                else {
+                    this.item.pending_reqs = false;
+                }
+            }
         }
     }
 
@@ -97,13 +123,13 @@ export class OJournosPage {
 
     appendReq(journo: any) {
         if (this.item) {
-            if (this.item.user.pending_reqs) {
+            if (this.item.pending_requests) {
                 this.item.pending_reqs = true;
-                this.item.user.pending_reqs.push(journo);
+                this.item.pending_requests.push(journo);
             }
             else {
                 this.item.pending_reqs = true;
-                this.item.user.pending_reqs = [journo];
+                this.item.pending_requests = [journo];
             }
         }
     }
@@ -113,8 +139,9 @@ export class OJournosPage {
             this.errOc = false;
             if (data.success) {
                 this.item = data.item;
-                this.checkJs();
                 this.username = this.item.user.username;
+                this.item.pending_requests = this.item.user.pending_reqs;
+                this.checkJs();
                 this.socket.on('j_req', (ret_d: any) => {
                     if (ret_d.page === 'j') {
                         this.appendReq(ret_d.journo);
@@ -129,7 +156,14 @@ export class OJournosPage {
                 });
                 this.socket.on('rem_req', (username: any) => {
                     if (document.getElementById(`j-req-${username}`)) {
-                        document.getElementById(`j-req-${username}`).remove();
+                        if(this.item.pending_requests){
+                            for(let i=0; i<this.item.pending_requests.length; i++){
+                                let p_r = this.item.pending_requests[i];
+                                if(p_r.username === username){
+                                    this.item.pending_requests.splice(i, 1);
+                                }
+                            }
+                        }
                         this.checkJs();
                     }
                 });

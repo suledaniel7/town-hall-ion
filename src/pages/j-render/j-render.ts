@@ -7,6 +7,7 @@ import { AddressProvider } from '../../providers/address/address';
 
 import { FollowersPage } from '../followers/followers';
 import { ChatPage } from '../chat/chat';
+import { ORenderPage } from '../o-render/o-render';
 
 @IonicPage()
 @Component({
@@ -144,6 +145,14 @@ export class JRenderPage {
 
     dm(recepient: string){
         this.navCtrl.push(ChatPage, {sender: this.c_username, recepient: recepient});
+    }
+
+    oProf(username: string){
+        if(username){
+            if(username.length > 0){
+                this.navCtrl.push(ORenderPage, { username: username });
+            }
+        }
     }
     
     newAlert(title: string, text: string) {

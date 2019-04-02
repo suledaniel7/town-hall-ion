@@ -9,6 +9,7 @@ import { JCommsPage } from "../j-comms/j-comms";
 import { SettingsPage } from '../settings/settings';
 import { FollowersPage } from '../followers/followers';
 import { ChatsPage } from '../chats/chats';
+import { ORenderPage } from '../o-render/o-render';
 
 @IonicPage()
 @Component({
@@ -189,6 +190,14 @@ export class JProfilePage {
 
     dms(){
         this.navCtrl.push(ChatsPage);
+    }
+
+    oProf(username: string){
+        if(username){
+            if(username.length > 0){
+                this.navCtrl.push(ORenderPage, { username: username });
+            }
+        }
     }
 
     newAlert(title: string, text: string) {

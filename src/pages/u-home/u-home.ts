@@ -152,6 +152,12 @@ export class UHomePage {
                 });
                 this.socket.on('following', (f_data: any) => {
                     if (f_data.page === 'h') {
+                        if(f_data.selected){
+                            this.item.sourceSelNull = false;
+                        }
+                        else {
+                            this.item.sourceSelNull = true;
+                        }
                         this.reload(f_data.messages);
                     }
                 });
@@ -170,6 +176,12 @@ export class UHomePage {
                 });
                 this.socket.on('recompiled', (ret_d) => {
                     let msgs = ret_d.messages;
+                    if(ret_d.selected){
+                        this.item.sourceSelNull = false;
+                    }
+                    else {
+                        this.item.sourceSelNull = true;
+                    }
                     this.reload(msgs);
                 });
                 let tmp_item = JSON.parse(JSON.stringify(this.item));
