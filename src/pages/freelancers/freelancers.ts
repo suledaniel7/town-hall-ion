@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
+import { JAccountProvider } from '../../providers/j-account/j-account';
+
 import { FHomePage } from "../f-home/f-home";
 import { FProfilePage } from "../f-profile/f-profile";
 import { SearchPage } from "../search/search";
-import { JAccountProvider } from '../../providers/j-account/j-account';
 import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
+import { JLegisPage } from '../j-legis/j-legis';
 
 @IonicPage()
 @Component({
@@ -15,7 +17,8 @@ import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
 export class FreelancersPage {
     tab1Root = FHomePage;
     tab2Root = SearchPage;
-    tab3Root = FProfilePage;
+    tab3Root = JLegisPage;
+    tab4Root = FProfilePage;
 
     constructor(
         public navCtrl: NavController,

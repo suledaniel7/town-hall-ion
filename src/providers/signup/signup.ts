@@ -23,6 +23,10 @@ export class SignupProvider {
         return this.http.get(`${this.api}/users/checkCorrEmail/` + email);
     }
 
+    i_check(v_id): Observable<any> {
+        return this.http.get(`${this.api}/users/checkVId/` + v_id);
+    }
+
     load_states(): Observable<any> {
         return this.http.get(`${this.api}/users/signup`);
     }
@@ -66,6 +70,6 @@ export class SignupProvider {
     }
 
     update_bio(bio: string): Observable<any> {
-        return this.http.post(`${this.api}/set-bio`, {bio: bio});
+        return this.http.post(`${this.api}/set-bio`, { bio: bio });
     }
 }

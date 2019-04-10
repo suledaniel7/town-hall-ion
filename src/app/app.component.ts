@@ -32,7 +32,7 @@ export class MyApp {
             }
         }).catch(err => {
             err.c_message = "App.component.ts, storage for orientation_complete";
-            this.transmit.transmit(err);
+            this.transmit.transmit(err).subscribe(()=>{});
         });
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.

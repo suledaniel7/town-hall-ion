@@ -25,6 +25,10 @@
             <ion-label stacked>Confirm Password</ion-label>
             <ion-input type="password" [(ngModel)]="pass1" id="pass1"></ion-input>
         </ion-item>
+        <ion-item>
+            <ion-label stacked>Voter ID</ion-label>
+            <ion-input type="text" [(ngModel)]="v_id" (ionBlur)="checkVId()" id="v_id" name="v_id"></ion-input>
+        </ion-item>
         <br><br>
         <ion-item>
             <ion-label><strong>Gender</strong></ion-label>

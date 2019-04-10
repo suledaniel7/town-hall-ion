@@ -40,6 +40,10 @@
                 <ion-input type="password" [(ngModel)]="c_pass"></ion-input>
             </ion-item>
             <ion-item>
+                <ion-label stacked>Voter ID</ion-label>
+                <ion-input type="text" [(ngModel)]="v_id">{{v_id}}</ion-input>
+            </ion-item>
+            <ion-item>
                 <ion-label><strong>Gender</strong></ion-label>
                 <ion-select [(ngModel)]="gender">
                     <ion-option value="f">Female</ion-option>

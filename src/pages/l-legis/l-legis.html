@@ -1,0 +1,90 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Legislation</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div *ngIf="empty">
+        <h3 class="center">No prior Legislation</h3>
+    </div>
+    <div *ngFor="let legislation of item?.legislation">
+        <ion-card>
+            <ion-item>
+                <h1>{{legislation.title}}</h1>
+                <p>{{legislation.official_title}} | Status: {{legislation.status.s_text}}</p>
+                <p><a href="{{legislation.text_link}}">Full Text</a></p>
+            </ion-item>
+            <ion-card-content>
+                <p>{{legislation.description}}</p>
+            </ion-card-content>
+            <ion-row>
+                <ion-col class="center">
+                    <button (click)="conversation()" ion-button icon-start clear>
+                        <ion-icon name="chatboxes"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col class="center">
+                    <button (click)="reporting()" ion-button icon-start clear>
+                        <ion-icon name="information-circle"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="left">
+                    <ion-note>
+                        {{legislation.date_created}}
+                    </ion-note>
+                </ion-col>
+                <ion-col class="right">
+                    <ion-note>
+                        {{legislation.time_created}}
+                    </ion-note>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+    </div>
+    <div *ngIf="c_active">
+        <h3>Inactive Legislation</h3>
+    </div>
+    <div *ngFor="let legislation of item?.c_legislation">
+        <ion-card>
+            <ion-item>
+                <h1>{{legislation.title}}</h1>
+                <p>{{legislation.official_title}} | Status: {{legislation.status.s_text}}</p>
+                <p><a href="{{legislation.text_link}}">Full Text</a></p>
+            </ion-item>
+            <ion-card-content>
+                <p>{{legislation.description}}</p>
+            </ion-card-content>
+            <ion-row>
+                <ion-col class="center">
+                    <button (click)="conversation()" ion-button icon-start clear small>
+                        <ion-icon name="chatboxes"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col class="center">
+                    <button (click)="reporting()" ion-button icon-start clear small>
+                        <ion-icon name="information-circle"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="left">
+                    <ion-note>
+                        {{legislation.date_created}}
+                    </ion-note>
+                </ion-col>
+                <ion-col class="right">
+                    <ion-note>
+                        {{legislation.time_created}}
+                    </ion-note>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+    </div>
+    <ion-fab bottom right>
+        <button (click)="create()" ion-fab color="secondary" class="fab">
+            <ion-icon name="add" class="icon"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

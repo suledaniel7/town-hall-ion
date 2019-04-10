@@ -132,12 +132,12 @@ export class FHomePage {
     }
 
     load() {
+        this.authorize();
         this.profProv.j_profile_h().subscribe(data => {
             this.socket.disconnect();
             this.socket.connect();
             this.errOc = false;
             if (data.success) {
-                this.authorize();
                 this.fin_preloaded = false;
                 this.item = data.item;
                 this.checkMsgs();
@@ -174,25 +174,25 @@ export class FHomePage {
                 let tmp_item = JSON.parse(JSON.stringify(this.item));
                 let tmp_msgs = tmp_item.beat_msgs;
                 let len = tmp_msgs.length;
-                if(len > 50){
+                if (len > 50) {
                     tmp_msgs = tmp_msgs.slice(0, 50);
                 }
                 tmp_item.beat_msgs = tmp_msgs;
-                this.storage.set('home_data', JSON.stringify({page: 'f', item: tmp_item})).then(()=>{
+                this.storage.set('home_data', JSON.stringify({ page: 'f', item: tmp_item })).then(() => {
                     this.preloaded = false;
-                }).catch((err)=>{
+                }).catch((err) => {
                     this.preloaded = false;
                     this.newAlert("Error", err);
                 });
             }
             else {
-                if(this.preloaded){
+                if (this.preloaded) {
                     this.fin_preloaded = true;
                 }
                 this.newAlert("Error", data.reason);
             }
         }, () => {
-            if(this.preloaded){
+            if (this.preloaded) {
                 this.fin_preloaded = true;
             }
             if (!this.preloaded) {

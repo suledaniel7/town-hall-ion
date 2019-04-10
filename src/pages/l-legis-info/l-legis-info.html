@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>H.R. 1048</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-card>
+        <ion-item>
+            <h1>The Green New Deal</h1>
+            <p>H.R. 1048</p>
+            <p><a href="https://nass.gov.ng/hr/1048">Full Text</a></p>
+        </ion-item>
+        <ion-card-content>
+            <p>Well, this generally speaking is a description of HR 1048</p>
+        </ion-card-content>
+        <ion-row>
+            <ion-item>
+                <ion-label><strong>Status:</strong></ion-label>
+                <ion-select [(ngModel)]="status">
+                    <ion-option (ionSelect)="bill_stat('e')" value="e">Exploratory</ion-option>
+                    <ion-option (ionSelect)="bill_stat('c')" value="c">Committee</ion-option>
+                    <ion-option (ionSelect)="bill_stat('f')" value="f">First Passage</ion-option>
+                    <ion-option (ionSelect)="bill_stat('t')" value="t">Conference Committee</ion-option>
+                    <ion-option (ionSelect)="bill_stat('w')" value="w">Withdrawn</ion-option>
+                    <ion-option (ionSelect)="bill_stat('l')" value="l">Law</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-row>
+        <ion-row>
+            <ion-col class="center">
+                <button (click)="edit()" ion-button icon-start clear small>
+                    <ion-icon name="create"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="left">
+                <ion-note>
+                    {{legislation.date_created}}
+                </ion-note>
+            </ion-col>
+            <ion-col class="right">
+                <ion-note>
+                    {{legislation.time_created}}
+                </ion-note>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+    <h3 class="center">Co-sponsors</h3>
+    <div *ngFor="let account of item?.co_sponsors">
+        <page-person [person]="account"></page-person>
+    </div>
+</ion-content>

@@ -156,12 +156,12 @@ export class JHomePage {
     }
 
     load() {
+        this.authorize();
         this.profProv.j_profile_h().subscribe(data => {
             this.errOc = false;
             this.socket.disconnect();
             this.socket.connect();
             if (data.success) {
-                this.authorize();
                 this.fin_preloaded = false;
                 this.item = data.item;
                 this.checkMsgs();
@@ -231,13 +231,13 @@ export class JHomePage {
                 });
             }
             else {
-                if(this.preloaded){
+                if (this.preloaded) {
                     this.fin_preloaded = true;
                 }
                 this.newAlert("Error", data.reason);
             }
         }, () => {
-            if(this.preloaded){
+            if (this.preloaded) {
                 this.fin_preloaded = true;
             }
             if (!this.preloaded) {

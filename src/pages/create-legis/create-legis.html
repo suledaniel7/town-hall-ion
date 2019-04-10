@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="center">Introduce Legislation</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+            <ion-input type="text" [(ngModel)]="name" id="name" name="name" placeholder="Bill Name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input type="text" [(ngModel)]="title" id="title" name="title" placeholder="Official Title"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-input type="url" [(ngModel)]="link" id="link" name="link" placeholder="Link to Full Text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-textarea maxlength="500" (keyup)="count()" name="desc" id="desc" [(ngModel)]="desc"
+                placeholder="Description of Bill">
+            </ion-textarea>
+        </ion-item>
+        <ion-item>
+            <p class="center grey-text"><span id="counter">0</span>/500 characters</p>
+        </ion-item>
+        <br><br>
+        <ion-item>
+            <ion-label><strong>Co-sponsors</strong></ion-label>
+            <ion-select multiple="true" [(ngModel)]="sponsors">
+                <div *ngFor="let legislator of item?.legislators">
+                    <ion-option value="{{legislator.code}}">{{legislator.type_exp}} {{legislator.full_name}}
+                    </ion-option>
+                </div>
+            </ion-select>
+        </ion-item>
+        <br><br>
+        <div class="center">
+            <button (click)="validate()" ion-button full color="primary">Publish Legislation</button>
+        </div>
+        <br><br><br>
+        <div class="center">
+            <button (click)="close(false)" ion-button color="secondary">Cancel</button>
+        </div>
+    </ion-list>
+</ion-content>

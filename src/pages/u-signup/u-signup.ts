@@ -32,7 +32,7 @@ export class USignupPage {
     u_state: any = '';
     sen_dist: any = '';
     fed_const: any = '';
-
+    v_id: any = '';
 
     constructor(
         public navCtrl: NavController,
@@ -93,7 +93,7 @@ export class USignupPage {
 
     validate() {
         let wsp = /^\s*$/;
-        if (!wsp.test(this.f_name) && !wsp.test(this.username) && !wsp.test(this.email) && !wsp.test(this.password) && !wsp.test(this.pass1) && !wsp.test(this.gender) && !wsp.test(this.fed_const) && !wsp.test(this.sen_dist)) {
+        if (!wsp.test(this.f_name) && !wsp.test(this.username) && !wsp.test(this.email) && !wsp.test(this.password) && !wsp.test(this.pass1) && !wsp.test(this.gender) && !wsp.test(this.fed_const) && !wsp.test(this.sen_dist) && !wsp.test(this.v_id)) {
             if (this.password == this.pass1) {
                 let u_loader = this.ldCtrl.create({
                     content: "Creating Account..."
@@ -113,27 +113,38 @@ export class USignupPage {
                                 this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
                             }
                             else {
-                                this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
-                                    u_loader.dismiss();
-                                    if (resp.success) {
-                                        this.socket.emit('changed_profile', this.sen_dist);
-                                        this.socket.emit('changed_profile', this.fed_const);
-                                        this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
-                                            this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
-                                            this.navCtrl.popToRoot();
-                                        }).catch(err => {
-                                            this.newAlert("Error", err);
-                                            this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
-                                            this.navCtrl.popToRoot();
-                                        });
+                                this.signupProv.i_check(this.v_id).subscribe(dataV=>{
+                                    if(dataV.found){
+                                        u_loader.dismiss();
+                                        this.newAlert("Voter ID in Use", "A user exists with that Voter ID. Please enter yours accurately");
                                     }
                                     else {
-                                        this.newAlert("Signup Error", resp.reason);
+                                        this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
+                                            u_loader.dismiss();
+                                            if (resp.success) {
+                                                this.socket.emit('changed_profile', this.sen_dist);
+                                                this.socket.emit('changed_profile', this.fed_const);
+                                                this.storage.set('signed_in', JSON.stringify({ status: true, u_type: 'j' })).then(() => {
+                                                    this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
+                                                    this.navCtrl.popToRoot();
+                                                }).catch(err => {
+                                                    this.newAlert("Error", err);
+                                                    this.navCtrl.setRoot(BioPage, { u_type: 'u', photo_type: 'Avatar' });
+                                                    this.navCtrl.popToRoot();
+                                                });
+                                            }
+                                            else {
+                                                this.newAlert("Signup Error", resp.reason);
+                                            }
+                                        }, () => {
+                                            u_loader.dismiss();
+                                            this.newAlert("Connection Error", "Please check your connection");
+                                        });
                                     }
-                                }, () => {
+                                }, ()=>{
                                     u_loader.dismiss();
                                     this.newAlert("Connection Error", "Please check your connection");
-                                });
+                                })
                             }
                         }, () => {
                             u_loader.dismiss();
@@ -171,6 +182,17 @@ export class USignupPage {
             this.signupProv.e_check(this.email).subscribe(data => {
                 if (data.found) {
                     this.newAlert("Invalid Email", "A user exists with that email address. Please choose another");
+                }
+            });
+        }
+    }
+
+    checkVId(){
+        let wsp = /^\s*$/;
+        if(!wsp.test(this.v_id)){
+            this.signupProv.i_check(this.v_id).subscribe(data => {
+                if(data.found){
+                    this.newAlert("Voter ID in Use", "A user exists with that Voter ID. Please enter yours accurately");
                 }
             });
         }

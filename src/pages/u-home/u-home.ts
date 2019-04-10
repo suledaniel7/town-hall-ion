@@ -133,12 +133,12 @@ export class UHomePage {
     }
 
     load() {
+        this.authorize();
         this.profProv.u_profile_h().subscribe(data => {
             this.errOc = false;
             this.socket.disconnect();
             this.socket.connect();
             if (data.success) {
-                this.authorize();
                 this.fin_preloaded = false;
                 this.item = data.item;
                 this.checkMsgs();
@@ -152,7 +152,7 @@ export class UHomePage {
                 });
                 this.socket.on('following', (f_data: any) => {
                     if (f_data.page === 'h') {
-                        if(f_data.selected){
+                        if (f_data.selected) {
                             this.item.sourceSelNull = false;
                         }
                         else {
@@ -176,7 +176,7 @@ export class UHomePage {
                 });
                 this.socket.on('recompiled', (ret_d) => {
                     let msgs = ret_d.messages;
-                    if(ret_d.selected){
+                    if (ret_d.selected) {
                         this.item.sourceSelNull = false;
                     }
                     else {
@@ -199,13 +199,13 @@ export class UHomePage {
                 });
             }
             else {
-                if(this.preloaded){
+                if (this.preloaded) {
                     this.fin_preloaded = true;
                 }
                 this.newAlert("Error Loading Feed", data.reason);
             }
         }, () => {
-            if(this.preloaded){
+            if (this.preloaded) {
                 this.fin_preloaded = true;
             }
             if (!this.preloaded) {

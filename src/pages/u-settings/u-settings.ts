@@ -22,6 +22,7 @@ export class USettingsPage {
     n_pass: string = '';
     c_pass: string = '';
     gender: string;
+    v_id: string;
     u_state: string;
     curr_state: string;
     fed_const: string;
@@ -74,6 +75,7 @@ export class USettingsPage {
                 this.username = user.username;
                 this.email = user.email;
                 this.gender = user.gender;
+                this.v_id = user.v_id;
                 this.u_state = user.state_code;
                 this.curr_state = user.state_code;
                 this.fed_const = item.fed_const_code;
@@ -129,6 +131,9 @@ export class USettingsPage {
         if(test(this.f_name) || test(this.username) || test(this.email)){
             this.newAlert("Invalid Info", "First Name, Username and Email must be provided");
         }
+        else if(test(this.v_id)){
+            this.newAlert("Invalid Info", "Voter ID must be provided");
+        }
         else if(!test(this.password)){
             if((test(this.n_pass))){
                 this.newAlert("Invalid Info", "You must provide a new password");
@@ -161,7 +166,7 @@ export class USettingsPage {
     update(){
         let ld3 = this.ldCtrl.create({content: "Updating Information"});
         ld3.present();
-        this.settingsProv.update_u(this.bio, this.f_name, this.username, this.email, this.password, this.n_pass, this.u_state, this.fed_const, this.sen_dist, this.gender).subscribe(data =>{
+        this.settingsProv.update_u(this.bio, this.f_name, this.username, this.email, this.password, this.n_pass, this.u_state, this.fed_const, this.sen_dist, this.gender, this.v_id).subscribe(data =>{
             ld3.dismiss();
             if(data.success){
                 this.password = '';

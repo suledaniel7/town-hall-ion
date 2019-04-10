@@ -19,6 +19,7 @@ import { ChatPage } from "../pages/chat/chat";
 import { ChatsPage } from "../pages/chats/chats";
 import { CommentPage } from "../pages/comment/comment";
 import { ConversationPage } from "../pages/conversation/conversation";
+import { CreateLegisPage } from "../pages/create-legis/create-legis";
 import { DmPage } from "../pages/dm/dm";
 import { EditCommentPage } from "../pages/edit-comment/edit-comment";
 import { EditMessagePage } from "../pages/edit-message/edit-message";
@@ -30,6 +31,8 @@ import { JBeatSelPage } from "../pages/j-beat-sel/j-beat-sel";
 import { JCommsPage } from "../pages/j-comms/j-comms";
 import { JHomePage } from "../pages/j-home/j-home";
 import { JIntroPage } from "../pages/j-intro/j-intro";
+import { JLegisPage } from "../pages/j-legis/j-legis";
+import { JLegisInfoPage } from "../pages/j-legis-info/j-legis-info";
 import { JOrgPage } from "../pages/j-org/j-org";
 import { JOrgSelPage } from "../pages/j-org-sel/j-org-sel";
 import { JProfilePage } from "../pages/j-profile/j-profile";
@@ -39,8 +42,10 @@ import { JSignupPage } from "../pages/j-signup/j-signup";
 import { JSettingsPage } from '../pages/j-settings/j-settings';
 import { JournalistsPage } from "../pages/journalists/journalists";
 import { LCommsPage } from "../pages/l-comms/l-comms";
+import { LLegisInfoPage } from "../pages/l-legis-info/l-legis-info";
 import { LHomePage } from "../pages/l-home/l-home";
 import { LIntroPage } from "../pages/l-intro/l-intro";
+import { LLegisPage } from "../pages/l-legis/l-legis";
 import { LProfilePage } from "../pages/l-profile/l-profile";
 import { LRenderPage } from "../pages/l-render/l-render";
 import { LSettingsPage } from '../pages/l-settings/l-settings';
@@ -70,6 +75,8 @@ import { TrendPage } from "../pages/trend/trend";
 import { TagPage } from "../pages/tag/tag";
 import { UHomePage } from "../pages/u-home/u-home";
 import { UIntroPage } from "../pages/u-intro/u-intro";
+import { ULegisPage } from "../pages/u-legis/u-legis";
+import { ULegisInfoPage } from "../pages/u-legis-info/u-legis-info";
 import { UProfilePage } from "../pages/u-profile/u-profile";
 import { URenderPage } from "../pages/u-render/u-render";
 import { USignupPage } from "../pages/u-signup/u-signup";
@@ -96,9 +103,10 @@ import { ServeProvider } from '../providers/serve/serve';
 import { OrgJsProvider } from '../providers/org-js/org-js';
 import { DmProvider } from '../providers/dm/dm';
 import { TransmitErrorProvider } from '../providers/transmit-error/transmit-error';
+import { LegislationProvider } from '../providers/legislation/legislation';
 
-const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
-// const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
+// const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
 
 @NgModule({
     declarations: [
@@ -110,6 +118,7 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         ChatsPage,
         CommentPage,
         ConversationPage,
+        CreateLegisPage,
         DmPage,
         EditCommentPage,
         EditMessagePage,
@@ -120,6 +129,8 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JCommsPage,
         JHomePage,
         JIntroPage,
+        JLegisPage,
+        JLegisInfoPage,
         JOrgPage,
         JOrgSelPage,
         JProfilePage,
@@ -129,8 +140,10 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LLegisInfoPage,
         LHomePage,
         LIntroPage,
+        LLegisPage,
         LProfilePage,
         LRenderPage,
         LSettingsPage,
@@ -161,6 +174,8 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         TagPage,
         UHomePage,
         UIntroPage,
+        ULegisPage,
+        ULegisInfoPage,
         UProfilePage,
         URenderPage,
         USignupPage,
@@ -186,6 +201,7 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         ChatsPage,
         CommentPage,
         ConversationPage,
+        CreateLegisPage,
         DmPage,
         EditCommentPage,
         EditMessagePage,
@@ -196,6 +212,8 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JCommsPage,
         JHomePage,
         JIntroPage,
+        JLegisPage,
+        JLegisInfoPage,
         JOrgPage,
         JOrgSelPage,
         JProfilePage,
@@ -205,8 +223,10 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LLegisInfoPage,
         LHomePage,
         LIntroPage,
+        LLegisPage,
         LProfilePage,
         LRenderPage,
         LSettingsPage,
@@ -237,6 +257,8 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         TagPage,
         UHomePage,
         UIntroPage,
+        ULegisPage,
+        ULegisInfoPage,
         UProfilePage,
         URenderPage,
         USignupPage,
@@ -269,8 +291,9 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         SettingsProvider,
         ServeProvider,
         OrgJsProvider,
-    DmProvider,
-    TransmitErrorProvider
+        DmProvider,
+        TransmitErrorProvider,
+        LegislationProvider
     ]
 })
 export class AppModule { }

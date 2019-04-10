@@ -15,7 +15,7 @@ export class SettingsProvider {
         return this.http.get(`${this.api}/settings`);
     }
 
-    update_u(bio: string, f_name: string, username: string, email: string, password: string, n_pass: string, state: string, fed_const: string, sen_dist: string, gender: string): Observable<any> {
+    update_u(bio: string, f_name: string, username: string, email: string, password: string, n_pass: string, state: string, fed_const: string, sen_dist: string, gender: string, v_id: string): Observable<any> {
         return this.http.post(`${this.api}/update/u`, {
             bio: bio,
             f_name: f_name,
@@ -26,7 +26,8 @@ export class SettingsProvider {
             state: state,
             fed_const: fed_const,
             sen_dist: sen_dist,
-            gender: gender
+            gender: gender,
+            v_id: v_id
         });
     }
 
