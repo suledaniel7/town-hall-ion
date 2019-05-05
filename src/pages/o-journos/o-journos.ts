@@ -39,12 +39,14 @@ export class OJournosPage {
     checkJs() {
         if (this.item) {
             if ((this.item.journos && !this.item.pending_reqs) || (!this.item.journos && this.item.pending_reqs)) {
-                let len = this.item.journos.length;
-                if (len > 0) {
-                    this.exp = null;
-                }
-                else {
-                    this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+                if(this.item.journos){
+                    let len = this.item.journos.length;
+                    if (len > 0) {
+                        this.exp = null;
+                    }
+                    else {
+                        this.exp = "You do not yet have any journalists registered. Any requests from journalists will be shown here.";
+                    }
                 }
             }
             else if (this.item.journos) {

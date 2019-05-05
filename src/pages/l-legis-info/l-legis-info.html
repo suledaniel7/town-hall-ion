@@ -4,14 +4,14 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-card>
+    <ion-card *ngIf="item?.bill">
         <ion-item>
-            <h1>The Green New Deal</h1>
-            <p>H.R. 1048</p>
-            <p><a href="https://nass.gov.ng/hr/1048">Full Text</a></p>
+            <h1>{{item.bill.title}}</h1>
+            <p>{{item.bill.official_title}}</p>
+            <p><a href="{{item.bill.text_link}}">Full Text</a></p>
         </ion-item>
         <ion-card-content>
-            <p>Well, this generally speaking is a description of HR 1048</p>
+            <p>{{item.bill.description}}</p>
         </ion-card-content>
         <ion-row>
             <ion-item>
@@ -36,18 +36,18 @@
         <ion-row>
             <ion-col class="left">
                 <ion-note>
-                    {{legislation.date_created}}
+                    {{item.bill.date_created}}
                 </ion-note>
             </ion-col>
             <ion-col class="right">
                 <ion-note>
-                    {{legislation.time_created}}
+                    {{item.bill.time_created}}
                 </ion-note>
             </ion-col>
         </ion-row>
     </ion-card>
     <h3 class="center">Co-sponsors</h3>
-    <div *ngFor="let account of item?.co_sponsors">
-        <page-person [person]="account"></page-person>
+    <div *ngFor="let account of item?.sponsors">
+        <page-legislator [person]="account"></page-legislator>
     </div>
 </ion-content>

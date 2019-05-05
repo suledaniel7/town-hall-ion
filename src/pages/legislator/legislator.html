@@ -1,0 +1,11 @@
+<ion-card class="cardy" (click)="render(person.code)">
+    <ion-card-content>
+        <img src="{{imgAddress}}/{{person.avatar}}" alt="{{person.full_name}}'s Avatar" class="avatar">
+        <div class="name">
+            {{person.type_exp}} {{person.full_name}}
+        </div>
+        <div class="bio">
+            Legislator
+        </div>
+    </ion-card-content>
+</ion-card>

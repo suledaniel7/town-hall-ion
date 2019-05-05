@@ -57,7 +57,10 @@ export class LLegisPage {
     create(){
         let md1 = this.mdCtrl.create(CreateLegisPage);
         md1.onDidDismiss((data)=>{
-            console.log(data);
+            if(data){
+                this.item.legislation.push(data);
+                this.empty = false;
+            }
         });
         md1.present();
     }
@@ -66,8 +69,8 @@ export class LLegisPage {
 
     }
 
-    reporting(){
-        this.navCtrl.push(LLegisInfoPage);
+    reporting(code: string){
+        this.navCtrl.push(LLegisInfoPage, {code: code});
     }
 
     newAlert(title: string, text: string) {

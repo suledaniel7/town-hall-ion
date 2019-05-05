@@ -22,6 +22,7 @@ import { ConversationPage } from "../pages/conversation/conversation";
 import { CreateLegisPage } from "../pages/create-legis/create-legis";
 import { DmPage } from "../pages/dm/dm";
 import { EditCommentPage } from "../pages/edit-comment/edit-comment";
+import { EditLegPage} from "../pages/edit-leg/edit-leg";
 import { EditMessagePage } from "../pages/edit-message/edit-message";
 import { FHomePage } from "../pages/f-home/f-home";
 import { FollowersPage } from "../pages/followers/followers";
@@ -42,6 +43,7 @@ import { JSignupPage } from "../pages/j-signup/j-signup";
 import { JSettingsPage } from '../pages/j-settings/j-settings';
 import { JournalistsPage } from "../pages/journalists/journalists";
 import { LCommsPage } from "../pages/l-comms/l-comms";
+import { LegislatorPage } from "../pages/legislator/legislator";
 import { LLegisInfoPage } from "../pages/l-legis-info/l-legis-info";
 import { LHomePage } from "../pages/l-home/l-home";
 import { LIntroPage } from "../pages/l-intro/l-intro";
@@ -105,8 +107,8 @@ import { DmProvider } from '../providers/dm/dm';
 import { TransmitErrorProvider } from '../providers/transmit-error/transmit-error';
 import { LegislationProvider } from '../providers/legislation/legislation';
 
-// const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
-const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
+const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
+// const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
 
 @NgModule({
     declarations: [
@@ -121,6 +123,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         CreateLegisPage,
         DmPage,
         EditCommentPage,
+        EditLegPage,
         EditMessagePage,
         FHomePage,
         FProfilePage,
@@ -140,6 +143,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LegislatorPage,
         LLegisInfoPage,
         LHomePage,
         LIntroPage,
@@ -204,6 +208,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         CreateLegisPage,
         DmPage,
         EditCommentPage,
+        EditLegPage,
         EditMessagePage,
         FHomePage,
         FProfilePage,
@@ -223,6 +228,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LegislatorPage,
         LLegisInfoPage,
         LHomePage,
         LIntroPage,

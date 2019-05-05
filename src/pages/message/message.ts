@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Input } from "@angular/core";
-import { IonicPage, NavController, NavParams, ModalController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { Socket } from 'ngx-socket-io';
 
 import { EditMessagePage } from "../edit-message/edit-message";
@@ -36,7 +36,6 @@ export class MessagePage {
         private modalCtrl: ModalController,
         private messageProv: MessageProvider,
         public alertCtrl: AlertController,
-        private ldCtrl: LoadingController,
         private rndrProv: RenderProvider,
         public address: AddressProvider,
         private socket: Socket
@@ -289,10 +288,7 @@ export class MessagePage {
     blind_profile(username) {
         //find u_type
         //push page or this.newAlert error
-        let ld = this.ldCtrl.create({ content: "Loading User" });
-        ld.present();
         this.rndrProv.req_type(username).subscribe(data => {
-            ld.dismiss();
             if (data.success) {
                 let u_type = data.u_type;
                 if (u_type == 'j') {
@@ -312,7 +308,6 @@ export class MessagePage {
                 this.newAlert("Error", data.reason);
             }
         }, () => {
-            ld.dismiss();
             this.newAlert("Connection Error", "Please check your connection");
         });
     }

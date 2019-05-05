@@ -20,7 +20,7 @@
     <ion-list *ngFor="let org of item?.organisations" inset radio-group>
         <ion-item>
             <ion-label>{{org.name}}</ion-label>
-            <ion-radio (ionSelect)="confirm(org.name, org.username)"></ion-radio>
+            <ion-radio name="org" (ionSelect)="confirm(org.name, org.username)"></ion-radio>
         </ion-item>
     </ion-list>
 </ion-content>

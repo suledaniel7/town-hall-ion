@@ -119,7 +119,7 @@ export class USignupPage {
                                         this.newAlert("Voter ID in Use", "A user exists with that Voter ID. Please enter yours accurately");
                                     }
                                     else {
-                                        this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const).subscribe(resp => {
+                                        this.signupProv.signup_u(this.f_name, this.username, this.email, this.password, this.gender, this.sen_dist, this.fed_const, this.v_id).subscribe(resp => {
                                             u_loader.dismiss();
                                             if (resp.success) {
                                                 this.socket.emit('changed_profile', this.sen_dist);

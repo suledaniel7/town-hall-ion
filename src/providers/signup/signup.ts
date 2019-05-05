@@ -57,7 +57,7 @@ export class SignupProvider {
         });
     }
 
-    signup_u(f_name, username, email, password, gender, sen_dist, fed_const): Observable<any> {
+    signup_u(f_name, username, email, password, gender, sen_dist, fed_const, v_id): Observable<any> {
         return this.http.post(`${this.api}/users/signup`, {
             f_name: f_name,
             username: username,
@@ -65,7 +65,8 @@ export class SignupProvider {
             password: password,
             gender: gender,
             sen_dist: sen_dist,
-            fed_const: fed_const
+            fed_const: fed_const,
+            v_id: v_id
         });
     }
 

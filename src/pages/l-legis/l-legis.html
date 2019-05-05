@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content padding>
     <div *ngIf="empty">
-        <h3 class="center">No prior Legislation</h3>
+        <h3 class="center grey-text">No prior Legislation</h3>
     </div>
     <div *ngFor="let legislation of item?.legislation">
         <ion-card>
@@ -24,7 +24,7 @@
                     </button>
                 </ion-col>
                 <ion-col class="center">
-                    <button (click)="reporting()" ion-button icon-start clear>
+                    <button (click)="reporting(legislation.code)" ion-button icon-start clear>
                         <ion-icon name="information-circle"></ion-icon>
                     </button>
                 </ion-col>
