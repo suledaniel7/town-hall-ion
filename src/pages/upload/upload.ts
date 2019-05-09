@@ -46,71 +46,58 @@ export class UploadPage {
 
     select() {
         this.fc.open().then((uri) => {
-            let lt = uri.length;
-            let li = uri.lastIndexOf('.') + 1;
-            let ext = uri.slice(li, lt);
-            ext = ext.toLowerCase();
-            let valid = false;
-            if(ext === 'jpg' || ext === 'jpeg' || ext === 'png'){
-                valid = true;
+
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            let options: FileUploadOptions = {
+                fileKey: 'avatar',
+                fileName: 'avatar'
             }
-            if(valid){
-                const fileTransfer: FileTransferObject = this.transfer.create();
-                let options: FileUploadOptions = {
-                    fileKey: 'avatar',
-                    fileName: 'avatar'
+
+            let ld1 = this.ldCtrl.create({
+                content: "Processing Image"
+            });
+
+            ld1.present();
+            fileTransfer.upload(uri, this.server_address + "/upload_img", options).then((data) => {
+                ld1.dismiss();
+                let data_obj = JSON.parse(data.response);
+                if (data_obj.success) {
+                    this.fileUri = this.img_address + '/' + data_obj.file.uri;
+                    this.final_obj = data_obj.file;
                 }
-                
-                let ld1 = this.ldCtrl.create({
-                    content: "Processing Image"
-                });
-    
-                ld1.present();
-                fileTransfer.upload(uri, this.server_address+"/upload_img", options).then((data)=>{
-                    ld1.dismiss();
-                    let data_obj = JSON.parse(data.response);
-                    if(data_obj.success){
-                        this.fileUri = this.img_address + '/' + data_obj.file.uri;
-                        this.final_obj = data_obj.file;
-                    }
-                    else {
-                        this.newAlert("Error", data_obj.reason);
-                    }
-                }).catch(()=>{
-                    ld1.dismiss();
-                    this.newAlert("Connection Error", "Please check your connection");
-                });
-            }
-            else {
-                this.newAlert("Unsupported file type", "At this time, only jpeg and png images are supported");
-            }
-            
+                else {
+                    this.newAlert("Error", data_obj.reason);
+                }
+            }).catch(() => {
+                ld1.dismiss();
+                this.newAlert("Connection Error", "Please check your connection");
+            });
         }).catch(() => {
             this.newAlert("Connection Error", "Please check your connection");
         });
     }
 
-    upload(){
+    upload() {
         let ld2 = this.ldCtrl.create({
             content: "Uploading Image"
         });
         ld2.present();
-        this.uplProv.confirm_upload(this.final_obj).subscribe((data)=>{
+        this.uplProv.confirm_upload(this.final_obj).subscribe((data) => {
             ld2.dismiss();
-            if(data.success){
+            if (data.success) {
                 this.newAlert("Success", "Image uploaded successfully");
                 this.skip();
             }
             else {
                 this.newAlert("Error", data.reason);
             }
-        }, ()=>{
+        }, () => {
             ld2.dismiss();
             this.newAlert("Error", "Please check your connection");
         });
     }
 
-    newAlert(title: string, text: string){
+    newAlert(title: string, text: string) {
         let newAl = this.alCtrl.create({
             title: title,
             message: text,
@@ -120,24 +107,24 @@ export class UploadPage {
         return newAl.present();
     }
 
-    skip(){
-        if(this.u_type === 'u'){
+    skip() {
+        if (this.u_type === 'u') {
             this.navCtrl.setRoot(UsersPage);
             this.navCtrl.popToRoot();
         }
-        else if(this.u_type === 'j'){
+        else if (this.u_type === 'j') {
             this.navCtrl.setRoot(JOrgSelPage);
             this.navCtrl.popToRoot();
         }
-        else if(this.u_type === 'f'){
+        else if (this.u_type === 'f') {
             this.navCtrl.setRoot(JBeatSelPage);
             this.navCtrl.popToRoot();
         }
-        else if(this.u_type === 'o'){
+        else if (this.u_type === 'o') {
             this.navCtrl.setRoot(OrganisationsPage);
             this.navCtrl.popToRoot();
         }
-        else if(this.u_type === 'l'){
+        else if (this.u_type === 'l') {
             this.navCtrl.setRoot(LegislatorsPage);
             this.navCtrl.popToRoot();
         }

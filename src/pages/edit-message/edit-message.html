@@ -20,9 +20,12 @@
                     </ion-item>
                 </ion-col>
                 <ion-col col-10>
-                    <ion-textarea maxlength="360" class="txt-msg" (keyup)="count()" [(ngModel)]="message" placeholder="Type Post...">
+                    <ion-item>
+                        <ion-textarea maxlength="360" class="txt-msg" (keyup)="count()" [(ngModel)]="message"
+                            placeholder="Type Post...">
 
-                    </ion-textarea>
+                        </ion-textarea>
+                    </ion-item>
                 </ion-col>
             </ion-row>
             <ion-row class="center grey-text">

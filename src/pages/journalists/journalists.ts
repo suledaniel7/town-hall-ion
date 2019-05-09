@@ -8,7 +8,7 @@ import { JOrgPage } from "../j-org/j-org";
 import { JProfilePage } from "../j-profile/j-profile";
 import { SearchPage } from "../search/search";
 import { JOrgSelPage } from '../j-org-sel/j-org-sel';
-import { JLegisPage } from '../j-legis/j-legis';
+// import { JLegisPage } from '../j-legis/j-legis';
 
 @IonicPage()
 @Component({
@@ -19,7 +19,7 @@ export class JournalistsPage {
     tab1Root = JHomePage;
     tab2Root = SearchPage;
     tab3Root = JOrgPage;
-    tab4Root = JLegisPage;
+    // tab4Root = JLegisPage;
     tab5Root = JProfilePage;
 
     constructor(

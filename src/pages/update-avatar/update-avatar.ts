@@ -42,44 +42,31 @@ export class UpdateAvatarPage {
 
     select() {
         this.fc.open().then((uri) => {
-            let lt = uri.length;
-            let li = uri.lastIndexOf('.') + 1;
-            let ext = uri.slice(li, lt);
-            ext = ext.toLowerCase();
-            let valid = false;
-            if(ext === 'jpg' || ext === 'jpeg' || ext === 'png'){
-                valid = true;
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            let options: FileUploadOptions = {
+                fileKey: 'avatar',
+                fileName: 'avatar'
             }
-            if(valid){
-                const fileTransfer: FileTransferObject = this.transfer.create();
-                let options: FileUploadOptions = {
-                    fileKey: 'avatar',
-                    fileName: 'avatar'
+
+            let ld1 = this.ldCtrl.create({
+                content: "Processing Image"
+            });
+
+            ld1.present();
+            fileTransfer.upload(uri, this.server_address + "/upload_img", options).then((data) => {
+                ld1.dismiss();
+                let data_obj = JSON.parse(data.response);
+                if (data_obj.success) {
+                    this.fileUri = this.img_address + '/' + data_obj.file.uri;
+                    this.final_obj = data_obj.file;
                 }
-    
-                let ld1 = this.ldCtrl.create({
-                    content: "Processing Image"
-                });
-    
-                ld1.present();
-                fileTransfer.upload(uri, this.server_address + "/upload_img", options).then((data) => {
-                    ld1.dismiss();
-                    let data_obj = JSON.parse(data.response);
-                    if (data_obj.success) {
-                        this.fileUri = this.img_address + '/' + data_obj.file.uri;
-                        this.final_obj = data_obj.file;
-                    }
-                    else {
-                        this.newAlert("Error", data_obj.reason);
-                    }
-                }).catch(() => {
-                    ld1.dismiss();
-                    this.newAlert("Connection Error", "Please check your connection");
-                });
-            }
-            else {
-                this.newAlert("Unsupported file type", "At this time, only jpeg and png images are supported");
-            }
+                else {
+                    this.newAlert("Error", data_obj.reason);
+                }
+            }).catch(() => {
+                ld1.dismiss();
+                this.newAlert("Connection Error", "Please check your connection");
+            });
         }).catch(() => {
             this.newAlert("Connection Error", "Please check your connection");
         });
