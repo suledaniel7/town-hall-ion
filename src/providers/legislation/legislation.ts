@@ -51,4 +51,12 @@ export class LegislationProvider {
     edit_leg_stat(code: string, status: string): Observable<any> {
         return this.http.post(`${this.api}/edit-leg-stat`, {code: code, status: status});
     }
+
+    load_comments(code: string): Observable<any> {
+        return this.http.get(`${this.api}/serve-conversations/${code}`);
+    }
+
+    post_comment(code: string, text: string): Observable<any>{
+        return this.http.post(`${this.api}/post-convo`, {l_code: code, text: text});
+    }
 }

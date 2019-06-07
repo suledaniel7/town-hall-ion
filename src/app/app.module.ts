@@ -86,6 +86,7 @@ import { UsersPage } from "../pages/users/users";
 import { USettingsPage } from '../pages/u-settings/u-settings';
 import { UploadPage } from "../pages/upload/upload";
 import { UpdateAvatarPage } from "../pages/update-avatar/update-avatar";
+import { LegisConvoPage } from "../pages/legis-convo/legis-convo";
 
 import { CheckUsernameProvider } from '../providers/check-username/check-username';
 import { SignupProvider } from '../providers/signup/signup';
@@ -107,8 +108,8 @@ import { DmProvider } from '../providers/dm/dm';
 import { TransmitErrorProvider } from '../providers/transmit-error/transmit-error';
 import { LegislationProvider } from '../providers/legislation/legislation';
 
-const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
-// const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
+// const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} };
+const config: SocketIoConfig = { url: 'http://127.0.0.1:8095', options: {} };
 
 @NgModule({
     declarations: [
@@ -143,6 +144,7 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LegisConvoPage,
         LegislatorPage,
         LLegisInfoPage,
         LHomePage,
@@ -228,6 +230,7 @@ const config: SocketIoConfig = { url: 'http://192.168.43.55:8095', options: {} }
         JSettingsPage,
         JournalistsPage,
         LCommsPage,
+        LegisConvoPage,
         LegislatorPage,
         LLegisInfoPage,
         LHomePage,

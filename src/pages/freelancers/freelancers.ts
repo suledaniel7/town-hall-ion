@@ -7,7 +7,7 @@ import { FHomePage } from "../f-home/f-home";
 import { FProfilePage } from "../f-profile/f-profile";
 import { SearchPage } from "../search/search";
 import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
-// import { JLegisPage } from '../j-legis/j-legis';
+import { JLegisPage } from '../j-legis/j-legis';
 
 @IonicPage()
 @Component({
@@ -17,7 +17,7 @@ import { JBeatSelPage } from '../j-beat-sel/j-beat-sel';
 export class FreelancersPage {
     tab1Root = FHomePage;
     tab2Root = SearchPage;
-    // tab3Root = JLegisPage;
+    tab3Root = JLegisPage;
     tab4Root = FProfilePage;
 
     constructor(

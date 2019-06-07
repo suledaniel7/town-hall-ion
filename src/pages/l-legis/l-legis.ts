@@ -5,6 +5,7 @@ import { LegislationProvider } from "../../providers/legislation/legislation";
 
 import { CreateLegisPage } from "../create-legis/create-legis";
 import { LLegisInfoPage } from '../l-legis-info/l-legis-info';
+import { LegisConvoPage } from '../legis-convo/legis-convo';
 
 @IonicPage()
 @Component({
@@ -65,12 +66,12 @@ export class LLegisPage {
         md1.present();
     }
 
-    conversation(){
-
-    }
-
     reporting(code: string){
         this.navCtrl.push(LLegisInfoPage, {code: code});
+    }
+
+    conversation(code: string){
+        this.navCtrl.push(LegisConvoPage, {code: code});
     }
 
     newAlert(title: string, text: string) {

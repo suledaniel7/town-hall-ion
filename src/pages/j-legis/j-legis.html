@@ -19,7 +19,7 @@
             </ion-card-content>
             <ion-row>
                 <ion-col class="center">
-                    <button (click)="conversation()" ion-button icon-start clear>
+                    <button (click)="conversation(legislation.code)" ion-button icon-start clear>
                         <ion-icon name="chatboxes"></ion-icon>
                     </button>
                 </ion-col>
@@ -82,9 +82,4 @@
             </ion-row>
         </ion-card>
     </div>
-    <ion-fab bottom right>
-        <button (click)="create()" ion-fab color="secondary" class="fab">
-            <ion-icon name="add" class="icon"></ion-icon>
-        </button>
-    </ion-fab>
 </ion-content>

@@ -1,0 +1,75 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>H.R. 1048 - Conversation</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <!-- Create message -->
+    <div class="cr-comm">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-2>
+                    <ion-item>
+                        <ion-avatar item-start>
+                            <img src="{{imgAddress}}/{{item?.avatar}}" alt="Avatar">
+                        </ion-avatar>
+                    </ion-item>
+                </ion-col>
+                <ion-col col-10>
+                    <ion-textarea class="txt-cmt" (keyup)="count()" [(ngModel)]="comment" placeholder="Type Comment...">
+
+                    </ion-textarea>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="right">
+                    <button ion-button small color="{{btnColor}}" (click)="post()" class="cmtBtn">Post Comment</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+    <h3 class="center grey-text">Conversation</h3>
+    <div *ngFor="let message of item?.conversations">
+        <ion-card class="message">
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="{{imgAddress}}/{{message.sender_avatar}}" alt="Avatar">
+                </ion-avatar>
+                <h2>{{message.sender_name}}</h2>
+                <p>{{message.sender_position}}</p>
+            </ion-item>
+            <ion-card-content>
+                <p id="c-{{message.c_timestamp}}" [innerHTML]="message.text"></p>
+            </ion-card-content>
+            <ion-row>
+                <ion-col>
+                    <ion-note>
+                        {{message.date_created}}
+                    </ion-note>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col center *ngIf="!message.originator">
+                    <button (click)="report(message.m_timestamp)" ion-button icon-start clear small>
+                        <ion-icon active="false" name="flag"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col *ngIf="message.originator">
+                    <button (click)="edit()" ion-button icon-start clear small>
+                        <ion-icon active="false" name="create"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col *ngIf="message.originator">
+                    <button (click)="del(message.m_timestamp)" ion-button icon-start clear small>
+                        <ion-icon active="false" name="trash"></ion-icon>
+                    </button>
+                </ion-col>
+                <ion-col center text-center>
+                    <ion-note>
+                        {{message.time_created}}
+                    </ion-note>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+    </div>
+</ion-content>
